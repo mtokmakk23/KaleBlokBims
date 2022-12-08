@@ -1,0 +1,576 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+}
+<script>
+    window.onload = function () {
+        bekleyenSiparisler();
+    }
+    function bekleyenSiparisler() {
+        loading(true);
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/bekleyenSiparisler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+
+                $('#table').bootstrapTable({
+                    columns: [{
+                        field: 'ReferansNo',
+                        title: "ReferansNo",
+                        sortable: true
+                    }, {
+                        field: 'BayiKodu',
+                        title: "BayiKodu",
+                        sortable: true
+                    }, {
+                        field: 'BayiAdi',
+                        title: "BayiAdi",
+                        sortable: true
+                    }, {
+                        field: 'AdresBasligi',
+                        title: "AdresBasligi",
+                        sortable: true
+                    }, {
+                        field: 'EklenmeTarihi',
+                        title: "EklenmeTarihi",
+                        sortable: true
+                    }],
+                    // exportDataType: $(this).val(),
+                    data: result,
+                    locale: 'tr-TR',
+                    detailView: 5 > 1,
+                    onExpandRow: function (index, row, $detail) {
+                        SiparisDetaylari(row, $detail);
+                        // $detail.html("selam");
+                        //irsaliyeIcerigi(result[index]["stFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+                    }
+                });
+            }
+        });
+    }
+
+    function SiparisDetaylari(row, $detail) {
+
+        $detail.html('<div id="siparisDetayi' + row.LOGICALREF + '">' + $(".temp").html() + '</div>');
+        $("#siparisDetayi" + row.LOGICALREF + " .tarih").val(row.EklenmeTarihi);
+        $("#siparisDetayi" + row.LOGICALREF + " .odemeAciklamasi").html(row.OdemeTipi);
+        $("#siparisDetayi" + row.LOGICALREF + " .siparisNotu").val(row.SiparisNotu);
+        $("#siparisDetayi" + row.LOGICALREF + " .referansNo").val(row.BayiKodu + "/" + row.LOGICALREF);
+        $("#siparisDetayi" + row.LOGICALREF + " .siparisSilButton").attr("onclick", "siparisiSil(0," + row.LOGICALREF+")");
+
+        Malzemeler(row.LOGICALREF);
+        CarileriGetir(row);
+        OdemeleriGetir(row);
+        SatisElemanlarini(row);
+        IsyeriBilgileri(row);
+        FabrikaBilgileri(row);
+        BolumBilgileri(row);
+        AmbarBilgileri(row);
+    }
+
+
+    function CarileriGetir(row) {
+        var theData = {
+            bayiKodu: row.BayiKodu
+        }
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/CarileriGetir/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .cari").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .cari").append('<option value="' + result[i].LOGICALREF + '">' + result[i].CODE + ' - ' + result[i].DEFINITION_ + ' ' + result[i].DEFINITION2 + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .cari").select2({ placeholder: "Cari Seçiniz.", });
+            }
+        });
+    }
+
+    function OdemeleriGetir(row) {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/OdemeleriGetir/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .odemeler").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .odemeler").append('<option value="' + result[i].OdemePlaniKodu + '">' + result[i].OdemePlaniAciklamasi + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .odemeler").select2({ placeholder: "Ödeme Seçiniz.", });
+            }
+        });
+    }
+
+    function SatisElemanlarini(row) {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/SatisElemanlarini/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").append('<option value="' + result[i].SatisElemaniKodu + '">' + result[i].SatisElemaniAciklamasi + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").select2({ placeholder: "Satış Elemanı Seçiniz.", });
+            }
+        });
+    }
+
+    function IsyeriBilgileri(row) {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/IsyeriBilgileri/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .isYeri").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .isYeri").append('<option value="' + result[i].IsYeriKodu + '">' + result[i].IsYeriAciklamasi + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .isYeri").select2({ placeholder: "İşyeri Seçiniz.", });
+            }
+        });
+    }
+
+    function FabrikaBilgileri(row) {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/FabrikaBilgileri/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .fabrika").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .fabrika").append('<option value="' + result[i].FabrikaKodu + '">' + result[i].FabrikaAciklamasi + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .fabrika").select2({ placeholder: "Fabrika Seçiniz.", });
+            }
+        });
+    }
+
+    function BolumBilgileri(row) {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/BolumBilgileri/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .bolum").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .bolum").append('<option value="' + result[i].BolumKodu + '">' + result[i].BolumAciklamasi + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .bolum").select2({ placeholder: "Bölüm Seçiniz.", });
+            }
+        });
+    }
+
+    function AmbarBilgileri(row) {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/AmbarBilgileri/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $("#siparisDetayi" + row.LOGICALREF + " .ambar").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#siparisDetayi" + row.LOGICALREF + " .ambar").append('<option value="' + result[i].AmbarKodu + '">' + result[i].AmbarAciklamasi + '</option>');
+                }
+                $("#siparisDetayi" + row.LOGICALREF + " .ambar").select2({ placeholder: "Ambar Seçiniz.", });
+            }
+        });
+    }
+
+    function Malzemeler(baslikREF) {
+        var theData = {
+            LOGICALREF: baslikREF
+        }
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/Malzemeler/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                $("#siparisDetayi" + baslikREF + " table tbody").html("");
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {                   
+                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
+                            '<td><a style="display:none" class="btn btn-warning" onclick="newRow(4,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ')"><i class="fa-solid fa-truck-fast"></i></a></td>' +
+                            '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ',' + (parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                            '<td>' + result[i].Turu + '</td>' +
+                            '<td>' + result[i].MalzemeKodu + '</td>' +
+                            '<td>' + result[i].MalzemeAdi + '</td>' +
+                            '<td>' + formatMoney(result[i].Miktar) + ' ' + result[i].Birimi + '</td>' +
+                            '<td>' + formatMoney(parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ' TL</td>' +
+                            '<td>' + result[i].HesaplamaDetayliAciklama + '</td>' +
+                            +'</tr>');
+                    var indirimler = result[i].Indirimler;
+                    for (var j = 0; j < indirimler.length; j++) {
+                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + indirimler[i].LOGICALREF + '">' +
+                            '<td><a class="btn btn-danger" onclick="deleteRow(0,' + baslikREF + ',' + indirimler[i].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
+                            '<td></td>' +
+                            '<td>İndirim</td>' +
+                            '<td></td>' +
+                            '<td>' + indirimler[i].IndirimAciklamasi + '</td>' +
+                            '<td>%' + ((parseFloat(indirimler[i].IndirimTutari) * 100) / parseFloat(indirimler[i].HesaplanmisBirimFiyatiTL)) + '</td>' +
+                            '<td>' + formatMoney(indirimler[i].IndirimTutari) + ' TL</td>' +
+                            '<td></td>' +
+                            +'</tr>');
+                    }
+
+                    var nakliyeler = result[i].Nakliyeler;
+                    for (var j = 0; j < nakliyeler.length; j++) {
+                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + nakliyeler[i].LOGICALREF + '">' +
+                            '<td><a style="display:none" class="btn btn-warning" onclick="newRow(4,' + baslikREF + ',' + nakliyeler[i].LOGICALREF + ',' + i + ')"><i class="fa-solid fa-truck-fast"></i></a></td>' +
+                            '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + nakliyeler[i].LOGICALREF + ',' + i + ',' + nakliyeler[i].NakliyeFiyatiTL + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                            '<td>Hizmet</td>' +
+                            '<td>' + nakliyeler[i].NakliyeKodu + '</td>' +
+                            '<td>' + nakliyeler[i].NakliyeAdi + '</td>' +
+                            '<td>' + formatMoney(nakliyeler[i].Miktar) + ' x ' + nakliyeler[i].NakliyeBirimSeti + '</td>' +
+                            '<td>' + nakliyeler[i].NakliyeFiyatiTL + ' TL</td>' +
+                            '<td></td>' +
+                            +'</tr>');
+                    }
+                    
+                    //if (Boolean(result[i].Editable)) {
+                    //    $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
+                    //        '<td><a class="btn btn-danger" onclick="deleteRow(0,' + baslikREF + ',' + result[i].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
+                    //        '<td></td>' +
+                    //        '<td>' + result[i].Turu + '</td>' +
+                    //        '<td></td>' +
+                    //        '<td>' + result[i].IndirimAciklamasi + '</td>' +
+                    //        '<td>%' + ((parseFloat(result[i].IndirimTutari) * 100) / parseFloat(result[i].HesaplanmisBirimFiyatiTL)) + '</td>' +
+                    //        '<td>' + formatMoney(result[i].IndirimTutari) + ' TL</td>' +
+                    //        '<td></td>' +
+                    //        +'</tr>');
+                    //} else {
+                    //    $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
+                    //        '<td><a style="display:none" class="btn btn-warning" onclick="newRow(4,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ')"><i class="fa-solid fa-truck-fast"></i></a></td>' +
+                    //        '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ',' + result[i].HesaplanmisBirimFiyatiTL + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                    //        '<td>' + result[i].Turu + '</td>' +
+                    //        '<td>' + result[i].MalzemeKodu + '</td>' +
+                    //        '<td>' + result[i].MalzemeAdi + '</td>' +
+                    //        '<td>' + formatMoney(result[i].Miktar) + ' ' + result[i].Birimi + '</td>' +
+                    //        '<td>' + formatMoney(result[i].HesaplanmisBirimFiyatiTL) + ' TL</td>' +
+                    //        '<td>' + result[i].HesaplamaDetayliAciklama + '</td>' +
+                    //        +'</tr>');
+                    //}
+
+                }
+
+
+            }
+        });
+    }
+
+
+    function newRow(step, baslikREF, itemRef, i, fiyat) {
+        if (step == "2") {
+            $("#siparisDetayi" + baslikREF + " tbody tr:eq(" + i + ")").after('<tr class="ek' + itemRef + '">' +
+                '<td colspan="1"><a onclick="indirimiKaydet(' + baslikREF + ',' + itemRef + ')" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></a></td>' +
+                '<td><input type="text" class="gizliFiyat form-control" value="' + fiyat + '" style="display:none"/></td>' +
+                '<td><select class="lineType form-control"><option val="2">İndirim</option></select></td>' +
+                '<td colspan="2"><input type="text" class="indirimAciklamasi form-control" placeholder="İndirim Açıklaması Yazınız"/></td>' +
+                '<td><input type="text" onkeyup="indirimHesapla(' + itemRef + ',0)" class="indirimYuzdesi sadeceSayi form-control" placeholder="Yüzde Olarak İndirim"/></td>' +
+                '<td colspan="2"><input type="text" onkeyup="indirimHesapla(' + itemRef + ',1)" class="indirimTutari sadeceSayi form-control" placeholder="Fiyat Olarak İndirim"/></td>' +
+                +'</tr>');
+        }
+
+    }
+
+
+    function deleteRow(step, baslikREF, itemRef) {
+        if (step == 0) {
+            Swal.fire({
+                title: 'Emin Misiniz?',
+                text: "Satırı Silmek İstediğinizden Emin Misiniz?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'EVET'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteRow(1, baslikREF, itemRef);
+                }
+            })
+        } else {
+            var theData = {
+                itemRef: itemRef
+            }
+            $.ajax({
+                url: '/Admin_BekleyenSiparisler/deleteRow/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (sonuc) {
+                    if (sonuc == "ok") {
+                        Malzemeler(baslikREF);
+                    }
+                }
+            });
+        }
+
+    }
+    function indirimHesapla(itemRef, step) {
+
+        if (step == 0) {
+            $(".ek" + itemRef + " .indirimTutari").val(parseFloat($(".ek" + itemRef + " .indirimYuzdesi").val()) * parseFloat($(".ek" + itemRef + " .gizliFiyat").val()) / 100);
+        } else {
+            $(".ek" + itemRef + " .indirimYuzdesi").val(parseFloat($(".ek" + itemRef + " .indirimTutari").val()) * 100 / parseFloat($(".ek" + itemRef + " .gizliFiyat").val()));
+
+        }
+
+    }
+
+    function indirimiKaydet(baslikREF, itemRef) {
+        var indirimAciklamasi = $(".ek" + itemRef + " .indirimAciklamasi").val();
+        var indirimTutari = parseFloat($(".ek" + itemRef + " .indirimTutari").val());
+        if (indirimAciklamasi.length < 5) {
+            UyariMesaji("İndirim Açıklaması En Az 5 Karakter Olmalıdır");
+            return;
+        }
+        if (parseFloat(indirimTutari) <= 0) {
+            UyariMesaji("İndirim Tutarı 0(Sıfır) dan Küçük Olamaz");
+            return;
+        }
+        var theData = {
+            itemREF: itemRef,
+            lineType: $(".ek" + itemRef + " .lineType option:selected").val(),
+            indirimAciklamasi: indirimAciklamasi,
+            indirimTutari: indirimTutari,
+            HesaplanmisBirimFiyatiTL: $(".ek" + itemRef + " .gizliFiyat").val()
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/indirimiKaydet/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                if (sonuc == "ok") {
+                    Malzemeler(baslikREF);
+                } else {
+                    HataMesaji(sonuc);
+                }
+
+            }
+        });
+    }
+
+    function siparisiSil(step, baslikLREF) {
+        if (step == 0) {
+            Swal.fire({
+                title: 'Emin Misiniz?',
+                text: "Bu Sipariş Kalıcı Olarak Silinecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'EVET'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    siparisiSil(1, baslikLREF);
+                }
+            })
+        } else {
+            var theData = {
+                baslikLREF: baslikLREF,
+                SilinmeSebebi: $("#siparisDetayi" + baslikLREF + " .siparisSilmeSebebi").val()
+            }
+            loading(true);
+            $.ajax({
+                url: '/Admin_BekleyenSiparisler/siparisiSil/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (sonuc) {
+                    loading(false);
+                    if (sonuc == "ok") {
+                        window.location.reload();
+                        bekleyenSiparisler();
+                    } else {
+                        HataMesaji(sonuc);
+                    }
+                }
+            });
+        }
+    }
+    function Validate(data, status, xhr) {
+
+        if (data == "ok") {
+            window.location.reload();
+        } else {
+            UyariMesaji(data);
+        }
+    }
+
+</script>
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<div class="page-content mt-1">
+
+    <table class="table-striped table-sm" id="table"
+           data-toolbar="#toolbar"
+           data-search="true"
+           data-show-export="true"></table>
+
+    <div class="temp" style="display:none">
+        @using (Ajax.BeginForm("siparisAktar", "Admin_BekleyenSiparisler", new AjaxOptions { HttpMethod = "POST", OnSuccess = "return Validate(data, status, xhr);", }))
+        {
+            <div class="row mt-1">
+                <div class="col-md-3">
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-3 col-form-label">Tarih</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="tarih form-control" name="tarih" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-3 col-form-label">Belge No</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="belgeNo form-control" name="belgeNo">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Referans No</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="referansNo form-control" name="referansNo" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-3 col-form-label">Cari</label>
+                        <div class="col-sm-9">
+                            <select class="cari form-control" name="cari"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-3 col-form-label">Ödemeler</label>
+                        <div class="col-sm-9">
+                            <select class="odemeler form-control" name="odemeler"></select>
+                            <small class="odemeAciklamasi text-danger"></small>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-3 col-form-label">Satış Elemanı</label>
+                        <div class="col-sm-9">
+                            <select class="satisElemani form-control" name="satisElemani"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-3 col-form-label">Sipariş Notu</label>
+                        <div class="col-sm-9">
+                            <textarea rows="5" class="siparisNotu form-control" name="siparisNotu" maxlength="100"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-4 col-form-label">İş Yeri</label>
+                        <div class="col-sm-8">
+                            <select class="isYeri form-control" name="isYeri"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-4 col-form-label">Bölüm</label>
+                        <div class="col-sm-8">
+                            <select class="bolum form-control" name="bolum"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-4 col-form-label">Fabrika</label>
+                        <div class="col-sm-8">
+                            <select class="fabrika form-control" name="fabrika"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <label class="col-sm-4 col-form-label">Ambar</label>
+                        <div class="col-sm-8">
+                            <select class="ambar form-control" name="ambar"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Türü</th>
+                        <th>Kodu</th>
+                        <th>Açıklaması</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
+                        <th>Fiyat Açıklaması</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-md-6 m-1">
+                    <button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
+                        <span>KAYDET</span>
+                        <i class="icon-long-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="col-md-6 row mt-5">
+                    <div class="col-md-9">
+                        <textarea class="siparisSilmeSebebi form-control" placeholder="Fiş Silme Sebebini Yazınız"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="siparisSilButton btn btn-danger">Siparişi Sil</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        }
+    </div>
+
+
+</div>

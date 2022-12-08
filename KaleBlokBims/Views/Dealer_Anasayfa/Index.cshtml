@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+<script>
+       
+
+        window.onload = function () {
+            
+            HesapEkstresi();
+            BaglantiOzeti();
+            BayiBilgileri();
+          //  buildTable($('#table'), 8, 1)
+        }
+
+    function BayiBilgileri() {
+         var sonuc = ('@Html.Raw(ViewBag.BayiBilgileri)');
+        var result = JSON.parse(sonuc);
+        $(".adres").html(result[0]["ADDR1"] + " " + result[0]["ADDR2"] + " "+result[0]["CITY"] + "/" + result[0]["TOWN"]);
+        $(".mail").html(result[0]["WEBURL"]);
+        $(".telefon").html(result[0]["TELNR1"] + "-" + result[0]["TELNR2"]);
+    }
+
+        function HesapEkstresi() {
+            var sonuc = ('@Html.Raw(ViewBag.HesapOzeti)');
+            var result = JSON.parse(sonuc);
+            eval('var objBaslik=' + sonuc);
+
+            var i; var j; var row;
+            var columns = []
+            var data = []
+            i = 0;
+            for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true
+                })
+                i++;
+            }
+
+            for (i = 0; i < result.length; i++) {
+                row = {}
+                for (j = 0; j < columns.length; j++) {
+                    row['field' + j] = result[i][columns[j].title];
+                }
+                data.push(row);
+            }
+            $('#tableHesapOzeti').bootstrapTable({
+                columns: columns,
+                // exportDataType: $(this).val(),
+                exportTypes: ['excel'],
+                locale: 'tr-TR',
+                exportOptions: {
+                    fileName: 'Hesap Özeti'
+                },
+                data: data
+            });
+        }
+    function BaglantiOzeti() {
+            var sonuc =('@Html.Raw(ViewBag.BaglantiOzeti)');
+            var result = JSON.parse(sonuc);
+            eval('var objBaslik=' + sonuc);
+
+            var i; var j; var row;
+            var columns = []
+            var data = []
+            i = 0;
+            for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true
+                })
+                i++;
+            }
+
+            for (i = 0; i < result.length; i++) {
+                row = {}
+                for (j = 0; j < columns.length; j++) {
+                    row['field' + j] = result[i][columns[j].title];
+                }
+                data.push(row);
+            }
+        $('#tableBaglantiOzeti').bootstrapTable({
+                columns: columns,
+                // exportDataType: $(this).val(),
+            exportTypes: ['excel'],
+            locale: 'tr-TR',
+            exportOptions: {
+                fileName: 'Bağlantı Özeti'
+            },
+                data: data
+            });
+        }
+
+
+
+</script>
+<style>
+    .card-title a:before {
+        content: none
+    }
+
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<div class="page-header text-center bg-white" @*style="background-image: url('/assets/images/banners/banner.jpeg')"*@>
+    <div class="container">
+    <img src="/assets/images/banners/banner.jpeg" />
+        <h1 class="page-title" style="font-family: cursive;font-weight: bold;display:none">İZOKALE PORTAL</h1>
+    </div><!-- End .container -->
+</div>
+<div class="page-content pb-0 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-2 mb-lg-0">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="contact-info">
+                            <div class="card-header mb-1" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">
+                                <h2 class="card-title">
+                                    <a>
+                                        Bayi Bilgileri
+                                    </a>
+                                </h2>
+                            </div>
+                            <ul class="contact-list">
+                                <li>
+                                    <i class="icon-map-marker"></i>
+                                    <b class="adres"></b>
+                                </li>
+                                <li>
+                                    <i class="icon-phone"></i>
+                                    <a href="tel:#" class="telefon" style="font-weight:bold"></a>
+                                </li>
+                                <li>
+                                    <i class="icon-envelope"></i>
+                                    <a href="mailto:#" class="mail" style="font-weight:bold"></a>
+                                </li>
+                            </ul><!-- End .contact-list -->
+                        </div><!-- End .contact-info -->
+                    </div><!-- End .col-sm-7 -->
+                    <!-- End .col-sm-5 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="card-header" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">
+                    <h2 class="card-title">
+                        <a>
+                            Duyurular
+                        </a>
+                    </h2>
+                </div>
+            </div><!-- End .col-lg-6 -->
+        </div><!-- End .row -->
+        <hr class="mt-4 mb-5">
+        <!-- End .stores -->
+    </div><!-- End .container -->
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="accordion" id="accordion-1">
+                    <div class="card">
+                        <div class="card-header" id="heading-1" style="border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-bottom: 0.1rem solid #ebebeb;">
+                            <h2 class="card-title">
+                                <a>
+                                    Hesap Özeti
+                                </a>
+                            </h2>
+                        </div><!-- End .card-header -->
+                        <div class="collapse show">
+                            <div class="card-body">
+                                <table class="table-striped" id="tableHesapOzeti"
+                                       data-toolbar="#toolbar"
+                                       data-show-export="true"></table>
+                            </div><!-- End .card-body -->
+                        </div><!-- End .collapse -->
+                    </div><!-- End .card -->
+                    <div class="card mt-7">
+                        <div class="card-header" id="heading-2" style="border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-bottom: 0.1rem solid #ebebeb;">
+                            <h2 class="card-title">
+                                <a>
+                                    Bağlantı Özeti
+                                </a>
+                            </h2>
+                        </div><!-- End .card-header -->
+                        <div class="collapse show">
+                            <div class="card-body">
+
+                                <table class="table-striped" id="tableBaglantiOzeti"
+                                       data-toolbar="#toolbar"
+                                       data-show-export="true"></table>
+
+                            </div><!-- End .card-body -->
+                        </div><!-- End .collapse -->
+                    </div><!-- End .card -->
+                </div><!-- End .accordion -->
+            </div><!-- End .col-md-6 -->
+            <!-- End .col-md-6 -->
+        </div><!-- End .row -->
+
+    </div><!-- End .container -->
+</div>

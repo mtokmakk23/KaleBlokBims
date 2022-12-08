@@ -1,0 +1,241 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+
+<script>
+    window.onload = function () {
+        fiyatListeleri();
+        AnaGruplar();
+        iller();
+    }
+
+    function fiyatListeleri() {
+        $.ajax({
+            url: '/Dealer_FiyatListesi/fiyatListeleri/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                 var result = JSON.parse(sonuc);
+
+                    $(".fiyatListeleri").html("<option value='-1'>Seçiniz</option>");
+                    for (var i = 0; i < result.length; i++) {
+                        $(".fiyatListeleri").append("<option value='" + result[i].fiyatListesiKodu + "'>" + result[i].Aciklama + "</option>");
+
+                    }
+            }
+        });
+
+    }
+    var anaGrupArray;
+    function AnaGruplar() {
+        $.ajax({
+            url: '/Dealer_FiyatListesi/Gruplar/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                anaGrupArray = result;
+                $(".anaGrup").html("<option value='-1'>Seçiniz</option>");
+                for (var i = 0; i < result.length; i++) {
+                    $(".anaGrup").append("<option value='" + result[i].OzelKod + "'>" + result[i].MenuAdi + "</option>");
+
+                }
+            }
+        });
+    }
+
+    function AltGruplar() {
+        var result = anaGrupArray;
+        var anaGrupKodu = $(".anaGrup option:selected").val();
+
+        $(".altGrup").html("<option value='-1'>Seçiniz</option>");
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].OzelKod == anaGrupKodu) {
+                debugger;
+                var altMenuler = result[i].AltMenuler;
+                for (var j = 0; j < altMenuler.length; j++) {
+                    $(".altGrup").append("<option value='" + altMenuler[j].AltMenuOzelKod + "'>" + altMenuler[j].AltMenuAdi + "</option>");
+                }
+
+            }
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------
+    var IllerArray;
+     function iller() {
+         $.ajax({
+             url: '/Dealer_FiyatListesi/Iller/',
+             type: 'POST',
+             dataType: 'text',
+             success: function (sonuc) {
+                 var result = JSON.parse(sonuc);
+                 IllerArray = result;
+                 $(".il").html("<option value='-1'>Seçiniz</option>");
+                 for (var i = 0; i < result.length; i++) {
+                     $(".il").append("<option value='" + result[i].LOGICALREF + "'>" + result[i].IlAdi + "</option>");
+
+                 }
+             }
+         });
+    }
+
+    function ilceler() {
+        var result = IllerArray;
+        var ilKodu = $(".il option:selected").val();
+
+        $(".ilce").html("<option value='-1'>Seçiniz</option>");
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].LOGICALREF == ilKodu) {
+                var ilceler = result[i].Ilceler;
+                for (var j = 0; j < ilceler.length; j++) {
+                    $(".ilce").append("<option value='" + ilceler[j].LOGICALREF + "'>" + ilceler[j].IlceAdi + "</option>");
+                }
+
+            }
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------------
+
+    function fiyatlariGetir() {
+        var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var anaGrupKodu = $(".anaGrup option:selected").val();
+        var altGrupKodu = $(".altGrup option:selected").val();
+        var il = $(".il option:selected").val();
+        var ilce = $(".ilce option:selected").val();
+        var fabrikaTeslimMi = $('.fabrikaTeslimMi').is(':checked');
+        if (fiyatListesiKodu == "-1") {
+            UyariMesaji("Fiyat listesi seçilmelidir.");
+            return;
+        }
+        if (anaGrupKodu == "-1") {
+            UyariMesaji("Ana grup seçilmelidir.");
+            return;
+        }
+        if (!Boolean(fabrikaTeslimMi)) {
+            if (il == "-1" || ilce == "-1") {
+                UyariMesaji("İl ve ilçe bilgisi seçilmelidir.");
+                return;
+            }
+        }
+       
+       
+        var theData = {
+            FiyatListesiKodu: fiyatListesiKodu,
+            SPECODE1: anaGrupKodu,
+            SPECODE2: altGrupKodu,
+            Il: il,
+            Ilce: ilce,
+            fabrikaTeslimMi: Boolean(fabrikaTeslimMi),
+            GuncelUSD: GuncelUSD,
+            GuncelEUR: GuncelEUR,
+        }
+        loading(true);
+        $.ajax({
+            url: '/Dealer_FiyatListesi/MalzemeFiyatlariniGetir/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+
+                var dataTable=[]
+                for (var i = 0; i < result.length; i++) {
+                    dataTable.push({
+                        'field1': result[i].MalzemeKodu,
+                        'field2': result[i].MalzemeAdi,
+                        'field3': result[i].Birim,
+                        'field4': formatMoney(result[i].HesaplanmisBirimFiyatiTL)+" TL",
+                        'field5': result[i].HataMesaji,
+                    });
+                  
+                }
+                $(".malzemeFiyatlariTablosu").bootstrapTable({ data: dataTable })
+
+
+            }
+        });
+    }
+
+</script>
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<div class="page-content pt-1">
+    <div class="cart">
+
+        <div class="row">
+
+            <aside class="col-lg-3">
+                <div class="summary summary-cart">
+                    <h3 class="summary-title">FİYAT BİLGİLERİ</h3><!-- End .summary-title -->
+                    <table class="table table-summary">
+                        <tbody>
+                            <tr class="summary-subtotal">
+                                <td>Fiyat Listesi:</td>
+                                <td><select class="fiyatListeleri form-control"></select></td>
+                            </tr><!-- End .summary-subtotal -->
+                            <tr class="summary-subtotal 0">
+                                <td class="border-0">Ana Grup:</td>
+                                <td class="border-0"><select class="anaGrup form-control" onchange="AltGruplar()"><option value="-1">Seçiniz</option></select></td>
+                            </tr><!-- End .summary-subtotal -->
+                            <tr class="summary-subtotal 0">
+                                <td>Alt Grup:</td>
+                                <td><select class="altGrup form-control"><option value="-1">Seçiniz</option></select></td>
+                            </tr><!-- End .summary-subtotal -->
+                            <tr class="summary-subtotal 0">
+                                <td class="border-0">İl:</td>
+                                <td class="border-0"><select class="il form-control" onchange="ilceler()" ><option value="-1">Seçiniz</option></select></td>
+                            </tr><!-- End .summary-subtotal -->
+                            <tr class="summary-subtotal 0">
+                                <td class="border-0">İlçe:</td>
+                                <td class="border-0"><select class="ilce form-control"><option value="-1" >Seçiniz</option></select></td>
+                            </tr><!-- End .summary-subtotal -->
+                            <tr class="summary-subtotal">
+                                <td>Fabrika Teslim:</td>
+                                <td> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input"></td>
+                            </tr><!-- End .summary-subtotal -->
+
+                        </tbody>
+                    </table><!-- End .table table-summary -->
+                    <a href="#" onclick="fiyatlariGetir()" class="btn btn-outline-primary-2 btn-order btn-block">FİYATLARI GETİR</a>
+                </div><!-- End .summary -->
+            </aside><!-- End .col-lg-3 -->
+
+            <div class="col-lg-9">
+                <table class="malzemeFiyatlariTablosu table table-striped table-sm"
+                       data-show-export="true"
+                       data-search-highlight="true"
+                       data-export-types="['excel']"
+                       data-export-options='{"fileName": "Fiyat Listesi"}'
+                       data-pagination="true"
+                       data-locale="tr-TR"
+                       data-search="true">
+                    <thead>
+                        <tr>
+                            <th data-field="field1">Kodu</th>
+                            <th data-field="field2">Adı</th>
+                            <th data-field="field3">Birim</th>
+                            <th data-field="field4">Fiyat</th>
+                            <th data-field="field5"></th>
+                        </tr>
+                    </thead>
+                  
+                </table><!-- End .table table-wishlist -->
+
+            </div>
+        </div><!-- End .row -->
+
+    </div><!-- End .cart -->
+</div>

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+
+
+
+
+
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+
+<table class="table-striped table-sm" id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-export="true"></table>
+
+<script>
+
+    window.onload = function () {
+
+        HesapEkstresi();
+
+        //  buildTable($('#table'), 8, 1)
+    }
+
+
+
+    function HesapEkstresi() {
+        loading(true);
+        $.ajax({
+            url: '/Dealer_HesapEkstresi/HesapEkstresi/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                eval('var objBaslik=' + sonuc);
+
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true
+                    })
+                    i++;
+                }
+
+                for (i = result.length - 1; i >= 0; i--) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                $('#table').bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    exportTypes: ['excel'],
+                    locale: 'tr-TR',
+                    exportOptions: {
+                        fileName: 'Hesap Ekstresi'
+                    },
+                    data: data
+                });
+            }
+        });
+    }
+
+
+
+</script>
+
+

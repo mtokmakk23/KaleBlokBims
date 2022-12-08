@@ -1,0 +1,425 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+<script>
+    window.onload = function () {
+
+
+        bayiler();
+
+    }
+
+    var bayilerDizisi;
+    function bayiler() {
+        loading(true);
+        $.ajax({
+            url: '/Admin_BayilerVeKullanicilar/bayiler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                $(".bayiListesi").html('<option value="-1">Seçiniz</option>');
+                loading(false);
+                var result = JSON.parse(data);
+                bayilerDizisi = result;
+                var str = "";
+                for (var i = 0; i < result.length; i++) {
+                    $(".bayiListesi").append('<option value="' + result[i].BayiKodu + '">' + result[i].MusteriAdi + '</option>');
+                    str += ('<div class="card">');
+                    str += ('  <div class="card-header">');
+                    str += ('   <h2 class="card-title">');
+                    str += ('     <a onclick="$(\'#collapse-' + i + '\').toggle(\'fast\');" class="collapsed" style="font-size:14px">' + result[i].MusteriAdi + '</a>');
+                    str += ('   </h2>');
+                    str += ('  </div>');
+
+
+                    str += (' <div id="collapse-' + i + '" class="collapse" aria-labelledby="heading-1" data-parent="#accordion-1" style="">');
+                    str += ('   <div class="card-body">');
+                    var cariler = result[i].BagliCariler;
+                    for (var j = 0; j < cariler.length; j++) {
+                        str += ('   <div class="tagcloud"><a style="width:100%">' + cariler[j].CariKodu + ' ' + cariler[j].CariAdi + '<i onclick="cariyiBayidenAyir(0,' + cariler[j].LOGICALREF + ')" class="fa-regular fa-square-minus" style="float:right;"></i></a></div>');
+                    }
+                    str += ('   <div class="tagcloud"><a class="btn" style="width:100%;"><i class="fa-solid fa-link"></i>Cari Bağla: <select id="cariListesi' + i + '" class="js-example-basic-single" style="width:70%"></select><p onclick="bayiyeCariBagla(' + result[i].LOGICALREF + ',' + i + ')" class="btn btn-primary btn-sm m-2">EKLE</p></a></div>');
+                    str += ('  </div>');
+                    str += (' </div>');
+                    str += ('</div>');
+
+                }
+
+                $("#accordion-1").html(str);
+                //$('.js-example-basic-single').select2({
+                //    minimumInputLength: 3
+                //});
+                $(".bayiListesi").select2({ placeholder: "Bayi Seçiniz.", allowClear: true });
+                $('.js-example-basic-single').select2({
+                    placeholder: "Cari Seçiniz.",
+                    minimumInputLength: 3,
+                    ajax: {
+                        delay: 1000,
+                        url: '/Admin_BayilerVeKullanicilar/tumCariler',
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        processResults: function (data) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.CODE + ' - ' + item.DEFINITION_,
+                                        id: item.LOGICALREF
+                                    }
+                                })
+                            };
+                        }
+                        // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                    }
+                });
+
+                bayiKullanicilari();
+                // tumCariler();
+            }
+        });
+    }
+
+    function cariyiBayidenAyir(step, LOGICALREF) {
+        if (step == 0) {
+            Swal.fire({
+                title: 'Emin Misiniz?',
+                text: "Cari Hesap İle Bayi Bağlantısı Koparılacaktır!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'EVET'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    cariyiBayidenAyir(1, LOGICALREF)
+                }
+            })
+        } else if (step == 1) {
+            var theData = {
+                LOGICALREF: LOGICALREF
+            }
+            loading(true);
+            $.ajax({
+                url: '/Admin_BayilerVeKullanicilar/cariyiBayidenAyir/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (data) {
+                    loading(false);
+                    if (data == "ok") {
+                        bayiler();
+                    }
+                }
+            });
+        }
+
+    }
+    function bayiyeCariBagla(MusteriLREF, sayac) {
+        var cariLREF = $("#cariListesi" + sayac + " option:selected").val();
+        if (cariLREF == -1) {
+            UyariMesaji("Cari Seçilmelidir.");
+            return;
+        }
+        var theData = {
+            MusteriLREF: MusteriLREF,
+            CariLREF: cariLREF
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_BayilerVeKullanicilar/bayiyeCariBagla/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                loading(false);
+                if (data == "ok") {
+                    bayiler();
+                }
+            }
+        });
+    }
+
+
+    var bayiAdi = "";
+    function yeniBayi(step) {
+        if (step == 0) {
+            Swal.fire({
+                title: 'Bayi Adını Yazınız',
+                html:
+                    '<input id="swal-input1" class="swal2-input" maxlength="50">',
+                focusConfirm: false,
+                preConfirm: () => {
+
+                    bayiAdi = document.getElementById('swal-input1').value;
+                    yeniBayi(1);
+                }
+            })
+        }
+        if (step == 1) {
+            if (bayiAdi == "") {
+                UyariMesaji("Bayi Adı Boş Geçilemez");
+                return;
+            }
+            var theData = {
+                bayiAdi: bayiAdi
+            }
+            $.ajax({
+                url: '/Admin_BayilerVeKullanicilar/yeniBayi/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (data) {
+                    if (data == "ok") {
+                        bayiler();
+                    } else {
+                        HataMesaji(data);
+                    }
+                }
+            });
+        }
+    }
+
+    function sifreOlustur() {
+
+        $(".cpassword").val(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+    }
+
+
+    function check(checkk) {
+        if ($(checkk).is(":checked")) {
+            $(checkk).attr("value", "true");
+        } else {
+            $(checkk).attr("value", "false");
+        }
+    }
+
+    function Validate(data, status, xhr) {
+        if (data == "yeniKullanici") {
+            $("#cAktif").prop("checked", true);
+            $("#cname").val("");
+            $("#cemail").val("");
+            $("#cemail").prop("disabled", false);
+            $("#cphone").val("");
+            $("#cpassword").val("");
+            $(".KullaniciSilButon").html("");
+            document.getElementById("bayiListesi").value = "-1";
+            $("#select2-bayiListesi-container").html("Seçiniz");
+        } else if (data == "ok") {
+            $("#cname").val("");
+            $("#cAktif").prop("checked", true);
+            $("#cemail").val("");
+            $("#cemail").prop("disabled", false);
+            $("#cphone").val("");
+            $("#cpassword").val("");
+            $(".KullaniciSilButon").html("");
+            document.getElementById("bayiListesi").value = "-1";
+            $("#select2-bayiListesi-container").html("Seçiniz");
+            OnayMesaji("Kayıt Başarılı");
+            bayiKullanicilari();
+        } else {
+            UyariMesaji(data);
+        }
+    }
+
+    function bayiKullanicilari(LREF) {
+        var dataTable = [];
+        $.ajax({
+            url: '/Admin_BayilerVeKullanicilar/bayiKullanicilari/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                var result = JSON.parse(data);
+                if (LREF == undefined) {
+                    for (var i = 0; i < result.length; i++) {
+                        for (var j = 0; j < bayilerDizisi.length; j++) {
+                            if (result[i].BayiKodu == bayilerDizisi[j].BayiKodu) {
+                                dataTable.push({
+                                    'field1': '<a onclick="bayiKullanicilari(' + result[i].LOGICALREF + ')"><i class="fa-solid fa-user-pen"></i></a>',
+                                    'field2': (Boolean(result[i].Status) ? '<div class="filter-colors"><a href="#" style="background: #669933;"><span class="sr-only">Aktif</span></a></div>' : '<div class="filter-colors"><a href="#" style="background: #cc3333;"><span class="sr-only">Pasif</span></a></div>'),
+                                    'field3': result[i].BayiKodu,
+                                    'field4': bayilerDizisi[j].MusteriAdi,
+                                    'field5': result[i].MailAdresi,
+                                    'field6': result[i].AdiSoyadi,
+                                    'field7': result[i].GSM,
+                                    'field8': (Boolean(result[i].AdminMi) ? '<div class="filter-colors"><a href="#" style="background: #669933;"><span class="sr-only">Evet</span></a></div>' : '<div class="filter-colors"><a href="#" style="background: #cc3333;"><span class="sr-only">Hayır</span></a></div>')
+                                });
+
+                                //$("#bayiKullanicilarTablosu tbody").append('<tr>' +
+                                //    '<td><a onclick="bayiKullanicilari(' + result[i].LOGICALREF + ')"><i class="fa-solid fa-user-pen"></i></a></td>' +
+                                //    '<td>' + (Boolean(result[i].Status) ? '<div class="filter-colors"><a href="#" style="background: #669933;"><span class="sr-only">Aktif</span></a></div>' : '<div class="filter-colors"><a href="#" style="background: #cc3333;"><span class="sr-only">Pasif</span></a></div>') + '</td>' +
+                                //    '<td>' + result[i].BayiKodu + '</td>' +
+                                //    '<td>' + bayilerDizisi[j].MusteriAdi + '</td>' +
+                                //    '<td>' + result[i].MailAdresi + '</td>' +
+                                //    '<td>' + result[i].AdiSoyadi + '</td>' +
+                                //    '<td>' + result[i].GSM + '</td>' +
+                                //    '<td>' + (Boolean(result[i].AdminMi) ? '<div class="filter-colors"><a href="#" style="background: #669933;"><span class="sr-only">Evet</span></a></div>' : '<div class="filter-colors"><a href="#" style="background: #cc3333;"><span class="sr-only">Hayır</span></a></div>') + '</td>' +
+                                //    +'</tr>');
+
+                            }
+                        }
+                    }
+                    $("#bayiKullanicilarTablosu").bootstrapTable({ data: dataTable })
+                } else {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].LOGICALREF == LREF) {
+                            if (Boolean(result[i].Status)) {
+                                $("#cAktif").prop("checked", true);
+                            } else {
+                                $("#cAktif").prop("checked", false);
+
+                            }
+
+                            if ($("#cAktif").is(":checked")) {
+                                $("#cAktif").prop("value", "true");
+                            } else {
+                                $("#cAktif").prop("value", "false");
+                            }
+                            $("#cname").val(result[i].AdiSoyadi);
+                            $("#cemail").val(result[i].MailAdresi);
+                            $("#cemail").prop("disabled", true);
+                            $("#cphone").val(result[i].GSM);
+                            document.getElementById("bayiListesi").value = result[i].BayiKodu;
+
+                            for (var j = 0; j < bayilerDizisi.length; j++) {
+                                if (result[i].BayiKodu == bayilerDizisi[j].BayiKodu) {
+                                    $("#select2-bayiListesi-container").html(bayilerDizisi[j].MusteriAdi);
+                                    break;
+                                }
+                            }
+                            $(".KullaniciSilButon").html('<a onclick="kullaniciSil(' + LREF + ')" class="btn btn-outline-danger btn-minwidth-sm" style="float:right"> <span>SİL</span> <i class="icon-long-arrow-right"></i></a>');
+
+                            //  $('.bayiListesi option[val=' + result[i].BayiKodu + ']').attr('selected', 'selected');
+                        }
+                    }
+
+
+                }
+
+            }
+        });
+    }
+
+    function kullaniciSil(LREF) {
+        var theData = {
+            LREF: LREF
+        }
+        $.ajax({
+            url: '/Admin_BayilerVeKullanicilar/kullaniciSil/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                Validate("ok");
+            }
+        });
+    }
+</script>
+@section scripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+}
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<div class="page-content mt-1">
+
+
+    <div class="row">
+        <div class="col-md-6">
+
+            <h2 class="title mb-1 text-primary" style="float:left">Bayiler ve Bağlı Cariler</h2>
+            <a class="btn btn-primary btn-sm" style="float:right" onclick="yeniBayi(0)">Yeni Bayi</a>
+            <div style="clear:both"></div>
+            <div class="accordion" id="accordion-1">
+
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            @using (Ajax.BeginForm("kullaniciDuzenle", "Admin_BayilerVeKullanicilar", new AjaxOptions { HttpMethod = "POST", OnSuccess = "return Validate(data, status, xhr);", }))
+            {
+                <h2 class="title mb-1 text-primary" style="float:left">Bayi Kullanıcıları</h2>
+                <a class="btn btn-primary btn-sm" style="float:right" onclick=" Validate('yeniKullanici')">Yeni Kullanıcı</a>
+                <div style="clear:both"></div>
+                <div class="contact-form mb-3">
+                    <div class="row mb-1">
+                        <div class="col-sm-10">
+                            <label for="cname" class="label-top m-0">Bayi *</label>
+                            <select class="bayiListesi form-control" id="bayiListesi" name="cbayi"></select>
+                        </div><!-- End .col-sm-6 -->
+                        <div class="col-sm-2">
+                            <label for="cAktif" class="label-top m-0">Aktif Mi *</label>
+                            <input type="checkbox" class="custom-checkbox" value="true" checked="checked" onclick="check(this)" name="cAktif" id="cAktif">
+
+                        </div><!-- End .col-sm-6 -->
+                        <div class="col-sm-6">
+                            <label for="cname" class="label-top m-0">Adı Soyadı *</label>
+                            <input type="text" class="form-control" name="cname" id="cname" required="">
+                        </div><!-- End .col-sm-6 -->
+                        <div class="col-sm-6">
+                            <label for="cemail" class="label-top m-0">Email *</label>
+                            <input type="email" class="form-control" name="cemail" id="cemail" required="">
+                        </div><!-- End .col-sm-6 -->
+                    </div><!-- End .row -->
+                    <div class="row mb-1">
+                        <div class="col-sm-6">
+                            <label for="cphone" class="label-top m-0">Telefon *</label>
+                            <input type="tel" class="form-control" name="cphone" id="cphone">
+                            <small class="text-danger">0(Sıfır) Kullanmadan Bitişik Şekilde Yazınız.</small>
+                        </div><!-- End .col-sm-6 -->
+                        <div class="col-sm-6">
+                            <label for="csubject" class="label-top m-0">Şifre *</label>
+                            <a class="btn btn-warning btn-sm" style="float:right" onclick="sifreOlustur()"><i class="fa-solid fa-lock"></i></a>
+                            <input type="text" class="form-control cpassword" name="cpassword" readonly>
+
+                        </div><!-- End .col-sm-6 -->
+                    </div><!-- End .row -->
+
+                    <button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
+                        <span>KAYDET</span>
+                        <i class="icon-long-arrow-right"></i>
+                    </button>
+
+                    <div class="KullaniciSilButon">
+
+                    </div>
+
+                </div>
+            }
+            <table id="bayiKullanicilarTablosu" class="table table-striped table-sm"
+                   data-toolbar="#toolbar"
+                   data-search="true"
+                   data-search-highlight="true"
+                   data-show-export="true"
+                   data-export-types="['excel']"
+                   data-export-options='{"fileName": "Bayi Kullanıcıları"}'
+                   data-pagination="true"
+                   data-locale="tr-TR">
+                <thead>
+                    <tr>
+                        <th data-field="field1"></th>
+                        <th data-field="field2">AktifMi</th>
+                        <th data-field="field3">Bayi Kodu</th>
+                        <th data-field="field4">Bayi Adı</th>
+                        <th data-field="field5">Mail Adresi</th>
+                        <th data-field="field6">Adı Soyadı</th>
+                        <th data-field="field7">GSM</th>
+                        <th data-field="field8">AdminMi</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+
+</div>

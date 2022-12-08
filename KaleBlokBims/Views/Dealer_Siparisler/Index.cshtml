@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+
+
+
+
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+
+<table class="table-striped table-sm" id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-export="true"></table>
+
+<script>
+    function htmlDecode(input) {
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
+    }
+
+        window.onload = function () {
+
+            siparisler();
+
+          //  buildTable($('#table'), 8, 1)
+        }
+
+      
+
+    function siparisler() {
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Siparisler/Siparisler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+            var result = JSON.parse(sonuc);
+            eval('var objBaslik=' + sonuc);
+
+            var i; var j; var row;
+            var columns = []
+            var data = []
+            i = 0;
+            for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true
+                })
+                i++;
+            }
+
+            for (i = 0; i < result.length; i++) {
+                row = {}
+                for (j = 0; j < columns.length; j++) {
+                    row['field' + j] = result[i][columns[j].title];
+                }
+                data.push(row);
+            }
+            $('#table').bootstrapTable({
+                columns: columns,
+                // exportDataType: $(this).val(),
+                exportTypes: ['excel'],
+                data: data,
+                locale: 'tr-TR',
+                exportOptions: {
+                    fileName: 'Siparişler'
+                },
+                detailView: columns.length > 1,
+                onExpandRow: function (index, row, $detail) {
+                    siparisIcerigi(result[index]["orFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+                }
+            });
+            }
+        });
+        }
+
+
+
+
+        function siparisIcerigi(orFicheRef,$detail) {
+            var theData = {
+                orFicheRef: orFicheRef,
+            }
+            $.ajax({
+                url: '/Dealer_Siparisler/SiparisDetaylari/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (data) {
+                    var result = JSON.parse(data);
+                    eval('var objBaslik=' + data);
+
+                            var i; var j; var row;
+                            var columns = []
+                            var data = []
+                            i = 0;
+                            for (x in objBaslik[0]) {
+                                    columns.push({
+                                        field: 'field' + i,
+                                        title: x,
+                                        sortable: true
+                                })
+                                i++;
+                            }
+
+                            for (i = 0; i < result.length; i++) {
+                                row = {}
+                                for (j = 0; j < columns.length; j++) {
+                                    row['field' + j] = result[i][columns[j].title];
+                                }
+                                data.push(row);
+                            }
+                    $detail.bootstrapTable({
+                                columns: columns,
+                                // exportDataType: $(this).val(),
+                                //exportTypes: ['excel'],
+                                data: data,
+                                detailView: columns.length > 1,
+                                onExpandRow: function (index, row, $detail) {
+                                    irsaliyeBilgisi(result[index]["orfLineRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+
+                                //    /* eslint no-use-before-define: ["error", { "functions": false }]*/
+                                }
+                            });
+                }
+            });
+
+    }
+
+
+
+    function irsaliyeBilgisi(orfLineRef, $detail) {
+        var theData = {
+            orfLineRef: orfLineRef,
+        }
+        $.ajax({
+            url: '/Dealer_Siparisler/IrsaliyeBilgisi/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                eval('var objBaslik=' + data);
+
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true
+                    })
+                    i++;
+                }
+
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                $detail.bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    //exportTypes: ['excel'],
+                    data: data,
+                    //detailView: columns.length > 1,
+                    //onExpandRow: function (index, row, $detail) {
+
+                    //    /* eslint no-use-before-define: ["error", { "functions": false }]*/
+                    //}
+                });
+            }
+        });
+
+    }
+
+</script>
+
+

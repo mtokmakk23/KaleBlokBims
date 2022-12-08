@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+
+
+<script>
+
+
+        window.onload = function () {
+
+          
+            AdminBilgileri();
+          //  buildTable($('#table'), 8, 1)
+        }
+
+    function AdminBilgileri() {
+         var sonuc = ('@Html.Raw(ViewBag.AdminBilgileri)');
+        var result = JSON.parse(sonuc);
+        $(".adiSoyadi").html(result[0]["AdiSoyadi"]);
+        $(".mail").html(result[0]["MailAdresi"]);
+        $(".telefon").html(result[0]["GSM"]);
+    }
+
+
+
+
+</script>
+<style>
+    .card-title a:before {
+        content: none
+    }
+
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<div class="page-header text-center bg-white" @*style="background-image: url('/assets/images/banners/banner.jpeg')"*@>
+    <div class="container">
+        <img src="/assets/images/banners/banner.jpeg" />
+        <h1 class="page-title" style="font-family: cursive;font-weight: bold;display:none">İZOKALE PORTAL</h1>
+    </div><!-- End .container -->
+</div>
+<div class="page-content pb-0 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-2 mb-lg-0">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="contact-info">
+                            <div class="card-header mb-1" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">
+                                <h2 class="card-title">
+                                    <a>
+                                        Admin Bilgileri
+                                    </a>
+                                </h2>
+                            </div>
+                            <ul class="contact-list">
+                                <li>
+                                    <i class="fa-solid fa-user"></i>
+                                    <b class="adiSoyadi"></b>
+                                </li>
+                                <li>
+                                    <i class="icon-phone"></i>
+                                    <a href="tel:#" class="telefon" style="font-weight:bold"></a>
+                                </li>
+                                <li>
+                                    <i class="icon-envelope"></i>
+                                    <a href="mailto:#" class="mail" style="font-weight:bold"></a>
+                                </li>
+                            </ul><!-- End .contact-list -->
+                        </div><!-- End .contact-info -->
+                    </div><!-- End .col-sm-7 -->
+                    <!-- End .col-sm-5 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="card-header" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">
+                    <h2 class="card-title">
+                        <a>
+                            Duyurular
+                        </a>
+                    </h2>
+                </div>
+            </div><!-- End .col-lg-6 -->
+        </div><!-- End .row -->
+        <hr class="mt-4 mb-5">
+        <!-- End .stores -->
+    </div><!-- End .container -->
+</div>
+
+
+
