@@ -21,7 +21,7 @@
 
                     $(".fiyatListeleri").html("<option value='-1'>Seçiniz</option>");
                     for (var i = 0; i < result.length; i++) {
-                        $(".fiyatListeleri").append("<option value='" + result[i].fiyatListesiKodu + "'>" + result[i].Aciklama + "</option>");
+                        $(".fiyatListeleri").append("<option value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + "</option>");
 
                     }
             }
@@ -154,7 +154,8 @@
                     });
                   
                 }
-                $(".malzemeFiyatlariTablosu").bootstrapTable({ data: dataTable })
+                $(".malzemeFiyatlariTablosu").bootstrapTable("destroy");
+                $(".malzemeFiyatlariTablosu").bootstrapTable({ data: dataTable, pagination: false });
 
 
             }
@@ -163,6 +164,8 @@
 
 </script>
 <style>
+    <script src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/auto-refresh/bootstrap-table-auto-refresh.min.js" > </script >
+
     table tbody tr td {
         white-space: nowrap;
     }
@@ -216,10 +219,9 @@
             <div class="col-lg-9">
                 <table class="malzemeFiyatlariTablosu table table-striped table-sm"
                        data-show-export="true"
-                       data-search-highlight="true"
+                       data-auto-refresh="true"
                        data-export-types="['excel']"
                        data-export-options='{"fileName": "Fiyat Listesi"}'
-                       data-pagination="true"
                        data-locale="tr-TR"
                        data-search="true">
                     <thead>

@@ -1683,21 +1683,6 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IlveIlceleriGetirResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BayiVeBagliCariKodlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YeniBayiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.CariHesaplarResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BayiyeCariBaglaResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.CariyiBayidenAyirResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.Musteriler.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1722,10 +1707,10 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IsyeriBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BayilerResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

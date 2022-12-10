@@ -20,7 +20,7 @@ namespace KaleBlokBims.Controllers
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             ViewBag.HesapOzeti = servis.HesapOzeti(Session["BayiKodu"].ToString());
             ViewBag.BaglantiOzeti = servis.BaglantiBakiyeOzeti(Session["BayiKodu"].ToString());
-            var tumBayiler = servis.BayiVeBagliCariKodlari();
+            var tumBayiler = servis.Bayiler();
             ViewBag.BayiBilgileri = JsonConvert.SerializeObject(tumBayiler.Where(x=>x.BayiKodu== Session["BayiKodu"].ToString()));
             return View();
         }

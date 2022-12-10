@@ -19,52 +19,22 @@ namespace KaleBlokBims.Controllers
 
             return View();
         }
-        [HttpPost]
-        public string cariyiBayidenAyir(string LOGICALREF)
-        {
-            var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.CariyiBayidenAyir(LOGICALREF);
-        }
-
-        public string tumCariler(string term, string _type, string q)
-        {
-            term = Encoding.UTF8.GetString(Encoding.GetEncoding("iso-8859-1").GetBytes(term));
-            if (term == null || term.Trim() == "")
-            {
-                return "";
-            }
-            else
-            {
-                var servis = new M2BWebService.ZOKALEAPISoapClient();
-                return servis.CariHesaplar(term);
-            }
-
-
-        }
-        [HttpPost]
-        public string bayiyeCariBagla(string MusteriLREF, string CariLREF)
-        {
-            var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.BayiyeCariBagla(MusteriLREF, CariLREF);
-        }
+       
 
         [HttpPost]
         public string bayiler()
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return JsonConvert.SerializeObject(servis.BayiVeBagliCariKodlari());
+            return JsonConvert.SerializeObject(servis.Bayiler());
         }
-        [HttpPost]
-        public string yeniBayi(string bayiAdi)
-        {
-            var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.YeniBayi(bayiAdi);
-        }
+      
 
         [HttpPost]
         public string bayiKullanicilari()
         {
+          
             var db = new Models.IZOKALEPORTALEntities();
+
             return JsonConvert.SerializeObject(db.BayiKullanicilari.OrderByDescending(x=>x.LOGICALREF));
         }
         [HttpPost]
@@ -76,23 +46,25 @@ namespace KaleBlokBims.Controllers
         [HttpPost]
         public string kullaniciDuzenle(string cbayi,string cname,string cemail,string cphone,string cpassword,bool cAktif = false)
         {
+            string cbayii = cbayi;
+            string cemaill = cemail;
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            var tumBayiler = servis.BayiVeBagliCariKodlari();
+            var tumBayiler = servis.Bayiler();
             MD5 md5 = new MD5();
-            if (cbayi==null || cbayi.ToString().Trim()=="" || cbayi.ToString().Trim() == "-1")
+            if (cbayii == null || cbayii.ToString().Trim()=="" || cbayii.ToString().Trim() == "-1")
             {
                 return "Bayi Seçmelisiniz";
             }
             var db = new Models.IZOKALEPORTALEntities();
-            var bayiKullanicisi = db.BayiKullanicilari.Where(x => x.MailAdresi == cemail).FirstOrDefault();
+            var bayiKullanicisi = db.BayiKullanicilari.Where(x => x.MailAdresi == cemaill).FirstOrDefault();
             if (bayiKullanicisi==null)
             {
                 bayiKullanicisi = new Models.BayiKullanicilari();
                 bayiKullanicisi.AdiSoyadi = cname;
                 bayiKullanicisi.AdminMi = true;
-                bayiKullanicisi.BayiKodu = cbayi;
-                bayiKullanicisi.BayiAdi = tumBayiler.Where(x=>x.BayiKodu.Equals(cbayi)).FirstOrDefault().MusteriAdi;
-                bayiKullanicisi.MailAdresi = cemail;
+                bayiKullanicisi.BayiKodu = cbayii;
+                bayiKullanicisi.BayiAdi = tumBayiler.Where(x=>x.BayiKodu.Equals(cbayii)).FirstOrDefault().BayiAdi;
+                bayiKullanicisi.MailAdresi = cemaill;
                 bayiKullanicisi.Sifre = md5.MD5Sifrele(cpassword);
                 bayiKullanicisi.Status = cAktif;
                 bayiKullanicisi.GSM = cphone;
@@ -103,9 +75,8 @@ namespace KaleBlokBims.Controllers
             {
                 bayiKullanicisi.AdiSoyadi = cname;
                 bayiKullanicisi.AdminMi = true;
-                bayiKullanicisi.BayiKodu = cbayi;
-                bayiKullanicisi.BayiAdi = tumBayiler.Where(x => x.BayiKodu.Equals(cbayi)).FirstOrDefault().MusteriAdi;
-                bayiKullanicisi.MailAdresi = cemail;
+                bayiKullanicisi.BayiKodu = cbayii;
+                bayiKullanicisi.BayiAdi = tumBayiler.Where(x => x.BayiKodu.Equals(cbayii)).FirstOrDefault().BayiAdi;
                 if (cpassword.Length==4)
                 {
                     bayiKullanicisi.Sifre = md5.MD5Sifrele(cpassword);
