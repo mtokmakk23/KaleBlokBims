@@ -914,12 +914,14 @@ function SepetiOnayla(step) {
             sepetOnaylaOdemeTipi: sepetOnaylaOdemeTipi,
             sepetOnaylaSiparisNotu: sepetOnaylaSiparisNotu
         }
+        loading(true);
         $.ajax({
             url: '/Dealer_Anasayfa/SepetiOnayla/',
             type: 'POST',
             dataType: 'text',
             data: theData,
             success: function (sonuc) {
+                loading(false);
                 var result = JSON.parse(sonuc);
                 if (Boolean(result.IsSuccessStatusCode)) {
                     var path = window.location.href;
@@ -934,8 +936,8 @@ function SepetiOnayla(step) {
                         showCloseButton: true,
                         showCancelButton: false,
                         focusConfirm: false,
-                        confirmButtonText:
-                            '<a><i class="fa-solid fa-download"></i> Sipariþ Formu Ýndir</a>',
+                        //confirmButtonText:
+                        //    '<a><i class="fa-solid fa-download"></i> Sipariþ Formu Ýndir</a>',
 
                     });
                 } else {
