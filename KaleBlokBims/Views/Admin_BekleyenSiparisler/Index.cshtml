@@ -21,7 +21,7 @@
             success: function (sonuc) {
                 loading(false);
                 var result = JSON.parse(sonuc);
-
+                var Gindex = -1;
                 $('#table').bootstrapTable({
                     columns: [{
                         field: 'ReferansNo',
@@ -49,6 +49,9 @@
                     locale: 'tr-TR',
                     detailView: 5 > 1,
                     onExpandRow: function (index, row, $detail) {
+                        if (Gindex != index)
+                            $('#table').bootstrapTable('collapseRow', Gindex);
+                        Gindex = index;
                         SiparisDetaylari(row, $detail);
                         // $detail.html("selam");
                         //irsaliyeIcerigi(result[index]["stFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));

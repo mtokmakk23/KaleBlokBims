@@ -29,6 +29,7 @@ namespace KaleBlokBims.Controllers
             if (kullanici != null)
             {
                 Session["BayiKodu"] = "";
+                Session["BayiAdi"] = "";
                 Session["AdiSoyadi"] = kullanici.AdiSoyadi;
                 Session["KullaniciId"] = kullanici.LOGICALREF;
                 Session["MailAdresi"] = kullanici.MailAdresi;

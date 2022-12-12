@@ -58,7 +58,9 @@
                         columns.push({
                             field: 'field' + i,
                             title: x,
-                            sortable: true
+                            sortable: true,
+                            visible: (x == "stFicheRef" ? false : true)
+
                         })
                         i++;
                     }
@@ -70,6 +72,7 @@
                         }
                         data.push(row);
                     }
+                    var Gindex = -1;
                     $('#table').bootstrapTable({
                         columns: columns,
                         // exportDataType: $(this).val(),
@@ -81,6 +84,9 @@
                         },
                         detailView: columns.length > 1,
                         onExpandRow: function (index, row, $detail) {
+                            if (Gindex != index)
+                            $('#table').bootstrapTable('collapseRow', Gindex);
+                            Gindex = index;
                             irsaliyeIcerigi(result[index]["stFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
                         }
                     });
@@ -112,7 +118,8 @@
                                     columns.push({
                                         field: 'field' + i,
                                         title: x,
-                                        sortable: true
+                                        sortable: true,
+                                        visible: (x == "stLineRef" ? false : true)
                                 })
                                 i++;
                             }

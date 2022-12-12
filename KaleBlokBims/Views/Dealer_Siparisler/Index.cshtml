@@ -29,14 +29,14 @@
         return doc.documentElement.textContent;
     }
 
-        window.onload = function () {
+    window.onload = function () {
 
-            siparisler();
+        siparisler();
 
-          //  buildTable($('#table'), 8, 1)
-        }
+        //  buildTable($('#table'), 8, 1)
+    }
 
-      
+
 
     function siparisler() {
         loading(true);
@@ -46,97 +46,107 @@
             dataType: 'text',
             success: function (sonuc) {
                 loading(false);
-            var result = JSON.parse(sonuc);
-            eval('var objBaslik=' + sonuc);
+                var result = JSON.parse(sonuc);
+                eval('var objBaslik=' + sonuc);
 
-            var i; var j; var row;
-            var columns = []
-            var data = []
-            i = 0;
-            for (x in objBaslik[0]) {
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
                     columns.push({
                         field: 'field' + i,
                         title: x,
-                        sortable: true
-                })
-                i++;
-            }
+                        sortable: true,
+                        visible: (x == "orFicheRef" ? false : true)
+                    })
+                    i++;
+                }
 
-            for (i = 0; i < result.length; i++) {
-                row = {}
-                for (j = 0; j < columns.length; j++) {
-                    row['field' + j] = result[i][columns[j].title];
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
                 }
-                data.push(row);
-            }
-            $('#table').bootstrapTable({
-                columns: columns,
-                // exportDataType: $(this).val(),
-                exportTypes: ['excel'],
-                data: data,
-                locale: 'tr-TR',
-                exportOptions: {
-                    fileName: 'Siparişler'
-                },
-                detailView: columns.length > 1,
-                onExpandRow: function (index, row, $detail) {
-                    siparisIcerigi(result[index]["orFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
-                }
-            });
+                var Gindex = -1;
+                $('#table').bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    exportTypes: ['excel'],
+                    data: data,
+                    locale: 'tr-TR',
+                    exportOptions: {
+                        fileName: 'Siparişler'
+                    },
+                    detailView: columns.length > 1,
+                    onExpandRow: function (index, row, $detail) {
+                        if (Gindex != index)
+                        $('#table').bootstrapTable('collapseRow', Gindex);
+                        Gindex = index;
+                        siparisIcerigi(result[index]["orFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+                    }
+                });
             }
         });
+    }
+
+
+
+
+    function siparisIcerigi(orFicheRef, $detail) {
+        var theData = {
+            orFicheRef: orFicheRef,
         }
+        $.ajax({
+            url: '/Dealer_Siparisler/SiparisDetaylari/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                eval('var objBaslik=' + data);
 
-
-
-
-        function siparisIcerigi(orFicheRef,$detail) {
-            var theData = {
-                orFicheRef: orFicheRef,
-            }
-            $.ajax({
-                url: '/Dealer_Siparisler/SiparisDetaylari/',
-                type: 'POST',
-                dataType: 'text',
-                data: theData,
-                success: function (data) {
-                    var result = JSON.parse(data);
-                    eval('var objBaslik=' + data);
-
-                            var i; var j; var row;
-                            var columns = []
-                            var data = []
-                            i = 0;
-                            for (x in objBaslik[0]) {
-                                    columns.push({
-                                        field: 'field' + i,
-                                        title: x,
-                                        sortable: true
-                                })
-                                i++;
-                            }
-
-                            for (i = 0; i < result.length; i++) {
-                                row = {}
-                                for (j = 0; j < columns.length; j++) {
-                                    row['field' + j] = result[i][columns[j].title];
-                                }
-                                data.push(row);
-                            }
-                    $detail.bootstrapTable({
-                                columns: columns,
-                                // exportDataType: $(this).val(),
-                                //exportTypes: ['excel'],
-                                data: data,
-                                detailView: columns.length > 1,
-                                onExpandRow: function (index, row, $detail) {
-                                    irsaliyeBilgisi(result[index]["orfLineRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
-
-                                //    /* eslint no-use-before-define: ["error", { "functions": false }]*/
-                                }
-                            });
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true,
+                        visible: (x == "orfLineRef" ? false : true)
+                    })
+                    i++;
                 }
-            });
+
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                var Gindex = -1;
+                $detail.bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    //exportTypes: ['excel'],
+                    data: data,
+                    detailView: columns.length > 1,
+                    onExpandRow: function (index, row, $detail2) {
+                        if (Gindex!=index)
+                        $detail.bootstrapTable('collapseRow', Gindex);
+                        Gindex = index;
+                        irsaliyeBilgisi(result[index]["orfLineRef"], $detail2.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+
+                        //    /* eslint no-use-before-define: ["error", { "functions": false }]*/
+                    }
+                });
+            }
+        });
 
     }
 
@@ -163,7 +173,9 @@
                     columns.push({
                         field: 'field' + i,
                         title: x,
-                        sortable: true
+                        sortable: true,
+                        visible: (x == "stlineRef" ? false : true)
+
                     })
                     i++;
                 }

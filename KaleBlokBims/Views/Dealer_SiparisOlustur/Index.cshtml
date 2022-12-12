@@ -297,12 +297,14 @@
             GuncelUSD: GuncelUSD,
             GuncelEUR: GuncelEUR,
         }
+        loading(true);
         $.ajax({
             url: '/Dealer_FiyatListesi/MalzemeFiyatlariniGetir/',
             type: 'POST',
             dataType: 'text',
             data: theData,
             success: function (sonuc) {
+                loading(false);
                 var result = JSON.parse(sonuc);
                 MalzemeFiyatlari = result;
                 var productList = "";

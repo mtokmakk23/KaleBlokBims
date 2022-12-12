@@ -908,6 +908,8 @@ function SepetiOnayla(step) {
         //});
     }
     if (step == 1) {
+        sepetOnaylaOdemeTipi = $("#swal-input1 option:selected").text();
+        sepetOnaylaSiparisNotu = $("#swal-input2").val();
         var theData = {
             sepetOnaylaOdemeTipi: sepetOnaylaOdemeTipi,
             sepetOnaylaSiparisNotu: sepetOnaylaSiparisNotu
@@ -1016,6 +1018,7 @@ function loading(step) {
         Swal.fire({
             title: 'Lütfen Bekleyin!',
             timerProgressBar: true,
+            allowOutsideClick:false,
             didOpen: () => {
                 Swal.showLoading()
                 const b = Swal.getHtmlContainer().querySelector('b')
