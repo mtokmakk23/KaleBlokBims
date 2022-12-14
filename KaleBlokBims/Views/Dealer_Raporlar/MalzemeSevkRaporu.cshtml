@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "MalzemeSevkRaporu";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+@section scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+}
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    td, th {
+        text-align: center
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<script>
+    var chart;
+    var options = {
+        series: [{
+            data: []
+        }],
+        chart: {
+            id: 'mychart',
+            type: 'bar',
+            height: 0
+
+        },
+        plotOptions: {
+            bar: {
+                barHeight: '100%',
+                distributed: true,
+                horizontal: true,
+                dataLabels: {
+                    position: 'bottom',
+                  
+                },
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            textAnchor: 'start',
+            style: {
+                colors: ['black']
+            },
+            formatter: function (val, opt) {
+                return opt.w.globals.labels[opt.dataPointIndex] + ":  " + formatMoney(val)
+            },
+            offsetX: 0,
+            //dropShadow: {
+            //    enabled: true
+            //}
+        },
+        stroke: {
+            width: 1,
+            colors: ['#fff']
+        },
+        xaxis: {
+            labels: {
+                show: false
+            }
+        },
+        yaxis: {
+            labels: {
+                show: false
+            }
+        },
+
+        subtitle: {
+            text: '',
+            align: 'center',
+        },
+        tooltip: {
+            theme: 'dark',
+            x: {
+                show: false
+            },
+            y: {
+                title: {
+                    formatter: function () {
+                        return ''
+                    }
+                }
+            }
+        }
+    };
+
+    window.onload = function () {
+
+
+    }
+
+
+    var birimler = ""
+    function chartsRender(result) {
+       
+        for (var i = 0; i < result.length; i++) {
+            result[i].BIRIM = result[i].BIRIM.replace(".", "")
+            if (birimler.indexOf(result[i].BIRIM + "##") == -1) {
+                birimler += result[i].BIRIM + "##";
+            }
+        }
+        var birimlerDizisi = birimler.split('##');
+        for (var i = 0; i < birimlerDizisi.length - 1; i++) {
+            if ($("#" + birimlerDizisi[i]).html() == undefined) {
+                $("#charts").append('<div  id="' + birimlerDizisi[i] + '"></div><hr/>');
+
+                options.chart.id = birimlerDizisi[i];
+                chart = new ApexCharts(document.querySelector("#" + birimlerDizisi[i]), options);
+                chart.render();
+            }
+        }
+
+        for (var i = 0; i < birimlerDizisi.length; i++) {
+            ApexCharts.exec(birimlerDizisi[i], 'updateOptions', {
+                series: [{
+                    data: result.filter(x => x.BIRIM == birimlerDizisi[i]).reduce(function (r, o) { r.push(parseFloat(o.MIKTAR)); return r; }, [])
+                }],
+                xaxis: {
+                    categories: result.filter(x => x.BIRIM == birimlerDizisi[i]).reduce(function (r, o) { r.push(o.MALZEMEADI); return r; }, []),
+
+                },
+                title: { text: birimlerDizisi[i] +" Olarak Alınan Malzemeler"},
+                chart: { height: 110 + ((result.filter(x => x.BIRIM == birimlerDizisi[i]).length - 1) * 30) }
+            }, false, true);
+        }
+    }
+
+    function malzemeler() {
+        loading(true);
+        var theData = {
+            baslangicTarihi: $("#baslangicTarihi").val(),
+            bitisTarihi: $("#bitisTarihi").val()
+        }
+        $.ajax({
+            url: '/Dealer_Raporlar/_MalzemeSevkRaporu/',
+            type: 'POST',
+            dataType: 'json',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                if (!Boolean(sonuc.IsSuccessStatusCode)) {
+                    HataMesaji(sonuc.ErrorMessage);
+                    return;
+                }
+                var result = JSON.parse(sonuc.Content);
+                eval('var objBaslik=' + sonuc.Content);
+                chartsRender(result);
+
+
+
+
+
+
+                //chart.updateOptions({
+                //    series: [{
+                //        data: result.reduce(function (r, o) { r.push(parseFloat(o.MIKTAR)); return r; },[])
+                //    }],
+                //    xaxis: {
+                //        categories: result.reduce(function (r, o) { r.push(o.MALZEMEADI); return r; }, [])}
+                //});
+
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true,
+                        visible: (x == "orFicheRef" ? false : true),
+                        filterControl: "select"
+                    })
+                    i++;
+                }
+
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                $("#table").bootstrapTable("destroy");
+
+                $('#table').bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    exportTypes: ['excel'],
+                    data: data,
+                    locale: 'tr-TR',
+                    exportOptions: {
+                        fileName: 'Malzeme Sevk Raporu'
+                    },
+
+                });
+            }
+        });
+    }
+</script>
+
+<div class="form-group row mt-1 shadow p-2">
+    <div class="col-md-1">
+        <input type="date" class="form-control h-100" id="baslangicTarihi" />
+    </div>
+    <div class="col-md-1">
+        <input type="date" class="form-control h-100" id="bitisTarihi" />
+    </div>
+    <div class="col-md-3">
+        <a class="btn btn-sm btn-primary text-white h-100" style="padding-top: 0.5rem !important;" onclick=" malzemeler()">ARA</a>
+    </div>
+</div>
+
+
+<div id="charts"></div>
+
+<div>
+    <table class="table-striped table-sm" id="table"
+           data-toolbar="#toolbar"
+           data-search="true"
+           data-filter-control="true"
+           data-show-export="true"></table>
+</div>
+

@@ -12,7 +12,9 @@
     table tbody tr td {
         white-space: nowrap;
     }
-
+    td, th {
+        text-align: center
+    }
     thead {
         background-color: #006EB7;
         color: white
@@ -45,7 +47,7 @@
                 loading(false);
                 var result = JSON.parse(sonuc);
                 eval('var objBaslik=' + sonuc);
-
+               
                 var i; var j; var row;
                 var columns = []
                 var data = []
@@ -60,6 +62,9 @@
                 }
 
                 for (i = result.length - 1; i >= 0; i--) {
+                    result[i].Borc = formatMoney(result[i].Borc) + " TL";
+                    result[i].Alacak = formatMoney(result[i].Alacak) + " TL";
+                    result[i].Bakiye = formatMoney(result[i].Bakiye) + " TL";
                     row = {}
                     for (j = 0; j < columns.length; j++) {
                         row['field' + j] = result[i][columns[j].title];

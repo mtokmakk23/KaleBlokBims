@@ -211,137 +211,137 @@ namespace KaleBlokBims.Controllers
         [HttpPost]
         public string siparisAktar(string tarih, string belgeNo, string referansNo, string cari, string odemeler, string satisElemani, string siparisNotu, string isYeri, string bolum, string fabrika, string ambar)
         {
-            return "";
-            //M2BWebService.M2BWCFBaslik baslik = new M2BWebService.M2BWCFBaslik();
-            //M2BWebService.CariSevkAdresi sevkAdresi = new M2BWebService.CariSevkAdresi();
-            //List<M2BWebService.M2BWCFTransaction> transactions = new List<M2BWebService.M2BWCFTransaction>();
-            //var db = new Models.IZOKALEPORTALEntities();
-            //var LOGICALREF = referansNo.Split('/')[1];
-            //var siparisBasligi = db.SiparisBasliklari.Where(x => x.LOGICALREF.ToString() == LOGICALREF).FirstOrDefault();
-            //var siparisIcerigi = db.SiparisIcerikleri.Where(x => x.BaslikLREF.ToString() == LOGICALREF && x.LINETYPE!=2).ToList();
+            //return "";
+            M2BWebService.M2BWCFBaslik baslik = new M2BWebService.M2BWCFBaslik();
+            M2BWebService.CariSevkAdresi sevkAdresi = new M2BWebService.CariSevkAdresi();
+            List<M2BWebService.M2BWCFTransaction> transactions = new List<M2BWebService.M2BWCFTransaction>();
+            var db = new Models.IZOKALEPORTALEntities();
+            var LOGICALREF = referansNo.Split('/')[1];
+            var siparisBasligi = db.SiparisBasliklari.Where(x => x.LOGICALREF.ToString() == LOGICALREF).FirstOrDefault();
+            var siparisIcerigi = db.SiparisIcerikleri.Where(x => x.BaslikLREF.ToString() == LOGICALREF && x.LINETYPE != 2).ToList();
 
-            //try
-            //{
-            //    if (Convert.ToBoolean(siparisBasligi.FabrikaTeslimMi))
-            //    {
-            //        baslik.Aciklama1 = "Fabrika Teslimi";
-            //    }
-            //    else
-            //    {
-            //        baslik.Aciklama1 = siparisBasligi.Ilce + "/" + siparisBasligi.Il;
-            //    }
+            try
+            {
+                if (Convert.ToBoolean(siparisBasligi.FabrikaTeslimMi))
+                {
+                    baslik.Aciklama1 = "Fabrika Teslimi";
+                }
+                else
+                {
+                    baslik.Aciklama1 = siparisBasligi.Ilce + "/" + siparisBasligi.Il;
+                }
 
-            //    if (siparisBasligi.SiparisNotu.Length > 50)
-            //    {
-            //        baslik.Aciklama2 = siparisBasligi.SiparisNotu.Substring(0, 50);
-            //        baslik.Aciklama3 = siparisBasligi.SiparisNotu.Substring(50, siparisBasligi.SiparisNotu.Length - 50);
-            //    }
-            //    else
-            //    {
-            //        baslik.Aciklama2 = siparisBasligi.SiparisNotu;
-            //    }
-            //    baslik.Ambar = Convert.ToInt32(ambar).ToString();
-            //    baslik.BelgeNo = belgeNo;
-            //    baslik.Bolum = Convert.ToInt32(bolum).ToString();
-            //    baslik.CariLREF = cari;
-            //    baslik.DokumanIzlemeNumarasi = "";
-            //    baslik.Fabrika = Convert.ToInt32(fabrika).ToString();
-            //    baslik.Isyeri = Convert.ToInt32(isYeri).ToString();
-            //    baslik.MusteriSiparisNo = siparisBasligi.BayiKodu + "/" + siparisBasligi.LOGICALREF;
-            //    baslik.OdemeTipiKodu = odemeler;
-            //    baslik.OzelKod = "";
-            //    baslik.SatisElemaniKodu = satisElemani;
-            //    baslik.Tarih = tarih;
+                if (siparisBasligi.SiparisNotu.Length > 50)
+                {
+                    baslik.Aciklama2 = siparisBasligi.SiparisNotu.Substring(0, 50);
+                    baslik.Aciklama3 = siparisBasligi.SiparisNotu.Substring(50, siparisBasligi.SiparisNotu.Length - 50);
+                }
+                else
+                {
+                    baslik.Aciklama2 = siparisBasligi.SiparisNotu;
+                }
+                baslik.Ambar = Convert.ToInt32(ambar).ToString();
+                baslik.BelgeNo = belgeNo;
+                baslik.Bolum = Convert.ToInt32(bolum).ToString();
+                baslik.CariLREF = cari;
+                baslik.DokumanIzlemeNumarasi = "";
+                baslik.Fabrika = Convert.ToInt32(fabrika).ToString();
+                baslik.Isyeri = Convert.ToInt32(isYeri).ToString();
+                baslik.MusteriSiparisNo = siparisBasligi.BayiKodu + "/" + siparisBasligi.LOGICALREF;
+                baslik.OdemeTipiKodu = odemeler;
+                baslik.OzelKod = "";
+                baslik.SatisElemaniKodu = satisElemani;
+                baslik.Tarih = tarih;
 
-            //    sevkAdresi.Aciklama1 = siparisBasligi.BayiAdi;
-            //    sevkAdresi.Adres1 = siparisBasligi.SevkAdresi;
-            //    sevkAdresi.Adres2 = siparisBasligi.IlgiliKisi + " - " + siparisBasligi.IlgiliKisiTel;
-            //    sevkAdresi.AdresBasligi = siparisBasligi.AdresBasligi;
-            //    if (Convert.ToBoolean(siparisBasligi.FabrikaTeslimMi))
-            //    {
-            //        sevkAdresi.Il = "ERZURUM";
-            //        sevkAdresi.Ilce = "OLTU";
-            //    }
-            //    else
-            //    {
-            //        sevkAdresi.Il = siparisBasligi.Il;
-            //        sevkAdresi.Ilce = siparisBasligi.Ilce;
-            //    }
+                sevkAdresi.Aciklama1 = siparisBasligi.BayiAdi;
+                sevkAdresi.Adres1 = siparisBasligi.SevkAdresi;
+                sevkAdresi.Adres2 = siparisBasligi.IlgiliKisi + " - " + siparisBasligi.IlgiliKisiTel;
+                sevkAdresi.AdresBasligi = siparisBasligi.AdresBasligi;
+                if (Convert.ToBoolean(siparisBasligi.FabrikaTeslimMi))
+                {
+                    sevkAdresi.Il = "ERZURUM";
+                    sevkAdresi.Ilce = "OLTU";
+                }
+                else
+                {
+                    sevkAdresi.Il = siparisBasligi.Il;
+                    sevkAdresi.Ilce = siparisBasligi.Ilce;
+                }
 
-            //    foreach (var item in siparisIcerigi.Where(x=>x.LINETYPE==0))
-            //    {
-            //        transactions.Add(new M2BWebService.M2BWCFTransaction()
-            //        {
-            //            Birim = item.Birimi,
-            //            BirimFiyat = Convert.ToDouble(item.HesaplanmisBirimFiyatiTL),
-            //            HareketOzelKodu = "",
-            //            //IskontoOrani=0,
-            //            Kdv = Convert.ToDouble(item.Kdv),
-            //            KdvHaricmi0 = 0,
-            //            MalzemeKodu = item.MalzemeKodu,
-            //            Miktar = Convert.ToDouble(item.Miktar),
-            //            SatirTipi = 0,
-            //            SatirAciklamasi = (item.HesaplamaDetayliAciklama.Length > 250) ? item.HesaplamaDetayliAciklama.Substring(0, 249) : item.HesaplamaDetayliAciklama,
-            //            Toplam = Convert.ToDouble(item.HesaplanmisBirimFiyatiTL) * Convert.ToDouble(item.Miktar)
-
-
-            //        });
-            //        var temp = item.LOGICALREF;
-            //        var queryIndirim = siparisIcerigi.Where(x => (x.IndiriminUygulanacagiLOGICALREF==(temp)) && (x.LINETYPE.Equals(2))).ToList();
-            //        foreach (var item2 in queryIndirim)
-            //        {
-            //            transactions.Add(new M2BWebService.M2BWCFTransaction()
-            //            {
-            //                Miktar = 0,
-            //                SatirTipi = 2,
-            //                SatirAciklamasi = (item2.IndirimAciklamasi.Length > 250) ? item2.IndirimAciklamasi.Substring(0, 249) : item2.IndirimAciklamasi,
-            //                Toplam = Convert.ToDouble(item2.IndirimTutari)
+                foreach (var item in siparisIcerigi.Where(x => x.LINETYPE == 0))
+                {
+                    transactions.Add(new M2BWebService.M2BWCFTransaction()
+                    {
+                        Birim = item.Birimi,
+                        BirimFiyat = Convert.ToDouble(item.HesaplanmisBirimFiyatiTL),
+                        HareketOzelKodu = "",
+                        //IskontoOrani=0,
+                        Kdv = Convert.ToDouble(item.Kdv),
+                        KdvHaricmi0 = 0,
+                        MalzemeKodu = item.MalzemeKodu,
+                        Miktar = Convert.ToDouble(item.Miktar),
+                        SatirTipi = 0,
+                        SatirAciklamasi = (item.HesaplamaDetayliAciklama.Length > 250) ? item.HesaplamaDetayliAciklama.Substring(0, 249) : item.HesaplamaDetayliAciklama,
+                        Toplam = Convert.ToDouble(item.HesaplanmisBirimFiyatiTL) * Convert.ToDouble(item.Miktar)
 
 
+                    });
+                    var temp = item.LOGICALREF;
+                    var queryIndirim = siparisIcerigi.Where(x => (x.IndiriminUygulanacagiLOGICALREF == (temp)) && (x.LINETYPE.Equals(2))).ToList();
+                    foreach (var item2 in queryIndirim)
+                    {
+                        transactions.Add(new M2BWebService.M2BWCFTransaction()
+                        {
+                            Miktar = 0,
+                            SatirTipi = 2,
+                            SatirAciklamasi = (item2.IndirimAciklamasi.Length > 250) ? item2.IndirimAciklamasi.Substring(0, 249) : item2.IndirimAciklamasi,
+                            Toplam = Convert.ToDouble(item2.IndirimTutari)
 
-            //            });
-            //        }
-            //        var queryHizmet = siparisIcerigi.Where(x => (x.NakliyeninUygulanacagiLref == (temp)) && (x.LINETYPE.Equals(4))).ToList();
-            //        foreach (var item2 in queryHizmet)
-            //        {
-            //            transactions.Add(new M2BWebService.M2BWCFTransaction()
-            //            {
-            //                Birim = item.NakliyeBirimSeti,
-            //                BirimFiyat = Convert.ToDouble(item.NakliyeFiyatiTL),
-            //                HareketOzelKodu = "",
-            //                //IskontoOrani=0,
-            //                Kdv = Convert.ToDouble(item.Kdv),
-            //                KdvHaricmi0 = 0,
-            //                MalzemeKodu = item.NakliyeKodu,
-            //                Miktar = Convert.ToDouble(item.Miktar),
-            //                SatirTipi = 4,
-            //                SatirAciklamasi ="",
-            //                Toplam = Convert.ToDouble(item.NakliyeFiyatiTL) * Convert.ToDouble(item.Miktar)
 
-            //            });
-            //        }
-            //    }
-            //    var servis = new M2BWebService.ZOKALEAPISoapClient();
-            //    var tigerDonenCevap = servis.M2BSiparisOlustur(Convert.ToInt32(ambar).ToString(), baslik, transactions.ToArray(), sevkAdresi);
-            //    if (tigerDonenCevap.Substring(0, 3) == "OK ")
-            //    {
-            //        siparisBasligi.TigereAktaranKisi = Session["MailAdresi"].ToString();
-            //        siparisBasligi.TigereAktarildiMi = true;
-            //        siparisBasligi.TigereAktarilmaTarihi = DateTime.Now;
-            //        db.SaveChanges();
-            //        return "ok";
-            //    }
-            //    else
-            //    {
-            //        return tigerDonenCevap;
-            //    }
 
-            //}
-            //catch (Exception hata)
-            //{
-            //    return hata.Message;
-            //}
-           
+                        });
+                    }
+                    var queryHizmet = siparisIcerigi.Where(x => (x.NakliyeninUygulanacagiLref == (temp)) && (x.LINETYPE.Equals(4))).ToList();
+                    foreach (var item2 in queryHizmet)
+                    {
+                        transactions.Add(new M2BWebService.M2BWCFTransaction()
+                        {
+                            Birim = item.NakliyeBirimSeti,
+                            BirimFiyat = Convert.ToDouble(item.NakliyeFiyatiTL),
+                            HareketOzelKodu = "",
+                            //IskontoOrani=0,
+                            Kdv = Convert.ToDouble(item.Kdv),
+                            KdvHaricmi0 = 0,
+                            MalzemeKodu = item.NakliyeKodu,
+                            Miktar = Convert.ToDouble(item.Miktar),
+                            SatirTipi = 4,
+                            SatirAciklamasi = "",
+                            Toplam = Convert.ToDouble(item.NakliyeFiyatiTL) * Convert.ToDouble(item.Miktar)
+
+                        });
+                    }
+                }
+                var servis = new M2BWebService.ZOKALEAPISoapClient();
+                var tigerDonenCevap = servis.M2BSiparisOlustur(Convert.ToInt32(ambar).ToString(), baslik, transactions.ToArray(), sevkAdresi);
+                if (tigerDonenCevap.Substring(0, 3) == "OK ")
+                {
+                    siparisBasligi.TigereAktaranKisi = Session["MailAdresi"].ToString();
+                    siparisBasligi.TigereAktarildiMi = true;
+                    siparisBasligi.TigereAktarilmaTarihi = DateTime.Now;
+                    db.SaveChanges();
+                    return "ok";
+                }
+                else
+                {
+                    return tigerDonenCevap;
+                }
+
+            }
+            catch (Exception hata)
+            {
+                return hata.Message;
+            }
+
         }
 
     }

@@ -6,10 +6,19 @@
 
 
 
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
+}
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <style>
     table tbody tr td {
         white-space: nowrap;
+    }
+
+    td, th {
+        text-align: center
     }
 
     thead {
@@ -21,6 +30,7 @@
 <table class="table-striped table-sm" id="table"
        data-toolbar="#toolbar"
        data-search="true"
+       data-filter-control="true"
        data-show-export="true"></table>
 
 <script>
@@ -47,6 +57,7 @@
             success: function (sonuc) {
                 loading(false);
                 var result = JSON.parse(sonuc);
+               
                 eval('var objBaslik=' + sonuc);
 
                 var i; var j; var row;
@@ -58,7 +69,8 @@
                         field: 'field' + i,
                         title: x,
                         sortable: true,
-                        visible: (x == "orFicheRef" ? false : true)
+                        visible: (x == "orFicheRef" ? false : true),
+                        filterControl:"select"
                     })
                     i++;
                 }
@@ -72,7 +84,7 @@
                 }
                 var Gindex = -1;
                 $('#table').bootstrapTable({
-                    columns: columns,
+                    columns: columns,                 
                     // exportDataType: $(this).val(),
                     exportTypes: ['excel'],
                     data: data,
@@ -83,7 +95,7 @@
                     detailView: columns.length > 1,
                     onExpandRow: function (index, row, $detail) {
                         if (Gindex != index)
-                        $('#table').bootstrapTable('collapseRow', Gindex);
+                            $('#table').bootstrapTable('collapseRow', Gindex);
                         Gindex = index;
                         siparisIcerigi(result[index]["orFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
                     }
@@ -137,8 +149,8 @@
                     data: data,
                     detailView: columns.length > 1,
                     onExpandRow: function (index, row, $detail2) {
-                        if (Gindex!=index)
-                        $detail.bootstrapTable('collapseRow', Gindex);
+                        if (Gindex != index)
+                            $detail.bootstrapTable('collapseRow', Gindex);
                         Gindex = index;
                         irsaliyeBilgisi(result[index]["orfLineRef"], $detail2.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
 

@@ -202,6 +202,693 @@ namespace KaleBlokBims.M2BWebService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="M2BWCFBaslik", Namespace="http://tempuri.org/")]
+    [System.SerializableAttribute()]
+    public partial class M2BWCFBaslik : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TarihField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CariLREFField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BelgeNoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string OzelKodField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string YetkiKoduField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Aciklama1Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Aciklama2Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Aciklama3Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Aciklama4Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string OdemeTipiKoduField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TicariIslemGrubuField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SatisElemaniKoduField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TeslimSekliKoduField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProjeKoduField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MusteriSiparisNoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DokumanIzlemeNumarasiField;
+        
+        private int SozlesmeReferansiField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IsyeriField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BolumField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string FabrikaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AmbarField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string Tarih {
+            get {
+                return this.TarihField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TarihField, value) != true)) {
+                    this.TarihField = value;
+                    this.RaisePropertyChanged("Tarih");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string CariLREF {
+            get {
+                return this.CariLREFField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CariLREFField, value) != true)) {
+                    this.CariLREFField = value;
+                    this.RaisePropertyChanged("CariLREF");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string BelgeNo {
+            get {
+                return this.BelgeNoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BelgeNoField, value) != true)) {
+                    this.BelgeNoField = value;
+                    this.RaisePropertyChanged("BelgeNo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string OzelKod {
+            get {
+                return this.OzelKodField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OzelKodField, value) != true)) {
+                    this.OzelKodField = value;
+                    this.RaisePropertyChanged("OzelKod");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string YetkiKodu {
+            get {
+                return this.YetkiKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.YetkiKoduField, value) != true)) {
+                    this.YetkiKoduField = value;
+                    this.RaisePropertyChanged("YetkiKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        public string Aciklama1 {
+            get {
+                return this.Aciklama1Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Aciklama1Field, value) != true)) {
+                    this.Aciklama1Field = value;
+                    this.RaisePropertyChanged("Aciklama1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        public string Aciklama2 {
+            get {
+                return this.Aciklama2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Aciklama2Field, value) != true)) {
+                    this.Aciklama2Field = value;
+                    this.RaisePropertyChanged("Aciklama2");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=7)]
+        public string Aciklama3 {
+            get {
+                return this.Aciklama3Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Aciklama3Field, value) != true)) {
+                    this.Aciklama3Field = value;
+                    this.RaisePropertyChanged("Aciklama3");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=8)]
+        public string Aciklama4 {
+            get {
+                return this.Aciklama4Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Aciklama4Field, value) != true)) {
+                    this.Aciklama4Field = value;
+                    this.RaisePropertyChanged("Aciklama4");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=9)]
+        public string OdemeTipiKodu {
+            get {
+                return this.OdemeTipiKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OdemeTipiKoduField, value) != true)) {
+                    this.OdemeTipiKoduField = value;
+                    this.RaisePropertyChanged("OdemeTipiKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
+        public string TicariIslemGrubu {
+            get {
+                return this.TicariIslemGrubuField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TicariIslemGrubuField, value) != true)) {
+                    this.TicariIslemGrubuField = value;
+                    this.RaisePropertyChanged("TicariIslemGrubu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=11)]
+        public string SatisElemaniKodu {
+            get {
+                return this.SatisElemaniKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SatisElemaniKoduField, value) != true)) {
+                    this.SatisElemaniKoduField = value;
+                    this.RaisePropertyChanged("SatisElemaniKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=12)]
+        public string TeslimSekliKodu {
+            get {
+                return this.TeslimSekliKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TeslimSekliKoduField, value) != true)) {
+                    this.TeslimSekliKoduField = value;
+                    this.RaisePropertyChanged("TeslimSekliKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=13)]
+        public string ProjeKodu {
+            get {
+                return this.ProjeKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProjeKoduField, value) != true)) {
+                    this.ProjeKoduField = value;
+                    this.RaisePropertyChanged("ProjeKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=14)]
+        public string MusteriSiparisNo {
+            get {
+                return this.MusteriSiparisNoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MusteriSiparisNoField, value) != true)) {
+                    this.MusteriSiparisNoField = value;
+                    this.RaisePropertyChanged("MusteriSiparisNo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=15)]
+        public string DokumanIzlemeNumarasi {
+            get {
+                return this.DokumanIzlemeNumarasiField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DokumanIzlemeNumarasiField, value) != true)) {
+                    this.DokumanIzlemeNumarasiField = value;
+                    this.RaisePropertyChanged("DokumanIzlemeNumarasi");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=16)]
+        public int SozlesmeReferansi {
+            get {
+                return this.SozlesmeReferansiField;
+            }
+            set {
+                if ((this.SozlesmeReferansiField.Equals(value) != true)) {
+                    this.SozlesmeReferansiField = value;
+                    this.RaisePropertyChanged("SozlesmeReferansi");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=17)]
+        public string Isyeri {
+            get {
+                return this.IsyeriField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IsyeriField, value) != true)) {
+                    this.IsyeriField = value;
+                    this.RaisePropertyChanged("Isyeri");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=18)]
+        public string Bolum {
+            get {
+                return this.BolumField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BolumField, value) != true)) {
+                    this.BolumField = value;
+                    this.RaisePropertyChanged("Bolum");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=19)]
+        public string Fabrika {
+            get {
+                return this.FabrikaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FabrikaField, value) != true)) {
+                    this.FabrikaField = value;
+                    this.RaisePropertyChanged("Fabrika");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=20)]
+        public string Ambar {
+            get {
+                return this.AmbarField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AmbarField, value) != true)) {
+                    this.AmbarField = value;
+                    this.RaisePropertyChanged("Ambar");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="M2BWCFTransaction", Namespace="http://tempuri.org/")]
+    [System.SerializableAttribute()]
+    public partial class M2BWCFTransaction : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private int SatirTipiField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MalzemeKoduField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string HareketOzelKoduField;
+        
+        private double MiktarField;
+        
+        private double BirimFiyatField;
+        
+        private double ToplamField;
+        
+        private double IskontoOraniField;
+        
+        private double KdvField;
+        
+        private int KdvHaricmi0Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SatirAciklamasiField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BirimField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public int SatirTipi {
+            get {
+                return this.SatirTipiField;
+            }
+            set {
+                if ((this.SatirTipiField.Equals(value) != true)) {
+                    this.SatirTipiField = value;
+                    this.RaisePropertyChanged("SatirTipi");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string MalzemeKodu {
+            get {
+                return this.MalzemeKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MalzemeKoduField, value) != true)) {
+                    this.MalzemeKoduField = value;
+                    this.RaisePropertyChanged("MalzemeKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string HareketOzelKodu {
+            get {
+                return this.HareketOzelKoduField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HareketOzelKoduField, value) != true)) {
+                    this.HareketOzelKoduField = value;
+                    this.RaisePropertyChanged("HareketOzelKodu");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
+        public double Miktar {
+            get {
+                return this.MiktarField;
+            }
+            set {
+                if ((this.MiktarField.Equals(value) != true)) {
+                    this.MiktarField = value;
+                    this.RaisePropertyChanged("Miktar");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=4)]
+        public double BirimFiyat {
+            get {
+                return this.BirimFiyatField;
+            }
+            set {
+                if ((this.BirimFiyatField.Equals(value) != true)) {
+                    this.BirimFiyatField = value;
+                    this.RaisePropertyChanged("BirimFiyat");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=5)]
+        public double Toplam {
+            get {
+                return this.ToplamField;
+            }
+            set {
+                if ((this.ToplamField.Equals(value) != true)) {
+                    this.ToplamField = value;
+                    this.RaisePropertyChanged("Toplam");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=6)]
+        public double IskontoOrani {
+            get {
+                return this.IskontoOraniField;
+            }
+            set {
+                if ((this.IskontoOraniField.Equals(value) != true)) {
+                    this.IskontoOraniField = value;
+                    this.RaisePropertyChanged("IskontoOrani");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
+        public double Kdv {
+            get {
+                return this.KdvField;
+            }
+            set {
+                if ((this.KdvField.Equals(value) != true)) {
+                    this.KdvField = value;
+                    this.RaisePropertyChanged("Kdv");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
+        public int KdvHaricmi0 {
+            get {
+                return this.KdvHaricmi0Field;
+            }
+            set {
+                if ((this.KdvHaricmi0Field.Equals(value) != true)) {
+                    this.KdvHaricmi0Field = value;
+                    this.RaisePropertyChanged("KdvHaricmi0");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=9)]
+        public string SatirAciklamasi {
+            get {
+                return this.SatirAciklamasiField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SatirAciklamasiField, value) != true)) {
+                    this.SatirAciklamasiField = value;
+                    this.RaisePropertyChanged("SatirAciklamasi");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
+        public string Birim {
+            get {
+                return this.BirimField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BirimField, value) != true)) {
+                    this.BirimField = value;
+                    this.RaisePropertyChanged("Birim");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CariSevkAdresi", Namespace="http://tempuri.org/")]
+    [System.SerializableAttribute()]
+    public partial class CariSevkAdresi : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AdresBasligiField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Aciklama1Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Adres1Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string Adres2Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IlField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IlceField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        public string AdresBasligi {
+            get {
+                return this.AdresBasligiField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AdresBasligiField, value) != true)) {
+                    this.AdresBasligiField = value;
+                    this.RaisePropertyChanged("AdresBasligi");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string Aciklama1 {
+            get {
+                return this.Aciklama1Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Aciklama1Field, value) != true)) {
+                    this.Aciklama1Field = value;
+                    this.RaisePropertyChanged("Aciklama1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string Adres1 {
+            get {
+                return this.Adres1Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Adres1Field, value) != true)) {
+                    this.Adres1Field = value;
+                    this.RaisePropertyChanged("Adres1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string Adres2 {
+            get {
+                return this.Adres2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Adres2Field, value) != true)) {
+                    this.Adres2Field = value;
+                    this.RaisePropertyChanged("Adres2");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string Il {
+            get {
+                return this.IlField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IlField, value) != true)) {
+                    this.IlField = value;
+                    this.RaisePropertyChanged("Il");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        public string Ilce {
+            get {
+                return this.IlceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IlceField, value) != true)) {
+                    this.IlceField = value;
+                    this.RaisePropertyChanged("Ilce");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="M2BWebService.IZOKALEAPISoap")]
     public interface IZOKALEAPISoap {
@@ -254,6 +941,13 @@ namespace KaleBlokBims.M2BWebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IrsaliyeFisiSatirlari", ReplyAction="*")]
         System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.IrsaliyeFisiSatirlariResponse> IrsaliyeFisiSatirlariAsync(KaleBlokBims.M2BWebService.IrsaliyeFisiSatirlariRequest request);
+        
+        // CODEGEN: Generating message contract since element name BayiKodu from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MusteriyeSevkRaporu", ReplyAction="*")]
+        KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse MusteriyeSevkRaporu(KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MusteriyeSevkRaporu", ReplyAction="*")]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse> MusteriyeSevkRaporuAsync(KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest request);
         
         // CODEGEN: Generating message contract since element name BayiKodu from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IrsaliyeFisleri", ReplyAction="*")]
@@ -345,6 +1039,13 @@ namespace KaleBlokBims.M2BWebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AmbarBilgileri", ReplyAction="*")]
         System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.AmbarBilgileriResponse> AmbarBilgileriAsync(KaleBlokBims.M2BWebService.AmbarBilgileriRequest request);
+        
+        // CODEGEN: Generating message contract since element name Ambar from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/M2BSiparisOlustur", ReplyAction="*")]
+        KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse M2BSiparisOlustur(KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/M2BSiparisOlustur", ReplyAction="*")]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse> M2BSiparisOlusturAsync(KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -838,6 +1539,82 @@ namespace KaleBlokBims.M2BWebService {
         
         public IrsaliyeFisiSatirlariResponseBody(string IrsaliyeFisiSatirlariResult) {
             this.IrsaliyeFisiSatirlariResult = IrsaliyeFisiSatirlariResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class MusteriyeSevkRaporuRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MusteriyeSevkRaporu", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequestBody Body;
+        
+        public MusteriyeSevkRaporuRequest() {
+        }
+        
+        public MusteriyeSevkRaporuRequest(KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class MusteriyeSevkRaporuRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string BayiKodu;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string BaslangicTarih;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string BitisTarihi;
+        
+        public MusteriyeSevkRaporuRequestBody() {
+        }
+        
+        public MusteriyeSevkRaporuRequestBody(string BayiKodu, string BaslangicTarih, string BitisTarihi) {
+            this.BayiKodu = BayiKodu;
+            this.BaslangicTarih = BaslangicTarih;
+            this.BitisTarihi = BitisTarihi;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class MusteriyeSevkRaporuResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MusteriyeSevkRaporuResponse", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponseBody Body;
+        
+        public MusteriyeSevkRaporuResponse() {
+        }
+        
+        public MusteriyeSevkRaporuResponse(KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class MusteriyeSevkRaporuResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string MusteriyeSevkRaporuResult;
+        
+        public MusteriyeSevkRaporuResponseBody() {
+        }
+        
+        public MusteriyeSevkRaporuResponseBody(string MusteriyeSevkRaporuResult) {
+            this.MusteriyeSevkRaporuResult = MusteriyeSevkRaporuResult;
         }
     }
     
@@ -1683,6 +2460,86 @@ namespace KaleBlokBims.M2BWebService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class M2BSiparisOlusturRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="M2BSiparisOlustur", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.M2BSiparisOlusturRequestBody Body;
+        
+        public M2BSiparisOlusturRequest() {
+        }
+        
+        public M2BSiparisOlusturRequest(KaleBlokBims.M2BWebService.M2BSiparisOlusturRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class M2BSiparisOlusturRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string Ambar;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public KaleBlokBims.M2BWebService.M2BWCFBaslik Baslik;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public KaleBlokBims.M2BWebService.M2BWCFTransaction[] Transactions;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public KaleBlokBims.M2BWebService.CariSevkAdresi AdresBilgileri;
+        
+        public M2BSiparisOlusturRequestBody() {
+        }
+        
+        public M2BSiparisOlusturRequestBody(string Ambar, KaleBlokBims.M2BWebService.M2BWCFBaslik Baslik, KaleBlokBims.M2BWebService.M2BWCFTransaction[] Transactions, KaleBlokBims.M2BWebService.CariSevkAdresi AdresBilgileri) {
+            this.Ambar = Ambar;
+            this.Baslik = Baslik;
+            this.Transactions = Transactions;
+            this.AdresBilgileri = AdresBilgileri;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class M2BSiparisOlusturResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="M2BSiparisOlusturResponse", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.M2BSiparisOlusturResponseBody Body;
+        
+        public M2BSiparisOlusturResponse() {
+        }
+        
+        public M2BSiparisOlusturResponse(KaleBlokBims.M2BWebService.M2BSiparisOlusturResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class M2BSiparisOlusturResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string M2BSiparisOlusturResult;
+        
+        public M2BSiparisOlusturResponseBody() {
+        }
+        
+        public M2BSiparisOlusturResponseBody(string M2BSiparisOlusturResult) {
+            this.M2BSiparisOlusturResult = M2BSiparisOlusturResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IZOKALEAPISoapChannel : KaleBlokBims.M2BWebService.IZOKALEAPISoap, System.ServiceModel.IClientChannel {
     }
@@ -1895,6 +2752,35 @@ namespace KaleBlokBims.M2BWebService {
             inValue.Body = new KaleBlokBims.M2BWebService.IrsaliyeFisiSatirlariRequestBody();
             inValue.Body.stFicheRef = stFicheRef;
             return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).IrsaliyeFisiSatirlariAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse KaleBlokBims.M2BWebService.IZOKALEAPISoap.MusteriyeSevkRaporu(KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest request) {
+            return base.Channel.MusteriyeSevkRaporu(request);
+        }
+        
+        public string MusteriyeSevkRaporu(string BayiKodu, string BaslangicTarih, string BitisTarihi) {
+            KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest inValue = new KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequestBody();
+            inValue.Body.BayiKodu = BayiKodu;
+            inValue.Body.BaslangicTarih = BaslangicTarih;
+            inValue.Body.BitisTarihi = BitisTarihi;
+            KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse retVal = ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).MusteriyeSevkRaporu(inValue);
+            return retVal.Body.MusteriyeSevkRaporuResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse> KaleBlokBims.M2BWebService.IZOKALEAPISoap.MusteriyeSevkRaporuAsync(KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest request) {
+            return base.Channel.MusteriyeSevkRaporuAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse> MusteriyeSevkRaporuAsync(string BayiKodu, string BaslangicTarih, string BitisTarihi) {
+            KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest inValue = new KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.MusteriyeSevkRaporuRequestBody();
+            inValue.Body.BayiKodu = BayiKodu;
+            inValue.Body.BaslangicTarih = BaslangicTarih;
+            inValue.Body.BitisTarihi = BitisTarihi;
+            return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).MusteriyeSevkRaporuAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2208,6 +3094,37 @@ namespace KaleBlokBims.M2BWebService {
             KaleBlokBims.M2BWebService.AmbarBilgileriRequest inValue = new KaleBlokBims.M2BWebService.AmbarBilgileriRequest();
             inValue.Body = new KaleBlokBims.M2BWebService.AmbarBilgileriRequestBody();
             return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).AmbarBilgileriAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse KaleBlokBims.M2BWebService.IZOKALEAPISoap.M2BSiparisOlustur(KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest request) {
+            return base.Channel.M2BSiparisOlustur(request);
+        }
+        
+        public string M2BSiparisOlustur(string Ambar, KaleBlokBims.M2BWebService.M2BWCFBaslik Baslik, KaleBlokBims.M2BWebService.M2BWCFTransaction[] Transactions, KaleBlokBims.M2BWebService.CariSevkAdresi AdresBilgileri) {
+            KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest inValue = new KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.M2BSiparisOlusturRequestBody();
+            inValue.Body.Ambar = Ambar;
+            inValue.Body.Baslik = Baslik;
+            inValue.Body.Transactions = Transactions;
+            inValue.Body.AdresBilgileri = AdresBilgileri;
+            KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse retVal = ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).M2BSiparisOlustur(inValue);
+            return retVal.Body.M2BSiparisOlusturResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse> KaleBlokBims.M2BWebService.IZOKALEAPISoap.M2BSiparisOlusturAsync(KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest request) {
+            return base.Channel.M2BSiparisOlusturAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse> M2BSiparisOlusturAsync(string Ambar, KaleBlokBims.M2BWebService.M2BWCFBaslik Baslik, KaleBlokBims.M2BWebService.M2BWCFTransaction[] Transactions, KaleBlokBims.M2BWebService.CariSevkAdresi AdresBilgileri) {
+            KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest inValue = new KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.M2BSiparisOlusturRequestBody();
+            inValue.Body.Ambar = Ambar;
+            inValue.Body.Baslik = Baslik;
+            inValue.Body.Transactions = Transactions;
+            inValue.Body.AdresBilgileri = AdresBilgileri;
+            return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).M2BSiparisOlusturAsync(inValue);
         }
     }
 }

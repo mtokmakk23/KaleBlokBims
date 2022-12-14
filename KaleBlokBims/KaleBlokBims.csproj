@@ -180,6 +180,7 @@
     <Compile Include="Controllers\Dealer_HesapEkstresiController.cs" />
     <Compile Include="Controllers\Dealer_IrsaliyelerController.cs" />
     <Compile Include="Controllers\Dealer_LoginController.cs" />
+    <Compile Include="Controllers\Dealer_RaporlarController.cs" />
     <Compile Include="Controllers\Dealer_SiparislerController.cs" />
     <Compile Include="Controllers\Dealer_SiparisOlusturController.cs" />
     <Compile Include="Global.asax.cs">
@@ -246,6 +247,7 @@
     <Content Include="assets\css\demos\demo-8.css" />
     <Content Include="assets\css\demos\demo-9.css" />
     <Content Include="assets\css\main.min.css" />
+    <Content Include="assets\css\plugins\excel-bootstrap-table-filter-style.css" />
     <Content Include="assets\css\plugins\jquery.countdown.css" />
     <Content Include="assets\css\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\css\plugins\nouislider\nouislider.css" />
@@ -1624,6 +1626,8 @@
     <Content Include="assets\js\demos\demo-7.js" />
     <Content Include="assets\js\demos\demo-8.js" />
     <Content Include="assets\js\demos\demo-9.js" />
+    <Content Include="assets\js\excel-bootstrap-table-filter-bundle.js" />
+    <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js" />
     <Content Include="assets\js\imagesloaded.pkgd.min.js" />
     <Content Include="assets\js\isotope.pkgd.min.js" />
     <Content Include="assets\js\jquery.countdown.min.js" />
@@ -1644,6 +1648,8 @@
     <Content Include="assets\main.js" />
     <Content Include="assets\vendor\line-awesome\line-awesome\line-awesome\css\line-awesome.min.css" />
     <Content Include="assets\vendor\line-awesome\line-awesome\line-awesome\fonts\line-awesomeeb4f.svg" />
+    <Content Include="assets\js\excel-bootstrap-table-filter-bundle.js.map" />
+    <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js.map" />
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
     <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
@@ -1707,8 +1713,14 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IsyeriBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BayilerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
@@ -2016,6 +2028,7 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="assets\js\example.html" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
     <Content Include="Scripts\jquery-3.6.0.slim.js" />
@@ -2045,6 +2058,7 @@
     <Content Include="Views\Admin_Anasayfa\Index.cshtml" />
     <Content Include="Views\Admin_BayilerVeKullanicilar\Index.cshtml" />
     <Content Include="Views\Admin_BekleyenSiparisler\Index.cshtml" />
+    <Content Include="Views\Dealer_Raporlar\MalzemeSevkRaporu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

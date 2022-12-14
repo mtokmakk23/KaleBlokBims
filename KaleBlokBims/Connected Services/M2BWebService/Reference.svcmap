@@ -22,8 +22,8 @@
     <MetadataSource Address="http://localhost:61120/IZOKALEAPI.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="IZOKALEAPI.disco" MetadataType="Disco" ID="f585a941-3124-459e-a2dc-04f0219f8d63" SourceId="1" SourceUrl="http://localhost:61120/IZOKALEAPI.asmx?disco" />
-    <MetadataFile FileName="IZOKALEAPI.wsdl" MetadataType="Wsdl" ID="ef85aaba-6071-44b0-bcfa-8b3f1d61ec83" SourceId="1" SourceUrl="http://localhost:61120/IZOKALEAPI.asmx?wsdl" />
+    <MetadataFile FileName="IZOKALEAPI.disco" MetadataType="Disco" ID="14dfc8d4-0967-45a4-b622-f2d6fb56604f" SourceId="1" SourceUrl="http://localhost:61120/IZOKALEAPI.asmx?disco" />
+    <MetadataFile FileName="IZOKALEAPI.wsdl" MetadataType="Wsdl" ID="04971edc-a03e-45da-a833-0e02a871a423" SourceId="1" SourceUrl="http://localhost:61120/IZOKALEAPI.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -49,48 +49,63 @@
 
         .header-middle .menu > li > a {
             padding: 20px 5px 8px 5px;
-            border: 1px solid #dedede,
         }
 
         .menu .megamenu-container {
-            border-bottom: 1px solid #006EB7;
             margin-right: 5px;
+        }
+
+        .menu .menu-col {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-top: 2.2rem;
+            padding-bottom: 2rem;
+            color: black;
+        }
+
+        .menu-col li > a {
+            color: black;
+            font-weight: bold
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-left">
-                    <div class="header-dropdown" style="padding:0">
-                        <a href="#">Usd:<span class="GuncelUSD" style="font-weight:bold;margin:0 2px 0 2px"></span> - Eur:<span class="GuncelEUR" style="font-weight:bold;margin:0 2px 0 2px"></span></a>
-                        <div class="header-menu">
-                            <ul>
-                                <li><a href="https://www.bloomberght.com/doviz" target="_blank">Bloomberg <small class="KurGuncellemeSaati" style="font-weight:bold;margin-left:5px"></small></a></li>
-                            </ul>
-                        </div><!-- End .header-menu -->
-                    </div><!-- End .header-dropdown -->
+    <header class="header sticky-header">
 
-                </div><!-- End .header-left -->
-                <div class="header-right">
-                    <ul class="top-menu">
-                        <li>
-                            <a href="#">Links</a>
-                            <ul>
-                                <li><a><i class="fa fa-arrow-right" aria-hidden="true"></i>@Session["BayiAdi"].ToString()</a></li>
-                                <li><a><i class="icon-user"></i>@Session["AdiSoyadi"].ToString()</a></li>
-                                <li><a href="/Dealer_Login/Login"><i class="icon-close"></i>Çıkış Yap</a></li>
-                            </ul>
-                        </li>
-                    </ul><!-- End .top-menu -->
-                </div><!-- End .header-right -->
-            </div><!-- End .container -->
+        <div class="header-top sticky-wrapper">
+            <div class="header-middle">
+
+                <div class="container">
+                    <div class="header-left">
+                        <div class="header-dropdown" style="padding:0">
+                            <a href="#">Usd:<span class="GuncelUSD" style="font-weight:bold;margin:0 2px 0 2px"></span> - Eur:<span class="GuncelEUR" style="font-weight:bold;margin:0 2px 0 2px"></span></a>
+                            <div class="header-menu">
+                                <ul>
+                                    <li><a href="https://www.bloomberght.com/doviz" target="_blank">Bloomberg <small class="KurGuncellemeSaati" style="font-weight:bold;margin-left:5px"></small></a></li>
+                                </ul>
+                            </div><!-- End .header-menu -->
+                        </div><!-- End .header-dropdown -->
+
+                    </div><!-- End .header-left -->
+                    <div class="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                <ul>
+                                    <li><a><i class="fa fa-arrow-right" aria-hidden="true"></i>@Session["BayiAdi"].ToString()</a></li>
+                                    <li><a><i class="icon-user"></i>@Session["AdiSoyadi"].ToString()</a></li>
+                                    <li><a href="/Dealer_Login/Login"><i class="icon-close"></i>Çıkış Yap</a></li>
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div>
         </div><!-- End .header-top -->
         <div class="sticky-wrapper" style="">
-            <div class="header-middle sticky-header">
-                <div class="container">
+            <div class="header-middle">
+                <div class="container" style="margin:0;max-width:none;width:auto">
                     <div class="header-left">
                         <button class="mobile-menu-toggler">
                             <span class="sr-only">Toggle mobile menu</span>
@@ -125,7 +140,21 @@
                                 <li class="megamenu-container">
                                     <a href="#">Satış Sonrası Hizmetler</a>
                                 </li>
+                                <li>
+                                    <a href="#" class="sf-with-ul">Raporlar</a>
+                                    <div class="megamenu megamenu-md" style="width:auto">
+                                        <div class="menu-col">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        <li><a href="/Dealer_Raporlar/MalzemeSevkRaporu">Malzeme Sevk Raporu</a></li>
 
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                                 @*<li>
                                         <a href="category.html" class="sf-with-ul">Shop</a>
                                         <div class="megamenu megamenu-md" style="display: none;">
@@ -240,10 +269,10 @@
                                     color: #fff;
                                     transition: color .35s;
                                 }
+
                                 .cart-dropdown .product {
                                     padding: 0.6rem 2.4rem 0.6rem 0.6rem !important;
                                     border-radius: 5px;
-                                   
                                 }
                             </style>
                             <div class="product-shop">
@@ -279,7 +308,7 @@
                                             </div>
                                         </div>
                                         <div class="dropdown-cart-action">
-                                            <a onclick="SepetiOnayla(1)" class="btn btn-primary m-auto" >Siparişi Onayla</a>
+                                            <a onclick="SepetiOnayla(1)" class="btn btn-primary m-auto">Siparişi Onayla</a>
                                         </div>
                                     </nav>
                                 </div>
@@ -287,8 +316,8 @@
                             </div>
 
                             <!--<div class="dropdown-menu dropdown-menu-right" style="top: 60px;width:360px;padding:5px;border:1px solid #dedede">
-                                <div class="dropdown-cart-products">
-                                </div>-->
+                            <div class="dropdown-cart-products">
+                            </div>-->
                             <!-- End .cart-product -->
                             <!--<div class="dropdown-cart-total m-0">
                                 <span>Ara Toplam</span>
