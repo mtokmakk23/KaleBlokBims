@@ -19,18 +19,28 @@ namespace KaleBlokBims.Controllers
         public string _MalzemeSevkRaporu(string baslangicTarihi,string bitisTarihi)
         {
             var response = new RestSharp.RestResponse();
-            if (baslangicTarihi.Trim()==""||bitisTarihi.Trim()=="")
+            try
+            {
+              
+                if (baslangicTarihi.Trim() == "" || bitisTarihi.Trim() == "")
+                {
+                    response.IsSuccessStatusCode = false;
+                    response.ErrorMessage = "Başlangıç Tarihi ve Bitiş Tarihi Doldurulmalıdır.";
+                }
+                else
+                {
+                    var servis = new M2BWebService.ZOKALEAPISoapClient();
+                    response.IsSuccessStatusCode = true;
+                    response.Content = servis.MusteriyeSevkRaporu(Session["BayiKodu"].ToString(), Convert.ToDateTime(baslangicTarihi).ToString("yyyy-MM-dd"), Convert.ToDateTime(bitisTarihi).ToString("yyyy-MM-dd"));
+
+
+                }
+               
+            }
+            catch (Exception hata)
             {
                 response.IsSuccessStatusCode = false;
-                response.ErrorMessage = "Başlangıç Tarihi ve Bitiş Tarihi Doldurulmalıdır.";
-            }
-            else
-            {
-                var servis = new M2BWebService.ZOKALEAPISoapClient();
-                response.IsSuccessStatusCode = true;
-                response.Content = servis.MusteriyeSevkRaporu(Session["BayiKodu"].ToString(), Convert.ToDateTime(baslangicTarihi).ToString("yyyy-MM-dd"), Convert.ToDateTime(bitisTarihi).ToString("yyyy-MM-dd"));
-               
-
+                response.ErrorMessage = hata.Message;
             }
             return JsonConvert.SerializeObject(response);
         }

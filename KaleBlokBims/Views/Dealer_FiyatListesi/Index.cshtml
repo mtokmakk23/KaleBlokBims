@@ -21,7 +21,7 @@
 
                     $(".fiyatListeleri").html("<option value='-1'>Seçiniz</option>");
                     for (var i = 0; i < result.length; i++) {
-                        $(".fiyatListeleri").append("<option value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + "</option>");
+                        $(".fiyatListeleri").append("<option data-baglantiLREF='" + result[i].baglantiLREF +"'  value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + " " + ((result[i].baglantiLREF != -1) ? " Kalan Tutar: " + (result[i].bakiye) + " TL" : "") + "</option>");
 
                     }
             }
@@ -102,6 +102,7 @@
 
     function fiyatlariGetir() {
         var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
         var anaGrupKodu = $(".anaGrup option:selected").val();
         var altGrupKodu = $(".altGrup option:selected").val();
         var il = $(".il option:selected").val();
@@ -125,6 +126,7 @@
        
         var theData = {
             FiyatListesiKodu: fiyatListesiKodu,
+            baglantiLREF: baglantiLREF,
             SPECODE1: anaGrupKodu,
             SPECODE2: altGrupKodu,
             Il: il,

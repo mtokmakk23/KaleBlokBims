@@ -38,5 +38,8 @@ namespace KaleBlokBims.Models
         public string TigereAktaranKisi { get; set; }
         public string OdemeTipi { get; set; }
         public string SiparisNotu { get; set; }
+        public Nullable<bool> FisiOlusturanAdminMi { get; set; }
+        public Nullable<int> BaglantiLref { get; set; }
+        public string BaglantiAciklamasi { get; set; }
     }
 }

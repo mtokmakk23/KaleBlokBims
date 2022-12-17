@@ -4,10 +4,10 @@
     Layout = "~/Views/Shared/_Dealer_Master.cshtml";
 }
 <script>
-       
+
 
         window.onload = function () {
-            
+
             HesapEkstresi();
             BaglantiOzeti();
             BayiBilgileri();
@@ -71,7 +71,8 @@
                     columns.push({
                         field: 'field' + i,
                         title: x,
-                        sortable: true
+                        sortable: true,
+                        visible: (x == "baglantiLREF") ? false : true
                 })
                 i++;
             }
@@ -79,7 +80,7 @@
             for (i = 0; i < result.length; i++) {
                 row = {}
                 for (j = 0; j < columns.length; j++) {
-                    row['field' + j] = result[i][columns[j].title];
+                    row['field' + j] = (columns[j].title == "iskontoOrani" ? "%" + result[i][columns[j].title] : result[i][columns[j].title]);
                 }
                 data.push(row);
             }
@@ -114,7 +115,7 @@
 </style>
 <div class="page-header text-center bg-white" @*style="background-image: url('/assets/images/banners/banner.jpeg')"*@>
     <div class="container">
-    <img src="/assets/images/banners/banner.jpeg" />
+        <img src="/assets/images/banners/banner.jpeg" />
         <h1 class="page-title" style="font-family: cursive;font-weight: bold;display:none">İZOKALE PORTAL</h1>
     </div><!-- End .container -->
 </div>

@@ -78,8 +78,18 @@ namespace KaleBlokBims.Controllers
                 baslik.SiparisNotu = sepetOnaylaSiparisNotu;
                 baslik.OdemeTipi = sepetOnaylaOdemeTipi;
                 db.SaveChanges();
+                var firmaAdmini = "";
+                foreach (var item in db.BayiKullanicilari.Where(x=>x.BayiKodu==baslik.BayiKodu && x.AdminMi==true))
+                {
+                    firmaAdmini += item.MailAdresi + ",";
+                }
+                SiparisFormuOlustur form = new SiparisFormuOlustur();
+                var pdfByte = form.siparisFormu(Convert.ToInt32(baslik.LOGICALREF));
+                MailGonderme mail = new MailGonderme();
+                mail.EkliMailGonderme("",SabitTanimlar.SiparisFormuGonderilecekMailler(),baslik.MailAdresi+","+ firmaAdmini, "Ön Sipariş Formu",baslik.BayiAdi+" Tarafından oluşturulan "+baslik.BayiKodu+"-"+baslik.LOGICALREF+" referans numaralı ön sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF+".pdf");
                 response.IsSuccessStatusCode = true;
-                response.Content = "asd";
+                String file = Convert.ToBase64String(pdfByte);
+                response.Content = file;
             }
             return JsonConvert.SerializeObject(response);
         }

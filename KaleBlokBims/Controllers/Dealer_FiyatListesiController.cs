@@ -20,13 +20,13 @@ namespace KaleBlokBims.Controllers
         public string fiyatListeleri()
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.SecilebilirFiyatListeleri(Session["BayiKodu"].ToString());
+            return JsonConvert.SerializeObject(servis.SecilebilirFiyatListeleri(Session["BayiKodu"].ToString()));
         }
          [HttpPost]
         public string Gruplar()
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.AnaGruplar("");
+            return servis.AnaGruplar("","","");
         }
          [HttpPost]
         public string Iller()
@@ -37,14 +37,14 @@ namespace KaleBlokBims.Controllers
 
 
         [HttpPost]
-        public string MalzemeFiyatlariniGetir(string FiyatListesiKodu, string SPECODE1, string SPECODE2, string Il, string Ilce, string fabrikaTeslimMi, string GuncelUSD, string GuncelEUR)
+        public string MalzemeFiyatlariniGetir(string FiyatListesiKodu,string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, string fabrikaTeslimMi, string GuncelUSD, string GuncelEUR)
         {
             if (SPECODE1=="-1") SPECODE1 = "";
             if (SPECODE2=="-1") SPECODE2 = "";
            
             
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            var list = servis.MalzemeListesi(Session["BayiKodu"].ToString(), FiyatListesiKodu, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".",",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ",")));
+            var list = servis.MalzemeListesi(Session["BayiKodu"].ToString(), FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".",",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ",")));
             return list;
 
         }

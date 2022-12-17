@@ -20,7 +20,7 @@ namespace KaleBlokBims.Controllers
         public string FiyatListeleri()
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.SecilebilirFiyatListeleri(Session["BayiKodu"].ToString());
+            return JsonConvert.SerializeObject(servis.SecilebilirFiyatListeleri(Session["BayiKodu"].ToString()));
         }
          [HttpPost]
         public string Iller()
@@ -41,7 +41,7 @@ namespace KaleBlokBims.Controllers
         public string Gruplar(string fiyatListesi)
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.AnaGruplar(fiyatListesi);
+            return servis.AnaGruplar("","","");
         }
         [HttpPost]
         public string adresKontrol(string adresBasligi, string ilgiliKisi, string ilgiliKisiTel, string detayliAdres, string il, string ilce, string fabrikaTeslimMi)
@@ -101,6 +101,7 @@ namespace KaleBlokBims.Controllers
 
         [HttpPost]
         public string SepeteEkle(string fiyatListesi,
+            string baglantiLREF,
             string adresBasligi,
             string IlgiliKisi,
             string IlgiliKisiTel,
@@ -152,6 +153,7 @@ namespace KaleBlokBims.Controllers
                 baslik.EklenmeTarihi = DateTime.Now;
                 baslik.FabrikaTeslimMi = Convert.ToBoolean(FabrikaTeslimMi);
                 baslik.FiyatListesi = fiyatListesi;
+                baslik.BaglantiLref =Convert.ToInt32(baglantiLREF);
                 baslik.Il = Il;
                 baslik.Ilce = Ilce;
                 baslik.IlgiliKisi = IlgiliKisi;

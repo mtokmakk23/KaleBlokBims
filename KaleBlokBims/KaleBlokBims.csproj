@@ -38,13 +38,16 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -54,8 +57,8 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\..\..\..\UYGULAMALAR\M2B\Megaboard\MegaboardBayiPortali\bin\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp">
-      <HintPath>..\..\..\..\..\..\UYGULAMALAR\M2B\Megaboard\MegaboardBayiPortali\bin\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -193,7 +196,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Classlar\LINQResultToDataTable.cs" />
+    <Compile Include="Models\Classlar\MailGonderme.cs" />
     <Compile Include="Models\Classlar\MD5.cs" />
+    <Compile Include="Models\Classlar\SabitTanimlar.cs" />
     <Compile Include="Models\Classlar\SiparisFormuOlustur.cs" />
     <Compile Include="Models\KayitliAdresler.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -1652,7 +1657,7 @@
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js.map" />
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.disco" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.HesapOzetiResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1719,10 +1724,13 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.FiyatListesiBakiye.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.wsdl" />
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

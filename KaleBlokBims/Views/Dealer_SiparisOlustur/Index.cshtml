@@ -16,10 +16,10 @@
                 fiyatListeleri();
                 iller();
                 kayitliAdresler();
-               
+
             }
         }, 100);
-     
+
     }
 
     var kayitliAdreslerArray;
@@ -97,8 +97,8 @@
                                 LilcelerSelect.options[j].removeAttribute("selected");
                             }
                         }
-                    } while (LilcelerSelect.options.length==0);
-                   
+                    } while (LilcelerSelect.options.length == 0);
+
                     $(".fabrikaTeslimMi").attr("checked", Boolean(result[i].FabrikaTeslimMi));
                 }
             }
@@ -120,7 +120,7 @@
 
                 $(".fiyatListeleri").html("<option value='-1'>Seçiniz</option>");
                 for (var i = 0; i < result.length; i++) {
-                    $(".fiyatListeleri").append("<option value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + "</option>");
+                    $(".fiyatListeleri").append("<option data-baglantiLREF='" + result[i].baglantiLREF+"' value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu +" "+ ((result[i].baglantiLREF != -1) ? " Kalan Tutar: " + (result[i].bakiye) + " TL" : "" )+ "</option>");
 
                 }
                 if (bekleyenBaslikBilgileri != undefined) {
@@ -154,10 +154,8 @@
                     var altMenuler = anaMenuler[i].AltMenuler;
                     for (var j = 0; j < altMenuler.length; j++) {
                         gruplarStr += '  <div class="form-check filter-item" style="cursor:pointer;margin-left: 10px;">';
-                     //   gruplarStr += '<input class="form-check-input" type="checkbox" onclick="fiyatlariGetir(this)" id="anaMenu' + i + 'altMenu' + j + '" data-anaGrup="' + anaMenuler[i].OzelKod + '" data-altGrup="' + altMenuler[j].AltMenuOzelKod + '">';
                         gruplarStr += '  <label class="form-check-label" for="anaMenu' + i + 'altMenu' + j + '" onclick="fiyatlariGetir(this)" data-anaGrup="' + anaMenuler[i].OzelKod + '" data-altGrup="' + altMenuler[j].AltMenuOzelKod + '">' + altMenuler[j].AltMenuAdi + '</label>';
-                      //  gruplarStr += ' <span class="item-count">3</span>';
-                        gruplarStr += '</div>';
+                        gruplarStr += '  </div>';
                     }
                     gruplarStr += '</div>';
                     gruplarStr += '</div>';
@@ -169,11 +167,11 @@
 
             }
         });
-               /*
-         <div class="widge">
+        /*
+  <div class="widge">
 
-                </div>
-         */
+         </div>
+  */
     }
 
     //---------------------------------------------------------------------------------------------------
@@ -254,7 +252,7 @@
             detayliAdres: $(".detayliAdres").val(),
             il: $(".il option:selected").text(),
             ilce: $(".ilce option:selected").text(),
-            fabrikaTeslimMi:$('.fabrikaTeslimMi').is(':checked')
+            fabrikaTeslimMi: $('.fabrikaTeslimMi').is(':checked')
         }
 
         $.ajax({
@@ -274,7 +272,7 @@
                 } else {
                     HataMesaji(result.ErrorMessage);
                 }
-               // fiyatlariGetir();
+                // fiyatlariGetir();
             }
         });
     }
@@ -283,12 +281,14 @@
     var MalzemeFiyatlari;
     function fiyatlariGetir(check) {
         var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
         var il = $(".il option:selected").val();
         var ilce = $(".ilce option:selected").val();
         var fabrikaTeslimMi = $('.fabrikaTeslimMi').is(':checked');
 
         var theData = {
             FiyatListesiKodu: fiyatListesiKodu,
+            baglantiLREF: baglantiLREF,
             SPECODE1: $(check).attr("data-anaGrup"),
             SPECODE2: $(check).attr("data-altGrup"),
             Il: il,
@@ -326,9 +326,9 @@
                         productList += '             <a onclick="SepeteEkle(' + i + ')" style="clear:both" class="btn-product btn-cart"><span>Sepete Ekle</span></a>';
                         productList += '           </div>';
                     } else {
-                        productList += '<div class="alert alert-danger">' + result[i].HataMesaji+'</div>';
+                        productList += '<div class="alert alert-danger">' + result[i].HataMesaji + '</div>';
                     }
-                   
+
                     productList += '       </div>';
                     productList += '       <div class="col-lg-6">';
                     productList += '           <div class="product-body product-action-inner">';
@@ -351,7 +351,7 @@
             UyariMesaji("Miktar Boş Geçilemez.");
             return;
         }
-        if (parseFloat(miktar)==0) {
+        if (parseFloat(miktar) == 0) {
             UyariMesaji("Miktar 0(Sıfır) Olamaz.");
             return;
         }
@@ -360,6 +360,7 @@
             return;
         }
         var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
         var il = $(".il option:selected").text();
         var ilce = $(".ilce option:selected").text();
         var adresBasligi = $(".adresBasligi").val();
@@ -372,6 +373,7 @@
 
         var theData = {
             fiyatListesi: fiyatListesiKodu,
+            baglantiLREF: baglantiLREF,
             adresBasligi: adresBasligi,
             IlgiliKisi: ilgiliKisi,
             IlgiliKisiTel: ilgiliKisiTel,
@@ -401,7 +403,7 @@
             NakliyeBirimSeti: MalzemeFiyatlari[i].NakliyeBirimSeti,
 
         }
-       
+
         $.ajax({
             url: '/Dealer_SiparisOlustur/SepeteEkle/',
             type: 'POST',
@@ -478,9 +480,9 @@
                             </tr><!-- End .summary-subtotal -->
                             <tr class="summary-subtotal 0">
                                 <td class="border-0">İl:</td>
-                                <td class="border-0"><select class="il form-control" id="iller" onchange="ilceler()" ><option value="-1">Seçiniz</option></select></td>
+                                <td class="border-0"><select class="il form-control" id="iller" onchange="ilceler()"><option value="-1">Seçiniz</option></select></td>
                                 <td class="border-0">İlçe:</td>
-                                <td class="border-0"><select class="ilce form-control" id="ilceler" ><option value="-1">Seçiniz</option></select></td>
+                                <td class="border-0"><select class="ilce form-control" id="ilceler"><option value="-1">Seçiniz</option></select></td>
 
                             </tr><!-- End .summary-subtotal -->
                             <tr class="summary-subtotal">

@@ -72,6 +72,9 @@
           <Property Name="TigereAktaranKisi" Type="nvarchar(max)" />
           <Property Name="OdemeTipi" Type="nvarchar(max)" />
           <Property Name="SiparisNotu" Type="nvarchar(max)" />
+          <Property Name="FisiOlusturanAdminMi" Type="bit" />
+          <Property Name="BaglantiLref" Type="int" />
+          <Property Name="BaglantiAciklamasi" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="SiparisIcerikleri">
           <Key>
@@ -193,6 +196,9 @@
           <Property Name="TigereAktaranKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OdemeTipi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SiparisNotu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FisiOlusturanAdminMi" Type="Boolean" />
+          <Property Name="BaglantiLref" Type="Int32" />
+          <Property Name="BaglantiAciklamasi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SiparisIcerikleri">
           <Key>
@@ -280,6 +286,9 @@
           <EntitySetMapping Name="SiparisBasliklari">
             <EntityTypeMapping TypeName="IZOKALEPORTALModel.SiparisBasliklari">
               <MappingFragment StoreEntitySet="SiparisBasliklari">
+                <ScalarProperty Name="BaglantiAciklamasi" ColumnName="BaglantiAciklamasi" />
+                <ScalarProperty Name="BaglantiLref" ColumnName="BaglantiLref" />
+                <ScalarProperty Name="FisiOlusturanAdminMi" ColumnName="FisiOlusturanAdminMi" />
                 <ScalarProperty Name="SiparisNotu" ColumnName="SiparisNotu" />
                 <ScalarProperty Name="OdemeTipi" ColumnName="OdemeTipi" />
                 <ScalarProperty Name="TigereAktaranKisi" ColumnName="TigereAktaranKisi" />
