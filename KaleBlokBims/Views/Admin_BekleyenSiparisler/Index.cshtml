@@ -222,10 +222,12 @@
             success: function (sonuc) {
                 $("#siparisDetayi" + baslikREF + " table tbody").html("");
                 var result = JSON.parse(sonuc);
-                for (var i = 0; i < result.length; i++) {                   
+                var sayac = -1;
+                for (var i = 0; i < result.length; i++) {
+                    sayac++;
                         $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
-                            '<td><a style="display:none" class="btn btn-warning" onclick="newRow(4,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ')"><i class="fa-solid fa-truck-fast"></i></a></td>' +
-                            '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ',' + (parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                            '<td></td>' +
+                            '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + sayac + ',' + (parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ')"><i class="fa-solid fa-tags"></i></a></td>' +
                             '<td>' + result[i].Turu + '</td>' +
                             '<td>' + result[i].MalzemeKodu + '</td>' +
                             '<td>' + result[i].MalzemeAdi + '</td>' +
@@ -235,58 +237,39 @@
                             +'</tr>');
                     var indirimler = result[i].Indirimler;
                     for (var j = 0; j < indirimler.length; j++) {
-                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + indirimler[i].LOGICALREF + '">' +
-                            '<td><a class="btn btn-danger" onclick="deleteRow(0,' + baslikREF + ',' + indirimler[i].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
+                        sayac++;
+                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + indirimler[j].LOGICALREF + '">' +
+                            '<td><a class="btn btn-danger" onclick="deleteRow(0,' + baslikREF + ',' + indirimler[j].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
                             '<td></td>' +
                             '<td>İndirim</td>' +
                             '<td></td>' +
-                            '<td>' + indirimler[i].IndirimAciklamasi + '</td>' +
-                            '<td>%' + ((parseFloat(indirimler[i].IndirimTutari) * 100) / parseFloat(indirimler[i].HesaplanmisBirimFiyatiTL)) + '</td>' +
-                            '<td>' + formatMoney(indirimler[i].IndirimTutari) + ' TL</td>' +
+                            '<td>' + indirimler[j].IndirimAciklamasi + '</td>' +
+                            '<td>%' + ((parseFloat(indirimler[j].IndirimTutari) * 100) / parseFloat(indirimler[j].HesaplanmisBirimFiyatiTL)) + '</td>' +
+                            '<td>' + formatMoney(indirimler[j].IndirimTutari) + ' TL</td>' +
                             '<td></td>' +
                             +'</tr>');
                     }
 
-                    var nakliyeler = result[i].Nakliyeler;
+                    var nakliyeler = result[i].Nakliyeler;                  
                     for (var j = 0; j < nakliyeler.length; j++) {
-                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + nakliyeler[i].LOGICALREF + '">' +
-                            '<td><a style="display:none" class="btn btn-warning" onclick="newRow(4,' + baslikREF + ',' + nakliyeler[i].LOGICALREF + ',' + i + ')"><i class="fa-solid fa-truck-fast"></i></a></td>' +
-                            '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + nakliyeler[i].LOGICALREF + ',' + i + ',' + nakliyeler[i].NakliyeFiyatiTL + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                        sayac++;
+                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + nakliyeler[j].LOGICALREF + '">' +
+                            '<td></td>' +
+                            '<td></td>' +
                             '<td>Hizmet</td>' +
-                            '<td>' + nakliyeler[i].NakliyeKodu + '</td>' +
-                            '<td>' + nakliyeler[i].NakliyeAdi + '</td>' +
-                            '<td>' + formatMoney(nakliyeler[i].Miktar) + ' x ' + nakliyeler[i].NakliyeBirimSeti + '</td>' +
-                            '<td>' + nakliyeler[i].NakliyeFiyatiTL + ' TL</td>' +
+                            '<td>' + nakliyeler[j].NakliyeKodu + '</td>' +
+                            '<td>' + nakliyeler[j].NakliyeAdi + '</td>' +
+                            '<td>' + formatMoney(nakliyeler[j].Miktar) + ' x ' + nakliyeler[j].NakliyeBirimSeti + '</td>' +
+                            '<td>' + nakliyeler[j].NakliyeFiyatiTL + ' TL</td>' +
                             '<td></td>' +
                             +'</tr>');
+                       
                     }
                     
-                    //if (Boolean(result[i].Editable)) {
-                    //    $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
-                    //        '<td><a class="btn btn-danger" onclick="deleteRow(0,' + baslikREF + ',' + result[i].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
-                    //        '<td></td>' +
-                    //        '<td>' + result[i].Turu + '</td>' +
-                    //        '<td></td>' +
-                    //        '<td>' + result[i].IndirimAciklamasi + '</td>' +
-                    //        '<td>%' + ((parseFloat(result[i].IndirimTutari) * 100) / parseFloat(result[i].HesaplanmisBirimFiyatiTL)) + '</td>' +
-                    //        '<td>' + formatMoney(result[i].IndirimTutari) + ' TL</td>' +
-                    //        '<td></td>' +
-                    //        +'</tr>');
-                    //} else {
-                    //    $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
-                    //        '<td><a style="display:none" class="btn btn-warning" onclick="newRow(4,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ')"><i class="fa-solid fa-truck-fast"></i></a></td>' +
-                    //        '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + i + ',' + result[i].HesaplanmisBirimFiyatiTL + ')"><i class="fa-solid fa-tags"></i></a></td>' +
-                    //        '<td>' + result[i].Turu + '</td>' +
-                    //        '<td>' + result[i].MalzemeKodu + '</td>' +
-                    //        '<td>' + result[i].MalzemeAdi + '</td>' +
-                    //        '<td>' + formatMoney(result[i].Miktar) + ' ' + result[i].Birimi + '</td>' +
-                    //        '<td>' + formatMoney(result[i].HesaplanmisBirimFiyatiTL) + ' TL</td>' +
-                    //        '<td>' + result[i].HesaplamaDetayliAciklama + '</td>' +
-                    //        +'</tr>');
-                    //}
+                   
 
                 }
-
+              
 
             }
         });
@@ -295,6 +278,7 @@
 
     function newRow(step, baslikREF, itemRef, i, fiyat) {
         if (step == "2") {
+            alert(i);
             $("#siparisDetayi" + baslikREF + " tbody tr:eq(" + i + ")").after('<tr class="ek' + itemRef + '">' +
                 '<td colspan="1"><a onclick="indirimiKaydet(' + baslikREF + ',' + itemRef + ')" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></a></td>' +
                 '<td><input type="text" class="gizliFiyat form-control" value="' + fiyat + '" style="display:none"/></td>' +

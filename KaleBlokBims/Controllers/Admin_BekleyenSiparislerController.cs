@@ -218,7 +218,7 @@ namespace KaleBlokBims.Controllers
             var db = new Models.IZOKALEPORTALEntities();
             var LOGICALREF = referansNo.Split('/')[1];
             var siparisBasligi = db.SiparisBasliklari.Where(x => x.LOGICALREF.ToString() == LOGICALREF).FirstOrDefault();
-            var siparisIcerigi = db.SiparisIcerikleri.Where(x => x.BaslikLREF.ToString() == LOGICALREF && x.LINETYPE != 2).ToList();
+            var siparisIcerigi = db.SiparisIcerikleri.Where(x => x.BaslikLREF.ToString() == LOGICALREF).ToList();
 
             try
             {
@@ -260,7 +260,7 @@ namespace KaleBlokBims.Controllers
                 if (Convert.ToBoolean(siparisBasligi.FabrikaTeslimMi))
                 {
                     sevkAdresi.Il = "ERZURUM";
-                    sevkAdresi.Ilce = "OLTU";
+                    sevkAdresi.Ilce = "PASİNLER";
                 }
                 else
                 {
@@ -295,10 +295,8 @@ namespace KaleBlokBims.Controllers
                             Miktar = 0,
                             SatirTipi = 2,
                             SatirAciklamasi = (item2.IndirimAciklamasi.Length > 250) ? item2.IndirimAciklamasi.Substring(0, 249) : item2.IndirimAciklamasi,
-                            Toplam = Convert.ToDouble(item2.IndirimTutari)
-
-
-
+                            Toplam = Convert.ToDouble(item2.IndirimTutari)* Convert.ToDouble(item.Miktar),
+                            IndirimOrani= (Convert.ToDouble(item2.IndirimTutari) * 100) / Convert.ToDouble(item.HesaplanmisBirimFiyatiTL)
                         });
                     }
                     var queryHizmet = siparisIcerigi.Where(x => (x.NakliyeninUygulanacagiLref == (temp)) && (x.LINETYPE.Equals(4))).ToList();
@@ -308,10 +306,10 @@ namespace KaleBlokBims.Controllers
                         {
                             Birim = item.NakliyeBirimSeti,
                             BirimFiyat = Convert.ToDouble(item.NakliyeFiyatiTL),
-                            HareketOzelKodu = "",
-                            //IskontoOrani=0,
-                            Kdv = Convert.ToDouble(item.Kdv),
-                            KdvHaricmi0 = 0,
+                            //HareketOzelKodu = "",
+                            ////IskontoOrani=0,
+                            //Kdv = Convert.ToDouble(item.Kdv),
+                            //KdvHaricmi0 = 0,
                             MalzemeKodu = item.NakliyeKodu,
                             Miktar = Convert.ToDouble(item.Miktar),
                             SatirTipi = 4,

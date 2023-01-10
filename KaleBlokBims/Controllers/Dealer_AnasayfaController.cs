@@ -86,7 +86,7 @@ namespace KaleBlokBims.Controllers
                 SiparisFormuOlustur form = new SiparisFormuOlustur();
                 var pdfByte = form.siparisFormu(Convert.ToInt32(baslik.LOGICALREF));
                 MailGonderme mail = new MailGonderme();
-                mail.EkliMailGonderme("",SabitTanimlar.SiparisFormuGonderilecekMailler(),baslik.MailAdresi+","+ firmaAdmini, "Ön Sipariş Formu",baslik.BayiAdi+" Tarafından oluşturulan "+baslik.BayiKodu+"-"+baslik.LOGICALREF+" referans numaralı ön sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF+".pdf");
+                mail.EkliMailGonderme("",SabitTanimlar.SiparisFormuGonderilecekMailler(),baslik.MailAdresi+","+ firmaAdmini, "Sipariş Formu",baslik.BayiAdi+" Tarafından oluşturulan "+baslik.BayiKodu+"-"+baslik.LOGICALREF+" referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF+".pdf");
                 response.IsSuccessStatusCode = true;
                 String file = Convert.ToBase64String(pdfByte);
                 response.Content = file;

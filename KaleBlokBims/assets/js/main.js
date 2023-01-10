@@ -947,7 +947,7 @@ function SepetiOnayla(step) {
                                 showCancelButton: false,
                                 focusConfirm: false,
                                 confirmButtonText:
-                                    '<a download="Ön Sipariþ Formu.pdf" href="data:application/octet-stream;base64,' + result.Content + '" class="text-white"><i class="fa-solid fa-download"></i>Ön Sipariþ Formunu Ýndir</a>',
+                                    '<a download="Sipariþ Formu.pdf" href="data:application/octet-stream;base64,' + result.Content + '" class="text-white"><i class="fa-solid fa-download"></i>Ön Sipariþ Formunu Ýndir</a>',
 
                             });
 

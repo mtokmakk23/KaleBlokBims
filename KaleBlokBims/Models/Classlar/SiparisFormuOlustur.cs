@@ -196,7 +196,7 @@ namespace KaleBlokBims.Models.Classlar
             cell.Border = PdfPCell.NO_BORDER;
             adresVeTarihTablo.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("ÖN SİPARİŞ FORMU", new pdf.Font(STF_Helvetica_Turkish, 12, pdf.Font.BOLD, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase("SİPARİŞ FORMU", new pdf.Font(STF_Helvetica_Turkish, 12, pdf.Font.BOLD, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             cell.VerticalAlignment = Element.ALIGN_CENTER;
             adresVeTarihTablo.AddCell(cell);
