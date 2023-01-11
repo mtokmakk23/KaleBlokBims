@@ -229,9 +229,6 @@ namespace KaleBlokBims.M2BWebService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string baglantiLREFField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string anaGruplarField;
-        
         private double iskontoOraniField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -322,20 +319,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
-        public string anaGruplar {
-            get {
-                return this.anaGruplarField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.anaGruplarField, value) != true)) {
-                    this.anaGruplarField = value;
-                    this.RaisePropertyChanged("anaGruplar");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=6)]
         public double iskontoOrani {
             get {
                 return this.iskontoOraniField;
@@ -1210,6 +1194,13 @@ namespace KaleBlokBims.M2BWebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AmbarBilgileri", ReplyAction="*")]
         System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.AmbarBilgileriResponse> AmbarBilgileriAsync(KaleBlokBims.M2BWebService.AmbarBilgileriRequest request);
+        
+        // CODEGEN: Generating message contract since element name BayiKodu from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/WCFSozlesmeBilgileri", ReplyAction="*")]
+        KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse WCFSozlesmeBilgileri(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/WCFSozlesmeBilgileri", ReplyAction="*")]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse> WCFSozlesmeBilgileriAsync(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest request);
         
         // CODEGEN: Generating message contract since element name testResult from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/test", ReplyAction="*")]
@@ -2654,6 +2645,78 @@ namespace KaleBlokBims.M2BWebService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class WCFSozlesmeBilgileriRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="WCFSozlesmeBilgileri", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequestBody Body;
+        
+        public WCFSozlesmeBilgileriRequest() {
+        }
+        
+        public WCFSozlesmeBilgileriRequest(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class WCFSozlesmeBilgileriRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string BayiKodu;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public int BaglantiLREF;
+        
+        public WCFSozlesmeBilgileriRequestBody() {
+        }
+        
+        public WCFSozlesmeBilgileriRequestBody(string BayiKodu, int BaglantiLREF) {
+            this.BayiKodu = BayiKodu;
+            this.BaglantiLREF = BaglantiLREF;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class WCFSozlesmeBilgileriResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="WCFSozlesmeBilgileriResponse", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponseBody Body;
+        
+        public WCFSozlesmeBilgileriResponse() {
+        }
+        
+        public WCFSozlesmeBilgileriResponse(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class WCFSozlesmeBilgileriResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string WCFSozlesmeBilgileriResult;
+        
+        public WCFSozlesmeBilgileriResponseBody() {
+        }
+        
+        public WCFSozlesmeBilgileriResponseBody(string WCFSozlesmeBilgileriResult) {
+            this.WCFSozlesmeBilgileriResult = WCFSozlesmeBilgileriResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class testRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="test", Namespace="http://tempuri.org/", Order=0)]
@@ -3351,6 +3414,33 @@ namespace KaleBlokBims.M2BWebService {
             KaleBlokBims.M2BWebService.AmbarBilgileriRequest inValue = new KaleBlokBims.M2BWebService.AmbarBilgileriRequest();
             inValue.Body = new KaleBlokBims.M2BWebService.AmbarBilgileriRequestBody();
             return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).AmbarBilgileriAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse KaleBlokBims.M2BWebService.IZOKALEAPISoap.WCFSozlesmeBilgileri(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest request) {
+            return base.Channel.WCFSozlesmeBilgileri(request);
+        }
+        
+        public string WCFSozlesmeBilgileri(string BayiKodu, int BaglantiLREF) {
+            KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest inValue = new KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequestBody();
+            inValue.Body.BayiKodu = BayiKodu;
+            inValue.Body.BaglantiLREF = BaglantiLREF;
+            KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse retVal = ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).WCFSozlesmeBilgileri(inValue);
+            return retVal.Body.WCFSozlesmeBilgileriResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse> KaleBlokBims.M2BWebService.IZOKALEAPISoap.WCFSozlesmeBilgileriAsync(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest request) {
+            return base.Channel.WCFSozlesmeBilgileriAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse> WCFSozlesmeBilgileriAsync(string BayiKodu, int BaglantiLREF) {
+            KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest inValue = new KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequestBody();
+            inValue.Body.BayiKodu = BayiKodu;
+            inValue.Body.BaglantiLREF = BaglantiLREF;
+            return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).WCFSozlesmeBilgileriAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

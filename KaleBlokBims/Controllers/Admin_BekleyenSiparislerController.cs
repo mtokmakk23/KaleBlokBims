@@ -24,7 +24,7 @@ namespace KaleBlokBims.Controllers
             //var query = db.SiparisBasliklari.Where(x=>x.OnaylandiMi==true && x.SilindiMi!=true).ToList();
 
             var query = from a in db.SiparisBasliklari
-                        where a.OnaylandiMi == true && a.SilindiMi != true
+                        where a.OnaylandiMi == true && a.SilindiMi != true && a.TigereAktarildiMi!=true
                         select new
                         {
                             a.LOGICALREF,
@@ -51,6 +51,7 @@ namespace KaleBlokBims.Controllers
                             a.TigereAktaranKisi,
                             a.TigereAktarildiMi,
                             a.TigereAktarilmaTarihi,
+                            a.BaglantiLref,
                             ReferansNo = a.BayiKodu + "/" + a.LOGICALREF
                         };
             return JsonConvert.SerializeObject(query, new IsoDateTimeConverter() { DateTimeFormat = "dd.MM.yyyy" });
@@ -101,7 +102,13 @@ namespace KaleBlokBims.Controllers
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             return servis.AmbarBilgileri();
         }
-
+        [HttpPost]
+        public string SozlesmeBilgileri(string BayiKodu,string BaglantiLref)
+        {
+            return "";
+            //var servis = new M2BWebService.ZOKALEAPISoapClient();
+            //return servis.WCFSozlesmeBilgileri(BayiKodu,Convert.ToInt32(BaglantiLref));
+        }
         [HttpPost]
         public string Malzemeler(string LOGICALREF)
         {
@@ -209,8 +216,9 @@ namespace KaleBlokBims.Controllers
         }
 
         [HttpPost]
-        public string siparisAktar(string tarih, string belgeNo, string referansNo, string cari, string odemeler, string satisElemani, string siparisNotu, string isYeri, string bolum, string fabrika, string ambar)
+        public string siparisAktar(string tarih, string belgeNo, string referansNo,string sozlesmeNo, string cari, string odemeler, string satisElemani, string siparisNotu, string isYeri, string bolum, string fabrika, string ambar)
         {
+            var servis = new M2BWebService.ZOKALEAPISoapClient();
             //return "";
             M2BWebService.M2BWCFBaslik baslik = new M2BWebService.M2BWCFBaslik();
             M2BWebService.CariSevkAdresi sevkAdresi = new M2BWebService.CariSevkAdresi();
@@ -252,6 +260,9 @@ namespace KaleBlokBims.Controllers
                 baslik.OzelKod = "";
                 baslik.SatisElemaniKodu = satisElemani;
                 baslik.Tarih = tarih;
+                baslik.ProjeKodu =(siparisBasligi.FiyatListesi);
+                if (sozlesmeNo.Trim() == "") sozlesmeNo = "0";
+                baslik.SozlesmeReferansi = Convert.ToInt32(sozlesmeNo);
 
                 sevkAdresi.Aciklama1 = siparisBasligi.BayiAdi;
                 sevkAdresi.Adres1 = siparisBasligi.SevkAdresi;
@@ -273,7 +284,7 @@ namespace KaleBlokBims.Controllers
                     transactions.Add(new M2BWebService.M2BWCFTransaction()
                     {
                         Birim = item.Birimi,
-                        BirimFiyat = Convert.ToDouble(item.HesaplanmisBirimFiyatiTL),
+                        BirimFiyat = Convert.ToDouble(item.HesaplanmisBirimFiyatiTL)-Convert.ToDouble(item.NakliyeFiyatiTL),
                         HareketOzelKodu = "",
                         //IskontoOrani=0,
                         Kdv = Convert.ToDouble(item.Kdv),
@@ -295,31 +306,31 @@ namespace KaleBlokBims.Controllers
                             Miktar = 0,
                             SatirTipi = 2,
                             SatirAciklamasi = (item2.IndirimAciklamasi.Length > 250) ? item2.IndirimAciklamasi.Substring(0, 249) : item2.IndirimAciklamasi,
-                            Toplam = Convert.ToDouble(item2.IndirimTutari)* Convert.ToDouble(item.Miktar),
-                            IndirimOrani= (Convert.ToDouble(item2.IndirimTutari) * 100) / Convert.ToDouble(item.HesaplanmisBirimFiyatiTL)
+                           // Toplam = Convert.ToDouble(item2.IndirimTutari)* Convert.ToDouble(item.Miktar),
+                            IndirimOrani= ((Convert.ToDouble(item2.IndirimTutari) * 100) / (Convert.ToDouble(item.HesaplanmisBirimFiyatiTL)- Convert.ToDouble(item.NakliyeFiyatiTL)))
                         });
-                    }
+                     }
                     var queryHizmet = siparisIcerigi.Where(x => (x.NakliyeninUygulanacagiLref == (temp)) && (x.LINETYPE.Equals(4))).ToList();
                     foreach (var item2 in queryHizmet)
                     {
                         transactions.Add(new M2BWebService.M2BWCFTransaction()
                         {
-                            Birim = item.NakliyeBirimSeti,
-                            BirimFiyat = Convert.ToDouble(item.NakliyeFiyatiTL),
+                            Birim = item2.NakliyeBirimSeti,
+                            BirimFiyat = Convert.ToDouble(item2.NakliyeFiyatiTL),
                             //HareketOzelKodu = "",
                             ////IskontoOrani=0,
-                            //Kdv = Convert.ToDouble(item.Kdv),
-                            //KdvHaricmi0 = 0,
-                            MalzemeKodu = item.NakliyeKodu,
-                            Miktar = Convert.ToDouble(item.Miktar),
+                            Kdv = Convert.ToDouble(item.Kdv),
+                            KdvHaricmi0 = 0,
+                            MalzemeKodu = item2.NakliyeKodu,
+                            Miktar = Convert.ToDouble(item2.Miktar),
                             SatirTipi = 4,
                             SatirAciklamasi = "",
-                            Toplam = Convert.ToDouble(item.NakliyeFiyatiTL) * Convert.ToDouble(item.Miktar)
+                            Toplam = Convert.ToDouble(item2.NakliyeFiyatiTL) * Convert.ToDouble(item2.Miktar)
 
                         });
                     }
                 }
-                var servis = new M2BWebService.ZOKALEAPISoapClient();
+              
                 var tigerDonenCevap = servis.M2BSiparisOlustur(Convert.ToInt32(ambar).ToString(), baslik, transactions.ToArray(), sevkAdresi);
                 if (tigerDonenCevap.Substring(0, 3) == "OK ")
                 {

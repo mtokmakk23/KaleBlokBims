@@ -1697,9 +1697,6 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IsyeriBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MalzemeListesiResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1728,6 +1725,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSatisElemanlariResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">

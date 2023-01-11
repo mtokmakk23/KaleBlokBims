@@ -67,7 +67,10 @@
             var columns = []
             var data = []
             i = 0;
-            for (x in objBaslik[0]) {
+        for (x in objBaslik[0]) {
+            if (x =="iskontoOrani") {
+                continue;
+            }
                     columns.push({
                         field: 'field' + i,
                         title: x,
@@ -80,7 +83,10 @@
             for (i = 0; i < result.length; i++) {
                 row = {}
                 for (j = 0; j < columns.length; j++) {
-                    row['field' + j] = (columns[j].title == "iskontoOrani" ? "%" + result[i][columns[j].title] : result[i][columns[j].title]);
+                    if (columns[j].title == "iskontoOrani") {
+                        continue;
+                    }
+                    row['field' + j] = result[i][columns[j].title];
                 }
                 data.push(row);
             }

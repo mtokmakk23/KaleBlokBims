@@ -78,6 +78,7 @@
         FabrikaBilgileri(row);
         BolumBilgileri(row);
         AmbarBilgileri(row);
+        SozlesmeBilgileri(row);
     }
 
 
@@ -209,7 +210,28 @@
             }
         });
     }
+    function SozlesmeBilgileri(row) {
 
+        console.log(row);
+        $("#siparisDetayi" + row.LOGICALREF + " .sozlesmeNo").val((row.BaglantiLref == "-1" ? "" : row.BaglantiLref));
+        //var theData = {
+        //    BayiKodu: row.BayiKodu,
+        //    BaglantiLref: row.BaglantiLref
+        //}
+        //$.ajax({
+        //    url: '/Admin_BekleyenSiparisler/SozlesmeBilgileri/',
+        //    type: 'POST',
+        //    dataType: 'text',
+        //    data:theData,
+        //    success: function (sonuc) {
+        //        var result = JSON.parse(sonuc);
+        //        $("#siparisDetayi" + row.LOGICALREF + " .sozlesmeNo").val(result[0].SozlesmeFisNo);
+
+               
+               
+        //    }
+        //});
+    }
     function Malzemeler(baslikREF) {
         var theData = {
             LOGICALREF: baslikREF
@@ -278,7 +300,6 @@
 
     function newRow(step, baslikREF, itemRef, i, fiyat) {
         if (step == "2") {
-            alert(i);
             $("#siparisDetayi" + baslikREF + " tbody tr:eq(" + i + ")").after('<tr class="ek' + itemRef + '">' +
                 '<td colspan="1"><a onclick="indirimiKaydet(' + baslikREF + ',' + itemRef + ')" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></a></td>' +
                 '<td><input type="text" class="gizliFiyat form-control" value="' + fiyat + '" style="display:none"/></td>' +
@@ -413,6 +434,7 @@
     function Validate(data, status, xhr) {
 
         if (data == "ok") {
+            OnayMesaji("Kayıt Başarılı");
             window.location.reload();
         } else {
             UyariMesaji(data);
@@ -460,6 +482,12 @@
                             <input type="text" class="referansNo form-control" name="referansNo" readonly>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Sözleşme Ref</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="sozlesmeNo form-control" name="sozlesmeNo" readonly>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group row mb-0">
@@ -481,6 +509,7 @@
                             <select class="satisElemani form-control" name="satisElemani"></select>
                         </div>
                     </div>
+                   
                 </div>
                 <div class="col-md-3">
                     <div class="form-group row mb-0">
@@ -550,11 +579,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
 
         }
     </div>
