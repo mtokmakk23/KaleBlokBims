@@ -110,6 +110,7 @@
           <Property Name="NakliyeKodu" Type="nvarchar(max)" />
           <Property Name="NakliyeAdi" Type="nvarchar(max)" />
           <Property Name="NakliyeBirimSeti" Type="nvarchar(max)" />
+          <Property Name="SistemKalemiMi" Type="bit" />
         </EntityType>
         <EntityContainer Name="IZOKALEPORTALModelStoreContainer">
           <EntitySet Name="AdminKullanicilari" EntityType="Self.AdminKullanicilari" Schema="dbo" store:Type="Tables" />
@@ -234,6 +235,7 @@
           <Property Name="NakliyeKodu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NakliyeAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NakliyeBirimSeti" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SistemKalemiMi" Type="Boolean" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -319,6 +321,7 @@
           <EntitySetMapping Name="SiparisIcerikleri">
             <EntityTypeMapping TypeName="IZOKALEPORTALModel.SiparisIcerikleri">
               <MappingFragment StoreEntitySet="SiparisIcerikleri">
+                <ScalarProperty Name="SistemKalemiMi" ColumnName="SistemKalemiMi" />
                 <ScalarProperty Name="NakliyeBirimSeti" ColumnName="NakliyeBirimSeti" />
                 <ScalarProperty Name="NakliyeAdi" ColumnName="NakliyeAdi" />
                 <ScalarProperty Name="NakliyeKodu" ColumnName="NakliyeKodu" />

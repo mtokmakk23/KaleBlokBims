@@ -814,6 +814,19 @@ function dovizCek() {
     });
 }
 
+function sistemKalemleriEkle() {
+    loading(true);
+    $.ajax({
+        url: '/Dealer_Anasayfa/sistemKalemleriEkle/',
+        type: 'POST',
+        dataType: 'text',
+        success: function (sonuc) {
+            loading(false);
+            acikSiparisler();
+        }
+    });
+}
+
 var acikSiparislerYuklendiMi = false;
 var bekleyenBaslikBilgileri;
 function acikSiparisler() {
@@ -1041,10 +1054,10 @@ function loading(step) {
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading()
-                const b = Swal.getHtmlContainer().querySelector('b')
-                timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                }, 100)
+                //const b = Swal.getHtmlContainer().querySelector('b')
+                //timerInterval = setInterval(() => {
+                //   // b.textContent = Swal.getTimerLeft()
+                //}, 100)
             },
 
         })

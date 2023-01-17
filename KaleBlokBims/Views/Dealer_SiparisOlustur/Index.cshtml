@@ -44,7 +44,9 @@
                         $(".detayliAdres").val(bekleyenBaslikBilgileri[0].SevkAdresi);
                         $(".kayitliAdresler").html("<option value='-1'>" + bekleyenBaslikBilgileri[0].AdresBasligi + "</option>");
                         $(".fabrikaTeslimMi").attr("checked", Boolean(bekleyenBaslikBilgileri[0].FabrikaTeslimMi));
-
+                        if (Boolean(bekleyenBaslikBilgileri[0].FabrikaTeslimMi)) {
+                            $('.adresBilgileriDivi').hide();
+                        }
 
 
                         $(".siparisBilgileri input").attr("disabled", true);
@@ -100,6 +102,9 @@
                     } while (LilcelerSelect.options.length == 0);
 
                     $(".fabrikaTeslimMi").attr("checked", Boolean(result[i].FabrikaTeslimMi));
+                    if (Boolean(result[i].FabrikaTeslimMi)) {
+                        $('.adresBilgileriDivi').hide();
+                    }
                 }
             }
             loading(false);
@@ -401,7 +406,7 @@
             NakliyeKodu: MalzemeFiyatlari[i].NakliyeKodu,
             NakliyeAdi: MalzemeFiyatlari[i].NakliyeAdi,
             NakliyeBirimSeti: MalzemeFiyatlari[i].NakliyeBirimSeti,
-
+            SistemKalemiMi: false
         }
 
         $.ajax({
@@ -473,12 +478,12 @@
                                 <td>İlgili Kişi Telefon:</td>
                                 <td><input type="text" class="ilgiliKisiTel form-control" /></td>
                             </tr><!-- End .summary-subtotal -->
-                            <tr class="summary-subtotal">
+                            <tr class="summary-subtotal adresBilgileriDivi">
                                 <td>Sevk Adresi:</td>
                                 <td colspan="3"><textarea class="detayliAdres form-control" rows="3"></textarea></td>
 
                             </tr><!-- End .summary-subtotal -->
-                            <tr class="summary-subtotal 0">
+                            <tr class="summary-subtotal 0 adresBilgileriDivi">
                                 <td class="border-0">İl:</td>
                                 <td class="border-0"><select class="il form-control" id="iller" onchange="ilceler()"><option value="-1">Seçiniz</option></select></td>
                                 <td class="border-0">İlçe:</td>
@@ -487,7 +492,7 @@
                             </tr><!-- End .summary-subtotal -->
                             <tr class="summary-subtotal">
                                 <td>Fabrika Teslim:</td>
-                                <td colspan="3"> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input"></td>
+                                <td colspan="3"> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input" onchange="$('.adresBilgileriDivi').toggle();"></td>
                             </tr><!-- End .summary-subtotal -->
 
                         </tbody>

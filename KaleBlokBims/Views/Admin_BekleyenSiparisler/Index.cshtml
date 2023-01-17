@@ -98,6 +98,7 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#siparisDetayi" + row.LOGICALREF + " .cari").append('<option value="' + result[i].LOGICALREF + '">' + result[i].CODE + ' - ' + result[i].DEFINITION_ + ' ' + result[i].DEFINITION2 + '</option>');
                 }
+                $('#siparisDetayi' + row.LOGICALREF + ' .cari option[value=' + row.cariLref+']').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .cari").select2({ placeholder: "Cari Seçiniz.", });
             }
         });
@@ -132,7 +133,7 @@
 
                 var result = JSON.parse(sonuc);
                 for (var i = 0; i < result.length; i++) {
-                    $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").append('<option value="' + result[i].SatisElemaniKodu + '">' + result[i].SatisElemaniAciklamasi + '</option>');
+                    $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").append('<option ' + (result[i].SatisElemaniKodu.indexOf(row.satisElemani) != -1 && row.satisElemani!="" ?"selected='selected'":"") + ' value="' + result[i].SatisElemaniKodu + '">' + result[i].SatisElemaniAciklamasi + '</option>');
                 }
                 $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").select2({ placeholder: "Satış Elemanı Seçiniz.", });
             }
@@ -152,7 +153,10 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#siparisDetayi" + row.LOGICALREF + " .isYeri").append('<option value="' + result[i].IsYeriKodu + '">' + result[i].IsYeriAciklamasi + '</option>');
                 }
+                $('#siparisDetayi' + row.LOGICALREF + ' .isYeri option[value=000]').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .isYeri").select2({ placeholder: "İşyeri Seçiniz.", });
+
+              
             }
         });
     }
@@ -170,6 +174,7 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#siparisDetayi" + row.LOGICALREF + " .fabrika").append('<option value="' + result[i].FabrikaKodu + '">' + result[i].FabrikaAciklamasi + '</option>');
                 }
+                $('#siparisDetayi' + row.LOGICALREF + ' .fabrika option[value=000]').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .fabrika").select2({ placeholder: "Fabrika Seçiniz.", });
             }
         });
@@ -188,6 +193,7 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#siparisDetayi" + row.LOGICALREF + " .bolum").append('<option value="' + result[i].BolumKodu + '">' + result[i].BolumAciklamasi + '</option>');
                 }
+                $('#siparisDetayi' + row.LOGICALREF + ' .bolum option[value=000]').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .bolum").select2({ placeholder: "Bölüm Seçiniz.", });
             }
         });
@@ -206,6 +212,7 @@
                 for (var i = 0; i < result.length; i++) {
                     $("#siparisDetayi" + row.LOGICALREF + " .ambar").append('<option value="' + result[i].AmbarKodu + '">' + result[i].AmbarAciklamasi + '</option>');
                 }
+                $('#siparisDetayi' + row.LOGICALREF + ' .ambar option[value=006]').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .ambar").select2({ placeholder: "Ambar Seçiniz.", });
             }
         });

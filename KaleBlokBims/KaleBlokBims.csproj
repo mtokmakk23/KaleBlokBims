@@ -178,6 +178,7 @@
     <Compile Include="Controllers\Admin_BayilerVeKullanicilarController.cs" />
     <Compile Include="Controllers\Admin_BekleyenSiparislerController.cs" />
     <Compile Include="Controllers\Admin_LoginController.cs" />
+    <Compile Include="Controllers\Admin_ReportsController.cs" />
     <Compile Include="Controllers\Dealer_AnasayfaController.cs" />
     <Compile Include="Controllers\Dealer_FiyatListesiController.cs" />
     <Compile Include="Controllers\Dealer_HesapEkstresiController.cs" />
@@ -1730,6 +1731,27 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.Malzeme.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriMalzemeListesiResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileriAlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.TumBayilerinBaglantiBakiyeOzetiResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeVeCarileri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeyeBagliCarilerVeSatisElemanlariResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -2073,6 +2095,7 @@
     <Content Include="Views\Admin_BayilerVeKullanicilar\Index.cshtml" />
     <Content Include="Views\Admin_BekleyenSiparisler\Index.cshtml" />
     <Content Include="Views\Dealer_Raporlar\MalzemeSevkRaporu.cshtml" />
+    <Content Include="Views\Admin_Reports\BayiBaglantiBakiyeRaporu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

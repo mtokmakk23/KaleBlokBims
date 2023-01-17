@@ -47,15 +47,15 @@ namespace KaleBlokBims.Controllers
         public string adresKontrol(string adresBasligi, string ilgiliKisi, string ilgiliKisiTel, string detayliAdres, string il, string ilce, string fabrikaTeslimMi)
         {
             RestResponse response = new RestResponse();
-            if (adresBasligi == "" || ilgiliKisi == "" || ilgiliKisiTel == "" || detayliAdres == "")
+            if (adresBasligi == "" || ilgiliKisi == "" || ilgiliKisiTel == "" )
             {
                 response.IsSuccessStatusCode = false;
-                response.ErrorMessage = "Lütfen Tüm Adres Alanlarını Doldurunuz";
+                response.ErrorMessage = "Lütfen Tüm Bilgileri Doldurunuz";
                 return JsonConvert.SerializeObject(response);
             }
             else
             {
-                if (Convert.ToBoolean(fabrikaTeslimMi) == false && (il == "Seçiniz" || ilce == "Seçiniz"))
+                if (Convert.ToBoolean(fabrikaTeslimMi) == false && (il == "Seçiniz" || ilce == "Seçiniz" || detayliAdres == ""))
                 {
                     response.IsSuccessStatusCode = false;
                     response.ErrorMessage = "Lütfen Tüm Adres Alanlarını Doldurunuz";
@@ -128,7 +128,8 @@ namespace KaleBlokBims.Controllers
             string NakliyeKartiLref,
             string NakliyeKodu,
             string NakliyeAdi,
-            string NakliyeBirimSeti)
+            string NakliyeBirimSeti,
+            bool SistemKalemiMi=false)
         {
             RestResponse response = new RestResponse();
             var db = new Models.IZOKALEPORTALEntities();
@@ -139,7 +140,7 @@ namespace KaleBlokBims.Controllers
                 var mailAdresi = Session["MailAdresi"].ToString();
                 var BayiKodu = Session["BayiKodu"].ToString();
                 var BayiAdi = Session["BayiAdi"].ToString();
-                var baslik = db.SiparisBasliklari.Where(x => x.MailAdresi == mailAdresi && x.BayiKodu == BayiKodu && x.OnaylandiMi == false).FirstOrDefault();
+                var baslik = db.SiparisBasliklari.Where(x => x.MailAdresi == mailAdresi && x.BayiKodu == BayiKodu && x.OnaylandiMi == false && x.SilindiMi != true).FirstOrDefault();
                 bool yeniBaslikMi = false;
                 if (baslik == null)
                 {
@@ -161,6 +162,7 @@ namespace KaleBlokBims.Controllers
                 baslik.MailAdresi = mailAdresi;
                 baslik.OnaylandiMi = false;
                 baslik.SevkAdresi = SevkAdresi;
+                baslik.SilindiMi = false;
                 if (yeniBaslikMi)
                 {
                     db.SiparisBasliklari.Add(baslik);
@@ -189,6 +191,7 @@ namespace KaleBlokBims.Controllers
                 icerik.SabitUSD = Convert.ToDouble(SabitUSD.ToString().Replace(".", ","));
                 icerik.Kdv = Convert.ToDouble(Kdv.ToString().Replace(".", ","));
                 icerik.Editable = false;
+                icerik.SistemKalemiMi = SistemKalemiMi;
                 db.SiparisIcerikleri.Add(icerik);
                 db.SaveChanges();
 

@@ -1,0 +1,248 @@
+﻿
+@{
+    ViewBag.Title = "BayiBaglantiBakiyeRaporu";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+}
+
+
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script>
+    var tableCount = 0;
+    var chart;
+    window.onload = function () {
+        BaglantiBakiyeRaporu();
+        setInterval(function () {
+
+            if ($('#table').bootstrapTable('getData').length != tableCount) {
+                tableCount = $('#table').bootstrapTable('getData').length;
+                chartUpdate($('#table').bootstrapTable('getData'));
+            }
+        }, 1000);
+    }
+    function BaglantiBakiyeRaporu() {
+        loading(true);
+        $.ajax({
+            url: '/Admin_Reports/_BaglantiBakiyeRaporu/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                chart(result);
+                $('#table').bootstrapTable({
+                    columns: [{
+                        field: 'MusteriKodu',
+                        title: "MusteriKodu",
+                        sortable: true
+                    }, {
+                        field: 'MusteriAdi',
+                        title: "MusteriAdi",
+                        sortable: true
+                    }, {
+                        field: 'Aciklama',
+                        title: "Aciklama",
+                        sortable: true,
+                        filterControl: "select"
+                    }, {
+                        field: 'fiyatListesiKodu',
+                        title: "FiyatListesi",
+                        sortable: true,
+                        filterControl: "select"
+                    }, {
+                        field: 'baglantiTutari',
+                        title: "BaglantiTutari",
+                        sortable: true
+                    }, {
+                        field: 'siparisTutari',
+                        title: "SiparisTutari",
+                        sortable: true
+                    }, {
+                        field: 'bakiye',
+                        title: "Bakiye",
+                        sortable: true
+                    },
+                    {
+                        field: 'kalanAdet',
+                        title: "Kalan Adet",
+                        sortable: true
+                    }, {
+                        field: 'iskontoOrani',
+                        title: "SozlesmeIskontosu",
+                        sortable: true
+                    }, {
+                        field: 'ListeIskontosu',
+                        title: "BayiIskontosu",
+                        sortable: true
+                    }
+                    ],
+                    exportTypes: ['excel'],
+                    exportOptions: {
+                        fileName: 'Bağlantı Bakiye Raporu'
+                    },
+                    // exportDataType: $(this).val(),
+                    data: result,
+                    locale: 'tr-TR',
+                });
+            }
+        });
+    }
+
+
+    function chartUpdate(result) {
+        var siparisTutari = [];
+        var bakiye = [];
+        var musteriAdi = [];
+        var kalanBakiye = 0;
+        var kalanAdet = 0;
+        for (var i = 0; i < result.length; i++) {
+            if (result[i]["Aciklama"] == "Bağlantı") {
+                siparisTutari.push(parseFloat(result[i]["siparisTutariDouble"]));
+                bakiye.push(parseFloat(result[i]["bakiyeDouble"]));
+                musteriAdi.push(result[i]["MusteriAdi"]);
+
+                kalanBakiye += parseFloat(result[i]["bakiyeDouble"]);
+                kalanAdet += parseFloat(result[i]["kalanAdetDouble"]);
+            }
+        }
+        $(".kalanBakiye").html(formatMoney(kalanBakiye)+" TL");
+        $(".kalanAdet").html(formatMoney(kalanAdet)+" ADET");
+        chart.updateOptions({
+            series: [{
+                name: 'Kullanılan Tutar',
+                data: siparisTutari,
+
+            }, {
+                name: 'Kalan Tutar',
+                data: bakiye
+                }],
+            chart: {
+                height: 100 + musteriAdi.length * 20,
+            },
+            xaxis: {
+                type: 'text',
+                categories: musteriAdi,
+            }
+        });
+    }
+
+    function chart(result) {
+        
+        var options = {
+            series: [{
+                name: 'Kullanılan Tutar',
+                data: [],
+
+            }, {
+                name: 'Kalan Tutar',
+                data: []
+            }],
+            chart: {
+                type: 'bar',
+                // height: 350,
+                stacked: true,
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: true
+                }
+            },
+            dataLabels: {
+                enabled: false,
+                offsetY: 7,
+                offsetX: 27,
+                style: {
+                    fontSize: '10px',
+                    colors: ["#304758"]
+                },
+
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '10px',
+                                fontWeight: 900
+                            },
+                            formatter: function (value, { seriesIndex, dataPointIndex, w }) {
+                                return formatMoney(value) + " TL";
+                            }
+                        }
+                    }
+                }
+            },
+            title: {
+                text: "MÜŞTERİLERİN BAĞLANTI KULANIM GRAFİĞİ"
+            },
+            xaxis: {
+                type: 'text',
+                categories: [],
+            },
+            legend: {
+                position: 'top',
+                offsetX: 40
+            },
+            fill: {
+                opacity: 1
+            }
+        };
+
+
+        chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+        chartUpdate(result);
+
+    }
+
+
+    function deneme() {
+        console.log($('#table').bootstrapTable('getData'));
+
+    }
+</script>
+
+<div class="row">
+    <div class="col-sm-2 m-auto">
+        <div class="card mb-3 mb-sm-0 shadow" style="border-bottom:4px solid #01a2ff">
+            <div class="card-body py-3 px-4">
+                <p class="m-0 survey-head">Kalan Bakiye</p>
+                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
+                    <div>
+                        <h3 class="m-0 survey-value kalanBakiye">0</h3>
+                    </div>
+                    <div id="earningChart" class="flot-chart" style="padding: 0px;"><canvas class="flot-base" width="61" height="51" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 61px; height: 51px;"></canvas><canvas class="flot-overlay" width="61" height="51" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 61px; height: 51px;"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2  m-auto">
+        <div class="card mb-3 mb-sm-0 shadow " style="border-bottom:4px solid #01a2ff">
+            <div class="card-body py-3 px-4">
+                <p class="m-0 survey-head">Kalan Adet</p>
+                <div class="d-flex justify-content-between align-items-end flot-bar-wrapper">
+                    <div>
+                        <h3 class="m-0 survey-value kalanAdet">0</h3>
+                    </div>
+                    <div id="earningChart" class="flot-chart" style="padding: 0px;"><canvas class="flot-base" width="61" height="51" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 61px; height: 51px;"></canvas><canvas class="flot-overlay" width="61" height="51" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 61px; height: 51px;"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table-striped table-sm" id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-filter-control="true"
+       data-show-export="true"></table>
+<hr />
+<div id="chart"></div>
+

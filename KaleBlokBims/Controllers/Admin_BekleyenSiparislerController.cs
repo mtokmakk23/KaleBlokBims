@@ -20,41 +20,54 @@ namespace KaleBlokBims.Controllers
         [HttpPost]
         public string bekleyenSiparisler()
         {
-            var db = new Models.IZOKALEPORTALEntities();
-            //var query = db.SiparisBasliklari.Where(x=>x.OnaylandiMi==true && x.SilindiMi!=true).ToList();
+            try
+            {
+                var servis = new M2BWebService.ZOKALEAPISoapClient();
+                var baglantiListesi = servis.SozlesmeyeBagliCarilerVeSatisElemanlari();
+                var db = new Models.IZOKALEPORTALEntities();
+                //var query = db.SiparisBasliklari.Where(x=>x.OnaylandiMi==true && x.SilindiMi!=true).ToList();
 
-            var query = from a in db.SiparisBasliklari
-                        where a.OnaylandiMi == true && a.SilindiMi != true && a.TigereAktarildiMi!=true
-                        select new
-                        {
-                            a.LOGICALREF,
-                            a.AdresBasligi,
-                            a.BayiAdi,
-                            a.BayiKodu,
-                            a.EklenmeTarihi,
-                            a.FabrikaTeslimMi,
-                            a.FiyatListesi,
-                            a.Il,
-                            a.Ilce,
-                            a.IlgiliKisi,
-                            a.IlgiliKisiTel,
-                            a.MailAdresi,
-                            a.OdemeTipi,
-                            a.OnaylandiMi,
-                            a.OnaylanmaTarihi,
-                            a.SevkAdresi,
-                            a.SilenKisi,
-                            a.SilindiMi,
-                            a.SilinmeSebebi,
-                            a.SilinmeTarihi,
-                            a.SiparisNotu,
-                            a.TigereAktaranKisi,
-                            a.TigereAktarildiMi,
-                            a.TigereAktarilmaTarihi,
-                            a.BaglantiLref,
-                            ReferansNo = a.BayiKodu + "/" + a.LOGICALREF
-                        };
-            return JsonConvert.SerializeObject(query, new IsoDateTimeConverter() { DateTimeFormat = "dd.MM.yyyy" });
+                var query = (from a in db.SiparisBasliklari.ToList()
+                             where a.OnaylandiMi == true && a.SilindiMi != true && a.TigereAktarildiMi != true
+                             select new
+                             {
+                                 a.LOGICALREF,
+                                 a.AdresBasligi,
+                                 a.BayiAdi,
+                                 a.BayiKodu,
+                                 a.EklenmeTarihi,
+                                 a.FabrikaTeslimMi,
+                                 a.FiyatListesi,
+                                 a.Il,
+                                 a.Ilce,
+                                 a.IlgiliKisi,
+                                 a.IlgiliKisiTel,
+                                 a.MailAdresi,
+                                 a.OdemeTipi,
+                                 a.OnaylandiMi,
+                                 a.OnaylanmaTarihi,
+                                 a.SevkAdresi,
+                                 a.SilenKisi,
+                                 a.SilindiMi,
+                                 a.SilinmeSebebi,
+                                 a.SilinmeTarihi,
+                                 a.SiparisNotu,
+                                 a.TigereAktaranKisi,
+                                 a.TigereAktarildiMi,
+                                 a.TigereAktarilmaTarihi,
+                                 a.BaglantiLref,
+                                 cariLref = (a.BaglantiLref == -1 || baglantiListesi.Where(x => x.baglantiLREF == a.BaglantiLref).FirstOrDefault() == null) ? -1 : baglantiListesi.Where(x => x.baglantiLREF == a.BaglantiLref).FirstOrDefault().cariLREF,
+                                 satisElemani = (a.BaglantiLref == -1 || baglantiListesi.Where(x => x.baglantiLREF == a.BaglantiLref).FirstOrDefault() == null) ? "" : baglantiListesi.Where(x => x.baglantiLREF == a.BaglantiLref).FirstOrDefault().SatisElemani,
+                                 ReferansNo = a.BayiKodu + "/" + a.LOGICALREF
+                             }).ToList();
+                
+                return JsonConvert.SerializeObject(query, new IsoDateTimeConverter() { DateTimeFormat = "dd.MM.yyyy" });
+            }
+            catch (Exception hata)
+            {
+                return hata.Message;
+            }
+           
 
         }
         [HttpPost]
