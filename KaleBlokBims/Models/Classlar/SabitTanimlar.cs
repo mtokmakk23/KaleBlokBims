@@ -13,11 +13,13 @@ namespace KaleBlokBims.Models.Classlar
                 "hayatiozdemir@kaleblokbims.com," +
                 "yener@kaleblokbims.com," +
                 "etanriver@hotmail.com," +
-                "bayram.gul@kaleblokbims.com," +
+              //  "bayram.gul@kaleblokbims.com," +
                 "selman.karakaya@kaleblokbims.com," +
                 "ozcaniskender61@hotmail.com," +
                 "tolgahan.imamgiller@kaleblokbims.com," +
                 "tanriveronur@icloud.com," +
+                "sevkiyat@kaleblokbims.com," +
+                "osman@kaleblokbims.com," +
                 "firat.yurdigul@kaleblokbims.com" +
                 "" +               
                 "";

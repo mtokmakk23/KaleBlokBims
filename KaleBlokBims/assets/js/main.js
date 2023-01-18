@@ -1,6 +1,9 @@
 // Main Js File
 $(document).ready(function () {
     'use strict';
+   
+    
+
     $("table").attr("data-pagination", "true");
     $("table").attr("data-export-data-type", "all");
     dovizCek();
