@@ -15,6 +15,8 @@
           <Property Name="AdiSoyadi" Type="nvarchar(max)" />
           <Property Name="GSM" Type="nvarchar(max)" />
           <Property Name="Statu" Type="bit" />
+          <Property Name="SifreDegistirmeTarihi" Type="datetime" />
+          <Property Name="GeciciSifre" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="BayiKullanicilari">
           <Key>
@@ -29,6 +31,8 @@
           <Property Name="BayiKodu" Type="nvarchar" MaxLength="50" />
           <Property Name="BayiAdi" Type="nvarchar(max)" />
           <Property Name="GSM" Type="nvarchar" MaxLength="50" />
+          <Property Name="SifreDegistirmeTarihi" Type="datetime" />
+          <Property Name="GeciciSifre" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="KayitliAdresler">
           <Key>
@@ -43,6 +47,18 @@
           <Property Name="Il" Type="nvarchar" MaxLength="50" />
           <Property Name="Ilce" Type="nvarchar" MaxLength="50" />
           <Property Name="DetayliAdres" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LOGICALREF" />
+          </Key>
+          <Property Name="LOGICALREF" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdminMi" Type="bit" />
+          <Property Name="MailAdresi" Type="nvarchar(max)" />
+          <Property Name="GezindigiSayfa" Type="nvarchar(max)" />
+          <Property Name="IpAdresi" Type="nvarchar(max)" />
+          <Property Name="Tarih" Type="datetime" />
+          <Property Name="BayiAdi" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="SiparisBasliklari">
           <Key>
@@ -116,6 +132,7 @@
           <EntitySet Name="AdminKullanicilari" EntityType="Self.AdminKullanicilari" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BayiKullanicilari" EntityType="Self.BayiKullanicilari" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KayitliAdresler" EntityType="Self.KayitliAdresler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiparisBasliklari" EntityType="Self.SiparisBasliklari" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiparisIcerikleri" EntityType="Self.SiparisIcerikleri" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -129,6 +146,7 @@
           <EntitySet Name="KayitliAdresler" EntityType="IZOKALEPORTALModel.KayitliAdresler" />
           <EntitySet Name="SiparisBasliklari" EntityType="IZOKALEPORTALModel.SiparisBasliklari" />
           <EntitySet Name="SiparisIcerikleri" EntityType="IZOKALEPORTALModel.SiparisIcerikleri" />
+          <EntitySet Name="Log" EntityType="IZOKALEPORTALModel.Log" />
         </EntityContainer>
         <EntityType Name="AdminKullanicilari">
           <Key>
@@ -140,6 +158,8 @@
           <Property Name="AdiSoyadi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GSM" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Statu" Type="Boolean" />
+          <Property Name="SifreDegistirmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="GeciciSifre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BayiKullanicilari">
           <Key>
@@ -154,6 +174,8 @@
           <Property Name="BayiKodu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BayiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GSM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SifreDegistirmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="GeciciSifre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="KayitliAdresler">
           <Key>
@@ -237,6 +259,18 @@
           <Property Name="NakliyeBirimSeti" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SistemKalemiMi" Type="Boolean" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LOGICALREF" />
+          </Key>
+          <Property Name="LOGICALREF" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdminMi" Type="Boolean" />
+          <Property Name="MailAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GezindigiSayfa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IpAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tarih" Type="DateTime" Precision="3" />
+          <Property Name="BayiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -246,6 +280,8 @@
           <EntitySetMapping Name="AdminKullanicilari">
             <EntityTypeMapping TypeName="IZOKALEPORTALModel.AdminKullanicilari">
               <MappingFragment StoreEntitySet="AdminKullanicilari">
+                <ScalarProperty Name="GeciciSifre" ColumnName="GeciciSifre" />
+                <ScalarProperty Name="SifreDegistirmeTarihi" ColumnName="SifreDegistirmeTarihi" />
                 <ScalarProperty Name="Statu" ColumnName="Statu" />
                 <ScalarProperty Name="GSM" ColumnName="GSM" />
                 <ScalarProperty Name="AdiSoyadi" ColumnName="AdiSoyadi" />
@@ -258,6 +294,8 @@
           <EntitySetMapping Name="BayiKullanicilari">
             <EntityTypeMapping TypeName="IZOKALEPORTALModel.BayiKullanicilari">
               <MappingFragment StoreEntitySet="BayiKullanicilari">
+                <ScalarProperty Name="GeciciSifre" ColumnName="GeciciSifre" />
+                <ScalarProperty Name="SifreDegistirmeTarihi" ColumnName="SifreDegistirmeTarihi" />
                 <ScalarProperty Name="GSM" ColumnName="GSM" />
                 <ScalarProperty Name="BayiAdi" ColumnName="BayiAdi" />
                 <ScalarProperty Name="BayiKodu" ColumnName="BayiKodu" />
@@ -351,6 +389,19 @@
                 <ScalarProperty Name="FiyatListesi" ColumnName="FiyatListesi" />
                 <ScalarProperty Name="LINETYPE" ColumnName="LINETYPE" />
                 <ScalarProperty Name="BaslikLREF" ColumnName="BaslikLREF" />
+                <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Log">
+            <EntityTypeMapping TypeName="IZOKALEPORTALModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="BayiAdi" ColumnName="BayiAdi" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="IpAdresi" ColumnName="IpAdresi" />
+                <ScalarProperty Name="GezindigiSayfa" ColumnName="GezindigiSayfa" />
+                <ScalarProperty Name="MailAdresi" ColumnName="MailAdresi" />
+                <ScalarProperty Name="AdminMi" ColumnName="AdminMi" />
                 <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
               </MappingFragment>
             </EntityTypeMapping>

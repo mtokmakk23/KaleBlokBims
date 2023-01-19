@@ -12,18 +12,14 @@ namespace KaleBlokBims.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BayiKullanicilari
+    public partial class Log
     {
         public long LOGICALREF { get; set; }
-        public string MailAdresi { get; set; }
-        public string Sifre { get; set; }
-        public string AdiSoyadi { get; set; }
-        public Nullable<bool> Status { get; set; }
         public Nullable<bool> AdminMi { get; set; }
-        public string BayiKodu { get; set; }
+        public string MailAdresi { get; set; }
+        public string GezindigiSayfa { get; set; }
+        public string IpAdresi { get; set; }
+        public Nullable<System.DateTime> Tarih { get; set; }
         public string BayiAdi { get; set; }
-        public string GSM { get; set; }
-        public Nullable<System.DateTime> SifreDegistirmeTarihi { get; set; }
-        public string GeciciSifre { get; set; }
     }
 }

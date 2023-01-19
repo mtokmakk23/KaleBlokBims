@@ -1,0 +1,68 @@
+﻿
+@{
+    Layout = null;
+}
+
+<link href="/Content/bootstrap.min.css" rel="stylesheet" />
+<script>
+    function sifreDegistir(btn) {
+        $(btn).html("Bekleyin...");
+        var theData= {
+            mevcutSifre: $("#mevcutSifre").val(),
+            yeniSifre: $("#yeniSifre").val(),
+            yeniSifreTekrar: $("#yeniSifreTekrar").val(),
+        }
+        $.ajax({
+            url: '/Password/SifreDegistir/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                $(btn).html("KAYDET");
+                var result = JSON.parse(data);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    window.location = result.Content;
+                } else {
+                    alert(result.ErrorMessage);
+                }
+            }
+        });
+    }
+</script>
+
+<div class="card w-25 m-auto mt-5">
+    <div class="card-header text-center">
+        <h4>Şifre Değiştir</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-group row mb-1">
+            <label class="col-md-4">Mevcut Şifre</label>
+            <div class="col-md-8">
+                <input type="password" class="form-control form-control-sm" id="mevcutSifre" />
+            </div>
+        </div>
+        <div class="form-group row mb-1">
+            <label class="col-md-4">Yeni Şifre</label>
+            <div class="col-md-8">
+                <input type="password" class="form-control form-control-sm" id="yeniSifre" />
+            </div>
+        </div>
+        <div class="form-group row mb-4">
+            <label class="col-md-4">Yeni Şifre Tekrar</label>
+            <div class="col-md-8">
+                <input type="password" class="form-control form-control-sm" id="yeniSifreTekrar" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3 m-auto">
+                <a class="btn btn-sm btn-primary" onclick="sifreDegistir(this)">KAYDET</a>
+            </div>
+           
+        </div>
+    </div>
+    <div class="card-footer">
+        <p class="text-danger text-muted smal">Yeni Oluşturulan, Şifresini Unutan ve 60 Gün Boyunca Şifre Değiştirmeyen Kullanıcıların Şifre Değiştirmeleri Mecburidir.</p>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>

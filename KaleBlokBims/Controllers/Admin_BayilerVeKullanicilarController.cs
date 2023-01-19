@@ -38,13 +38,30 @@ namespace KaleBlokBims.Controllers
             return JsonConvert.SerializeObject(db.BayiKullanicilari.OrderByDescending(x=>x.LOGICALREF));
         }
         [HttpPost]
-        public void kullaniciSil(string LREF)
+        public string adminKullanicilari()
         {
+          
             var db = new Models.IZOKALEPORTALEntities();
-            db.Database.ExecuteSqlCommand("delete from BayiKullanicilari where LOGICALREF="+LREF);
+
+            return JsonConvert.SerializeObject(db.AdminKullanicilari.OrderByDescending(x=>x.LOGICALREF));
         }
         [HttpPost]
-        public string kullaniciDuzenle(string cbayi,string cname,string cemail,string cphone,string cpassword,bool cAktif = false)
+        public void kullaniciSil(string LREF,string adminMi)
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+
+            if (adminMi=="0")
+            {
+                db.Database.ExecuteSqlCommand("delete from BayiKullanicilari where LOGICALREF=" + LREF);
+            } 
+            if (adminMi=="1")
+            {
+                db.Database.ExecuteSqlCommand("delete from AdminKullanicilari where LOGICALREF=" + LREF);
+            }
+           
+        }
+        [HttpPost]
+        public string bayikullaniciDuzenle(string cbayi,string cname,string cemail,string cphone,string cpassword,bool cAktif = false)
         {
             string cbayii = cbayi;
             string cemaill = cemail;
@@ -68,6 +85,7 @@ namespace KaleBlokBims.Controllers
                 bayiKullanicisi.Sifre = md5.MD5Sifrele(cpassword);
                 bayiKullanicisi.Status = cAktif;
                 bayiKullanicisi.GSM = cphone;
+                bayiKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
                 db.BayiKullanicilari.Add(bayiKullanicisi);
                 db.SaveChanges();
             }
@@ -87,6 +105,43 @@ namespace KaleBlokBims.Controllers
             }
             return "ok";
            
+        }
+
+
+        [HttpPost]
+        public string adminkullaniciDuzenle( string ccname, string ccemail, string ccphone, string ccpassword, bool ccAktif = false)
+        {
+            string cemaill = ccemail;
+            var servis = new M2BWebService.ZOKALEAPISoapClient();
+            var tumBayiler = servis.Bayiler();
+            MD5 md5 = new MD5();            
+            var db = new Models.IZOKALEPORTALEntities();
+            var adminKullanicisi = db.AdminKullanicilari.Where(x => x.MailAdresi == cemaill).FirstOrDefault();
+            if (adminKullanicisi == null)
+            {
+                adminKullanicisi = new Models.AdminKullanicilari();
+                adminKullanicisi.AdiSoyadi = ccname;
+                adminKullanicisi.MailAdresi = cemaill;
+                adminKullanicisi.Sifre = md5.MD5Sifrele(ccpassword);
+                adminKullanicisi.Statu = ccAktif;
+                adminKullanicisi.GSM = ccphone;
+                adminKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
+                db.AdminKullanicilari.Add(adminKullanicisi);
+                db.SaveChanges();
+            }
+            else
+            {
+                adminKullanicisi.AdiSoyadi = ccname;
+                if (ccpassword.Length == 4)
+                {
+                    adminKullanicisi.Sifre = md5.MD5Sifrele(ccpassword);
+                }
+                adminKullanicisi.Statu = ccAktif;
+                adminKullanicisi.GSM = ccphone;
+                db.SaveChanges();
+            }
+            return "ok";
+
         }
     }
 }

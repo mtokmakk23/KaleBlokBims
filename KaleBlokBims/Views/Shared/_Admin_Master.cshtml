@@ -84,15 +84,17 @@
 
                 </div><!-- End .header-left -->
                 <div class="header-right">
-                    <ul class="top-menu">
-                        <li>
-                            <a href="#">Links</a>
+                    
+                    <div class="header-dropdown" style="padding:0">
+                        <a href="#"><i class="icon-user" test></i>@Session["AdiSoyadi"].ToString()</a>
+                        <div class="header-menu">
                             <ul>
-                                <li><a href="#signin-modal"><i class="icon-user" test></i>@Session["AdiSoyadi"].ToString()</a></li>
-                                <li><a href="/Admin_Login/Login"><i class="icon-close"></i>Çıkış Yap</a></li>
+                                <li><a href="/Password/Index"><i class="fa-solid fa-key" style="margin-right:3px"></i>Şifre Değiştir</a></li>
+                                <li><a href="/Admin_Login/Login"><i class="icon-close mr-2" style="margin-right:3px"></i>Çıkış Yap</a></li>
+
                             </ul>
-                        </li>
-                    </ul><!-- End .top-menu -->
+                        </div><!-- End .header-menu -->
+                    </div>
                 </div><!-- End .header-right -->
             </div><!-- End .container -->
         </div><!-- End .header-top -->
@@ -113,7 +115,7 @@
                                     <a href="/Admin_Anasayfa/Index">Anasayfa</a>
                                 </li>
                                 <li class="megamenu-container">
-                                    <a href="/Admin_BayilerVeKullanicilar/Index">Bayiler ve Kullanıcılar</a>
+                                    <a href="/Admin_BayilerVeKullanicilar/Index">Kullanıcılar</a>
                                 </li>
                                 <li class="megamenu-container">
                                     <a href="/Admin_BekleyenSiparisler/Index">Bekleyen Siparişler</a>
@@ -127,6 +129,7 @@
                                                 <div class="col-md-12">
                                                     <ul>
                                                         <li><a href="/Admin_Reports/BayiBaglantiBakiyeRaporu">Bağlantı Bakiye Raporu</a></li>
+                                                        <li><a href="/Logger/Index">Log Kayıtları</a></li>
 
                                                     </ul>
                                                 </div>

@@ -20,5 +20,7 @@ namespace KaleBlokBims.Models
         public string AdiSoyadi { get; set; }
         public string GSM { get; set; }
         public Nullable<bool> Statu { get; set; }
+        public Nullable<System.DateTime> SifreDegistirmeTarihi { get; set; }
+        public string GeciciSifre { get; set; }
     }
 }

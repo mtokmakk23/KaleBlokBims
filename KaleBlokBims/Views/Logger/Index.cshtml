@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+
+<script>
+    window.onload = function () {
+        loger();
+    }
+    function loger() {
+        loading(true);
+        $.ajax({
+            url: '/Logger/LogKayitlari/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                var dataTable = []
+                for (var i = 0; i < result.length; i++) {
+                    dataTable.push({
+                        'field1': result[i].AdminMi,
+                        'field2': result[i].BayiAdi,
+                        'field3': result[i].MailAdresi,
+                        'field4': result[i].IpAdresi,
+                        'field5': result[i].GezindigiSayfa,
+                        'field6': result[i].Tarih,
+                    });
+
+                }
+                $(".logTable").bootstrapTable("destroy");
+                $(".logTable").bootstrapTable({ data: dataTable, pagination: true });
+
+
+            }
+        });
+    }
+</script>
+
+<table class="logTable table table-striped table-sm"
+       data-show-export="true"
+       data-auto-refresh="true"
+       data-export-types="['excel']"
+       data-export-options='{"fileName": "Logger"}'
+       data-locale="tr-TR"
+       data-search="true">
+    <thead>
+        <tr>
+            <th data-field="field1"></th>
+            <th data-field="field2">Bayi Adı</th>
+            <th data-field="field3">Mail Adresi</th>
+            <th data-field="field4">Ip Adresi</th>
+            <th data-field="field5">Gezdiği Sayfa</th>
+            <th data-field="field6">Tarih</th>
+        </tr>
+    </thead>
+
+</table><!-- End .table table-wishlist -->

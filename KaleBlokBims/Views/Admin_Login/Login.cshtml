@@ -32,6 +32,92 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="/assets/css/style.css">
+    <script>
+        function sifremiUnuttum() {
+            Swal.fire({
+                title: 'Mail Adresinizi Yazınız',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Şifre Gönder',
+                cancelButtonText: 'Kapat',
+                showLoaderOnConfirm: true,
+                preConfirm: (mailAdresi) => {
+                    if (mailAdresi == "") {
+                        Swal.showValidationMessage(
+                            'Mail Adresi Boş Geçilemez!'
+                        )
+                        return;
+                    }
+                    var theData = {
+                        mailAdresi: mailAdresi
+                    }
+
+                    let timerInterval
+                    Swal.fire({
+                        title: 'Lütfen Bekleyin!',
+                        html: 'Geçici Şifreniz Oluşturup Sms İle Gönderilecektir.',
+                        timer: 5000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        
+                    })
+
+                    $.ajax({
+                        url: '/Admin_Login/geciciSifreOlustur/',
+                        type: 'POST',
+                        dataType: 'text',
+                        data: theData,
+                        success: function (data) {
+                            data = JSON.parse(data);
+                            if (Boolean(data.IsSuccessStatusCode)) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: data.Content,
+                                    showConfirmButton: false,
+                                    timer: 5000
+                                })
+                            } else {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: data.ErrorMessage,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                })
+                                // Swal.showValidationMessage(data.ErrorMessage)
+                            }
+                        }
+                    });
+
+
+
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+            //    .then((result) => {
+            //    if (result.isConfirmed) {
+            //        Swal.fire({
+            //            title: `${result.value.login}'s avatar`,
+            //            imageUrl: result.value.avatar_url
+            //        })
+            //    }
+            //})
+        }
+    </script>
 </head>
 <body style="background-color: #eff4f7;">
     <div class="page-wrapper">
@@ -60,12 +146,13 @@
                                         <label for="singin-password-2" style="margin:0">Şifre *</label>
                                         <input type="password" class="form-control form-control-lg" id="singin-password-2" name="password" required>
                                     </div><!-- End .form-group -->
-                                    <div class="form-footer">
+                                    <div class="form-footer" style="display:block">
                                         <button type="submit" class="btn btn-primary">
                                             <span>GİRİŞ YAP</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
 
+                                        <a class="btn btn-link" style="cursor:pointer;float:right" onclick="sifremiUnuttum()">Şifremi Unuttum</a>
 
                                     </div><!-- End .form-footer -->
                                     <p class="fw-bold text-danger">@ViewBag.Sonuc</p>
@@ -87,12 +174,14 @@
     <!-- Sign in / Register Modal -->
     <!-- Plugins JS File -->
     <script src="/assets/js/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/jquery.hoverIntent.min.js"></script>
     <script src="/assets/js/jquery.waypoints.min.js"></script>
     <script src="/assets/js/superfish.min.js"></script>
     <script src="/assets/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
-    <script src="/assets/js/main.js"></script>
+    @*<script src="/assets/js/main.js"></script>*@
 </body>
 </html>

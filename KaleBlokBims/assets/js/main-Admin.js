@@ -1,7 +1,9 @@
 // Main Js File
 $(document).ready(function () {
     'use strict';
+    log();
     dovizCek();
+   
     $("table").attr("data-pagination", "true");
     $("table").attr("data-export-data-type", "all");
     setInterval(function () {
@@ -793,6 +795,43 @@ $(document).ready(function () {
 
 var GuncelUSD = 0;
 var GuncelEUR = 0;
+function log() {
+    $.getJSON("https://api.ipify.org?format=json", function (data) {
+
+        var theData = {
+            ip: data.ip,
+            sayfaLinki: window.location.pathname
+        }
+
+        $.ajax({
+            url: '/Logger/LogKayit/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+
+                var dataTable = []
+                for (var i = 0; i < result.length; i++) {
+                    dataTable.push({
+                        'field1': result[i].MalzemeKodu,
+                        'field2': result[i].MalzemeAdi,
+                        'field3': result[i].Birim,
+                        'field4': formatMoney(result[i].HesaplanmisBirimFiyatiTL) + " TL",
+                        'field5': result[i].HataMesaji,
+                    });
+
+                }
+                $(".malzemeFiyatlariTablosu").bootstrapTable("destroy");
+                $(".malzemeFiyatlariTablosu").bootstrapTable({ data: dataTable, pagination: false });
+
+
+            }
+        });
+
+    });
+}
 function dovizCek() {
     $(".GuncelUSD").html(GuncelUSD);
     $(".GuncelEUR").html(GuncelEUR);

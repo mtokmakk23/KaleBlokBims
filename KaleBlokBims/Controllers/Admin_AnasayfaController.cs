@@ -15,7 +15,9 @@ namespace KaleBlokBims.Controllers
             Session["BayiKodu"] = "";
             Session["BayiAdi"] = "";
             var db = new Models.IZOKALEPORTALEntities();
-            var AdminBilgisi = db.AdminKullanicilari.ToList().Where(x=>x.MailAdresi== Session["MailAdresi"].ToString());
+            var mailAdresi = Session["MailAdresi"].ToString();
+            db.AdminKullanicilari.Where(x => x.MailAdresi == mailAdresi).FirstOrDefault().GeciciSifre = "";
+            var AdminBilgisi = db.AdminKullanicilari.Where(x=>x.MailAdresi== mailAdresi);
             ViewBag.AdminBilgileri = JsonConvert.SerializeObject(AdminBilgisi);
            
             return View();

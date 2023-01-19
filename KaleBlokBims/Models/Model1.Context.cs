@@ -30,5 +30,6 @@ namespace KaleBlokBims.Models
         public virtual DbSet<KayitliAdresler> KayitliAdresler { get; set; }
         public virtual DbSet<SiparisBasliklari> SiparisBasliklari { get; set; }
         public virtual DbSet<SiparisIcerikleri> SiparisIcerikleri { get; set; }
+        public virtual DbSet<Log> Log { get; set; }
     }
 }

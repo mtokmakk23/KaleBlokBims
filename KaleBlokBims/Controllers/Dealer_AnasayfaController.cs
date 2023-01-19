@@ -14,6 +14,7 @@ namespace KaleBlokBims.Controllers
 {
     public class Dealer_AnasayfaController : Controller
     {
+
         // GET: Dealer_Anasayfa
         public ActionResult Index()
         {
@@ -22,6 +23,9 @@ namespace KaleBlokBims.Controllers
             ViewBag.BaglantiOzeti = servis.BaglantiBakiyeOzeti(Session["BayiKodu"].ToString());
             var tumBayiler = servis.Bayiler();
             ViewBag.BayiBilgileri = JsonConvert.SerializeObject(tumBayiler.Where(x => x.BayiKodu == Session["BayiKodu"].ToString()));
+            var db = new Models.IZOKALEPORTALEntities();
+            var mailAdresi = Session["MailAdresi"].ToString();
+            db.BayiKullanicilari.Where(x => x.MailAdresi == mailAdresi).FirstOrDefault().GeciciSifre = "";
             return View();
         }
         [HttpPost]
@@ -53,9 +57,10 @@ namespace KaleBlokBims.Controllers
         [HttpPost]
         public string SepetiOnayla(string sepetOnaylaOdemeTipi, string sepetOnaylaSiparisNotu)
         {
+            RestResponse response = new RestResponse();
             try
             {
-                RestResponse response = new RestResponse();
+
                 if (sepetOnaylaOdemeTipi == "Seçiniz")
                 {
                     response.IsSuccessStatusCode = false;
@@ -74,7 +79,32 @@ namespace KaleBlokBims.Controllers
                 }
                 else
                 {
+                    if (baslik.BaglantiLref != -1)
+                    {
+                        var servis = new M2BWebService.ZOKALEAPISoapClient();
+                        var liste = servis.SecilebilirFiyatListeleri(baslik.BayiKodu).Where(x=>x.baglantiLREF.ToString()==baslik.BaglantiLref.ToString()).FirstOrDefault();
+                        var malzemeler = db.SiparisIcerikleri.Where(x => x.BaslikLREF == baslik.LOGICALREF).ToList();
+                        double toplamTutar = 0;
+                        foreach (var item in malzemeler)
+                        {
+                            if (item.LINETYPE == 0)
+                            {
+                                toplamTutar += Convert.ToDouble(item.HesaplanmisBirimFiyatiTL) * Convert.ToDouble(item.Miktar) * (Convert.ToDouble(100 + item.Kdv) / 100);
+                            }
+                            if (item.LINETYPE == 2)
+                            {
+                                toplamTutar -= Convert.ToDouble(item.IndirimTutari);
 
+                            }
+                        }
+
+                        if (Convert.ToDouble(liste.bakiye)+1000<toplamTutar)
+                        {
+                            response.IsSuccessStatusCode = false;
+                            response.ErrorMessage = "En Fazla "+liste.bakiye+" TL Tutarında Sipariş Girebilirsiniz.";
+                            return JsonConvert.SerializeObject(response);
+                        }
+                    }
                     baslik.OnaylandiMi = true;
                     baslik.OnaylanmaTarihi = DateTime.Now;
                     baslik.SiparisNotu = sepetOnaylaSiparisNotu;
@@ -97,9 +127,11 @@ namespace KaleBlokBims.Controllers
             }
             catch (Exception hata)
             {
+                response.IsSuccessStatusCode = false;
+                response.ErrorMessage = hata.Message;
                 return hata.Message;
             }
-            
+
         }
 
 
@@ -113,7 +145,7 @@ namespace KaleBlokBims.Controllers
             {
                 var temp = baslik.LOGICALREF.ToString();
                 var icerik = db.SiparisIcerikleri.Where(x => x.BaslikLREF.ToString() == temp && x.LINETYPE != 4 && x.LINETYPE != 2 && (x.AnaGrup == "KB_EPS" || x.AnaGrup == "KB_TASYUNU" || x.AnaGrup == "KB_XPS") && x.SistemKalemiMi != true).ToList();
-                db.Database.ExecuteSqlCommand("delete from SiparisIcerikleri where BaslikLREF="+temp+ " and SistemKalemiMi=1");
+                db.Database.ExecuteSqlCommand("delete from SiparisIcerikleri where BaslikLREF=" + temp + " and SistemKalemiMi=1");
                 var servis = new M2BWebService.ZOKALEAPISoapClient();
                 foreach (var item in icerik)
                 {
@@ -121,7 +153,7 @@ namespace KaleBlokBims.Controllers
                     var sistemKalemleriMalzemeKodlari = "";
                     foreach (var item2 in sistemKalemleriListesi)
                     {
-                        sistemKalemleriMalzemeKodlari += "'"+item2.Kodu+"',";
+                        sistemKalemleriMalzemeKodlari += "'" + item2.Kodu + "',";
                     }
                     sistemKalemleriMalzemeKodlari = sistemKalemleriMalzemeKodlari.Substring(0, sistemKalemleriMalzemeKodlari.Length - 1);
                     var list = servis.SistemKalemleriMalzemeListesi(Session["BayiKodu"].ToString(), baslik.FiyatListesi, baslik.BaglantiLref.ToString(), baslik.Il, baslik.Ilce, Convert.ToBoolean(baslik.FabrikaTeslimMi), Convert.ToDouble(item.GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(item.GuncelEUR.ToString().Replace(".", ",")), sistemKalemleriMalzemeKodlari);
@@ -168,7 +200,7 @@ namespace KaleBlokBims.Controllers
 
 
             }
-        }        
+        }
         [HttpPost]
         public string acikSiparisler()
         {
@@ -178,7 +210,7 @@ namespace KaleBlokBims.Controllers
                 var db = new Models.IZOKALEPORTALEntities();
                 var mailAdresi = Session["MailAdresi"].ToString();
                 var BayiKodu = Session["BayiKodu"].ToString();
-                var baslik = db.SiparisBasliklari.Where(x => x.MailAdresi == mailAdresi && x.BayiKodu == BayiKodu && x.OnaylandiMi == false && x.SilindiMi!=true ).ToList();
+                var baslik = db.SiparisBasliklari.Where(x => x.MailAdresi == mailAdresi && x.BayiKodu == BayiKodu && x.OnaylandiMi == false && x.SilindiMi != true).ToList();
                 if (baslik.Count > 0)
                 {
                     var donusturucu = new LINQResultToDataTable();
