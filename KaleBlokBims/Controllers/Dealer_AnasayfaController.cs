@@ -23,9 +23,13 @@ namespace KaleBlokBims.Controllers
             ViewBag.BaglantiOzeti = servis.BaglantiBakiyeOzeti(Session["BayiKodu"].ToString());
             var tumBayiler = servis.Bayiler();
             ViewBag.BayiBilgileri = JsonConvert.SerializeObject(tumBayiler.Where(x => x.BayiKodu == Session["BayiKodu"].ToString()));
-            var db = new Models.IZOKALEPORTALEntities();
-            var mailAdresi = Session["MailAdresi"].ToString();
-            db.BayiKullanicilari.Where(x => x.MailAdresi == mailAdresi).FirstOrDefault().GeciciSifre = "";
+            if (Session["AdminMi"].ToString()=="0")
+            {
+                var db = new Models.IZOKALEPORTALEntities();
+                var mailAdresi = Session["MailAdresi"].ToString();
+                db.BayiKullanicilari.Where(x => x.MailAdresi == mailAdresi).FirstOrDefault().GeciciSifre = "";
+            }
+           
             return View();
         }
         [HttpPost]

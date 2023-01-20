@@ -163,6 +163,7 @@ namespace KaleBlokBims.Controllers
                 baslik.OnaylandiMi = false;
                 baslik.SevkAdresi = SevkAdresi;
                 baslik.SilindiMi = false;
+                baslik.FisiOlusturanAdminMi = (Session["AdminMi"].ToString() == "0") ? false : true;
                 if (yeniBaslikMi)
                 {
                     db.SiparisBasliklari.Add(baslik);

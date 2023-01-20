@@ -51,7 +51,7 @@ namespace KaleBlokBims.Controllers
             var md5 = new Models.Classlar.MD5();
             password = md5.MD5Sifrele(password);
             var db = new Models.IZOKALEPORTALEntities();
-            var kullanici = db.AdminKullanicilari.Where(x => x.MailAdresi == (email) && x.Sifre == (password) && x.Statu == (true)).FirstOrDefault();
+            var kullanici = db.AdminKullanicilari.Where(x => x.MailAdresi == (email) && (x.Sifre == (password) || x.GeciciSifre == (password)) && x.Statu == (true)).FirstOrDefault();
             if (kullanici != null)
             {
                 Session["BayiKodu"] = "";
