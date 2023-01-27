@@ -812,23 +812,7 @@ function log() {
             dataType: 'text',
             data: theData,
             success: function (sonuc) {
-                loading(false);
-                var result = JSON.parse(sonuc);
-
-                var dataTable = []
-                for (var i = 0; i < result.length; i++) {
-                    dataTable.push({
-                        'field1': result[i].MalzemeKodu,
-                        'field2': result[i].MalzemeAdi,
-                        'field3': result[i].Birim,
-                        'field4': formatMoney(result[i].HesaplanmisBirimFiyatiTL) + " TL",
-                        'field5': result[i].HataMesaji,
-                    });
-
-                }
-                $(".malzemeFiyatlariTablosu").bootstrapTable("destroy");
-                $(".malzemeFiyatlariTablosu").bootstrapTable({ data: dataTable, pagination: false });
-
+                
 
             }
         });

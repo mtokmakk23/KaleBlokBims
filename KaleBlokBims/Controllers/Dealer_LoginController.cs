@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,7 +18,7 @@ namespace KaleBlokBims.Controllers
         // GET: Dealer_Login
         public ActionResult Login()
         {
-           
+            
             FormsAuthentication.SignOut();
             Session.RemoveAll();
             HttpContext.Request.Cookies.Clear();
@@ -66,6 +67,8 @@ namespace KaleBlokBims.Controllers
                 Session["KullaniciId"] = kullanici.LOGICALREF;
                 Session["MailAdresi"] = kullanici.MailAdresi;
                 Session["AdminMi"] = "0";
+                Yetkiler(kullanici.LOGICALREF.ToString(), Convert.ToBoolean(kullanici.AdminMi));
+
                 FormsAuthentication.SetAuthCookie(kullanici.LOGICALREF.ToString(), false); 
 
                 if (Convert.ToDateTime(kullanici.SifreDegistirmeTarihi).AddDays(60)<DateTime.Now || kullanici.GeciciSifre==password)
@@ -85,6 +88,28 @@ namespace KaleBlokBims.Controllers
                 return View();
             }
            
+        }
+
+        public void Yetkiler(string KullaniciId,bool firmaAdminiMi)
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+            var query = db.BayiKullaniciYetkileri.Where(x=>x.KullaniciID.ToString()==KullaniciId).FirstOrDefault();
+            if (query==null)
+            {
+                query = new Models.BayiKullaniciYetkileri();
+                query.KullaniciID = Convert.ToInt32(KullaniciId);
+                if (firmaAdminiMi)
+                {
+                    query.FirmaAdminiMi = true;
+                }
+                else
+                {
+                    query.FirmaAdminiMi = false;                                      
+                }
+                db.BayiKullaniciYetkileri.Add(query);
+                db.SaveChanges();
+            }
+            Session["Yetkiler"] = JsonConvert.SerializeObject(query);
         }
     }
 }

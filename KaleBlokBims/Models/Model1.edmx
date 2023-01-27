@@ -34,6 +34,23 @@
           <Property Name="SifreDegistirmeTarihi" Type="datetime" />
           <Property Name="GeciciSifre" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="BayiKullaniciYetkileri">
+          <Key>
+            <PropertyRef Name="LOGICALREF" />
+          </Key>
+          <Property Name="LOGICALREF" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KullaniciID" Type="int" />
+          <Property Name="FiyatListesiGorme" Type="bit" />
+          <Property Name="SiparisOlusturma" Type="bit" />
+          <Property Name="SiparisleriGorme" Type="bit" />
+          <Property Name="IrsaliyeleriGorme" Type="bit" />
+          <Property Name="HesapEkstresiGorme" Type="bit" />
+          <Property Name="RaporlariGorme" Type="bit" />
+          <Property Name="AnketleriGorme" Type="bit" />
+          <Property Name="SikayetleriGorme" Type="bit" />
+          <Property Name="BelgeleriGorme" Type="bit" />
+          <Property Name="FirmaAdminiMi" Type="bit" />
+        </EntityType>
         <EntityType Name="KayitliAdresler">
           <Key>
             <PropertyRef Name="LOGICALREF" />
@@ -131,6 +148,7 @@
         <EntityContainer Name="IZOKALEPORTALModelStoreContainer">
           <EntitySet Name="AdminKullanicilari" EntityType="Self.AdminKullanicilari" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BayiKullanicilari" EntityType="Self.BayiKullanicilari" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BayiKullaniciYetkileri" EntityType="Self.BayiKullaniciYetkileri" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KayitliAdresler" EntityType="Self.KayitliAdresler" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiparisBasliklari" EntityType="Self.SiparisBasliklari" Schema="dbo" store:Type="Tables" />
@@ -147,6 +165,7 @@
           <EntitySet Name="SiparisBasliklari" EntityType="IZOKALEPORTALModel.SiparisBasliklari" />
           <EntitySet Name="SiparisIcerikleri" EntityType="IZOKALEPORTALModel.SiparisIcerikleri" />
           <EntitySet Name="Log" EntityType="IZOKALEPORTALModel.Log" />
+          <EntitySet Name="BayiKullaniciYetkileri" EntityType="IZOKALEPORTALModel.BayiKullaniciYetkileri" />
         </EntityContainer>
         <EntityType Name="AdminKullanicilari">
           <Key>
@@ -270,6 +289,23 @@
           <Property Name="IpAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Tarih" Type="DateTime" Precision="3" />
           <Property Name="BayiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BayiKullaniciYetkileri">
+          <Key>
+            <PropertyRef Name="LOGICALREF" />
+          </Key>
+          <Property Name="LOGICALREF" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KullaniciID" Type="Int32" />
+          <Property Name="FiyatListesiGorme" Type="Boolean" />
+          <Property Name="SiparisOlusturma" Type="Boolean" />
+          <Property Name="SiparisleriGorme" Type="Boolean" />
+          <Property Name="IrsaliyeleriGorme" Type="Boolean" />
+          <Property Name="HesapEkstresiGorme" Type="Boolean" />
+          <Property Name="RaporlariGorme" Type="Boolean" />
+          <Property Name="AnketleriGorme" Type="Boolean" />
+          <Property Name="SikayetleriGorme" Type="Boolean" />
+          <Property Name="BelgeleriGorme" Type="Boolean" />
+          <Property Name="FirmaAdminiMi" Type="Boolean" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -402,6 +438,24 @@
                 <ScalarProperty Name="GezindigiSayfa" ColumnName="GezindigiSayfa" />
                 <ScalarProperty Name="MailAdresi" ColumnName="MailAdresi" />
                 <ScalarProperty Name="AdminMi" ColumnName="AdminMi" />
+                <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BayiKullaniciYetkileri">
+            <EntityTypeMapping TypeName="IZOKALEPORTALModel.BayiKullaniciYetkileri">
+              <MappingFragment StoreEntitySet="BayiKullaniciYetkileri">
+                <ScalarProperty Name="FirmaAdminiMi" ColumnName="FirmaAdminiMi" />
+                <ScalarProperty Name="BelgeleriGorme" ColumnName="BelgeleriGorme" />
+                <ScalarProperty Name="SikayetleriGorme" ColumnName="SikayetleriGorme" />
+                <ScalarProperty Name="AnketleriGorme" ColumnName="AnketleriGorme" />
+                <ScalarProperty Name="RaporlariGorme" ColumnName="RaporlariGorme" />
+                <ScalarProperty Name="HesapEkstresiGorme" ColumnName="HesapEkstresiGorme" />
+                <ScalarProperty Name="IrsaliyeleriGorme" ColumnName="IrsaliyeleriGorme" />
+                <ScalarProperty Name="SiparisleriGorme" ColumnName="SiparisleriGorme" />
+                <ScalarProperty Name="SiparisOlusturma" ColumnName="SiparisOlusturma" />
+                <ScalarProperty Name="FiyatListesiGorme" ColumnName="FiyatListesiGorme" />
+                <ScalarProperty Name="KullaniciID" ColumnName="KullaniciID" />
                 <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
               </MappingFragment>
             </EntityTypeMapping>

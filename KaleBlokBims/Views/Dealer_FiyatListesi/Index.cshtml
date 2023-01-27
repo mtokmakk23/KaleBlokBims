@@ -150,9 +150,10 @@
                     dataTable.push({
                         'field1': result[i].MalzemeKodu,
                         'field2': result[i].MalzemeAdi,
-                        'field3': result[i].Birim,
-                        'field4': formatMoney(result[i].HesaplanmisBirimFiyatiTL)+" TL",
-                        'field5': result[i].HataMesaji,
+                        'field3': result[i].MalzemeAciklama,
+                        'field4': result[i].Birim,
+                        'field5': formatMoney(result[i].HesaplanmisBirimFiyatiTL)+" TL",
+                        'field6': result[i].HataMesaji,
                     });
                   
                 }
@@ -229,9 +230,10 @@
                         <tr>
                             <th data-field="field1">Kodu</th>
                             <th data-field="field2">Adı</th>
-                            <th data-field="field3">Birim</th>
-                            <th data-field="field4">Fiyat</th>
-                            <th data-field="field5"></th>
+                            <th data-field="field3">Açıklama</th>
+                            <th data-field="field4">Birim</th>
+                            <th data-field="field5">Fiyat</th>
+                            <th data-field="field6"></th>
                         </tr>
                     </thead>
                   

@@ -75,6 +75,11 @@
 
 </head>
 <body>
+    @using KaleBlokBims.Models.Classlar
+    @{
+
+        var yetkiler = Yetkiler.BayiYetkileri();
+    }
 
     <header class="header sticky-header">
 
@@ -90,7 +95,7 @@
 
                                 <a href="/Admin_Anasayfa/Index" class="adminPanelButton btn btn-primary btn-sm text-white fw-bold" style="margin-right:3px;">Admin Panel</a>
                             }
-                            
+
                         }
 
 
@@ -111,6 +116,10 @@
                                 <ul>
                                     <li><a><i class="fa fa-arrow-right" aria-hidden="true"></i>@Session["BayiAdi"].ToString()</a></li>
                                     <li><a><i class="fa-regular fa-user"></i>@Session["AdiSoyadi"].ToString()</a></li>
+                                    @{ if (Convert.ToBoolean(yetkiler.FirmaAdminiMi))
+                                        {
+                                            <li><a href="/Dealer_KullaniciEkleme/Index"><i class="fa-solid fa-users-gear"></i>Kullanıcılar</a></li>
+                                        } }
                                     <li><a href="/Password/Index"><i class="fa-solid fa-key"></i>Şifre Değiştir</a></li>
                                     <li><a href="/Dealer_Login/Login"><i class="fa-solid fa-xmark"></i>Çıkış Yap</a></li>
                                 </ul>
@@ -136,21 +145,50 @@
                                 <li class="megamenu-container">
                                     <a href="/Dealer_Anasayfa/Index">Anasayfa</a>
                                 </li>
-                                <li class="megamenu-container">
-                                    <a href="/Dealer_FiyatListesi/Index">Fiyat Listesi</a>
-                                </li>
-                                <li class="megamenu-container">
-                                    <a href="/Dealer_SiparisOlustur/Index">Sipariş Oluştur</a>
-                                </li>
-                                <li class="megamenu-container">
-                                    <a href="/Dealer_Siparisler/Index">Siparişler</a>
-                                </li>
-                                <li class="megamenu-container">
-                                    <a href="/Dealer_Irsaliyeler/Index">İrsaliyeler</a>
-                                </li>
-                                <li class="megamenu-container">
-                                    <a href="/Dealer_HesapEkstresi/Index">Hesap Ekstresi</a>
-                                </li>
+                                @{
+                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.FiyatListesiGorme))
+                                    {
+                                        <li class="megamenu-container">
+                                            <a href="/Dealer_FiyatListesi/Index">Fiyat Listesi</a>
+                                        </li>
+                                    }
+                                }
+                                @{
+                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisOlusturma))
+                                    {
+                                        <li class="megamenu-container">
+                                            <a href="/Dealer_SiparisOlustur/Index">Sipariş Oluştur</a>
+                                        </li>
+                                    }
+                                }
+                                @{
+                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisleriGorme))
+                                    {
+                                        <li class="megamenu-container">
+                                            <a href="/Dealer_Siparisler/Index">Siparişler</a>
+                                        </li>
+                                    }
+                                }
+                                @{
+                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.IrsaliyeleriGorme))
+                                    {
+                                        <li class="megamenu-container">
+                                            <a href="/Dealer_Irsaliyeler/Index">İrsaliyeler</a>
+                                        </li>
+                                    }
+                                }
+                                @{
+                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.HesapEkstresiGorme))
+                                    {
+                                        <li class="megamenu-container">
+                                            <a href="/Dealer_HesapEkstresi/Index">Hesap Ekstresi</a>
+                                        </li>
+                                    }
+                                }
+
+
+
+
                                 <li class="megamenu-container">
                                     <a href="https://kaleblokbims.netahsilat.com/" target="_blank">Kale Tahsilat</a>
                                 </li>
@@ -171,21 +209,28 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <a href="#" class="sf-with-ul">Raporlar</a>
-                                    <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
-                                        <div class="menu-col">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <ul>
-                                                        <li><a href="/Dealer_Raporlar/MalzemeSevkRaporu">Malzeme Sevk Raporu</a></li>
 
-                                                    </ul>
+                                @{
+                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.RaporlariGorme))
+                                    {
+                                        <li>
+                                            <a href="#" class="sf-with-ul">Raporlar</a>
+                                            <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                                                <div class="menu-col">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <ul>
+                                                                <li><a href="/Dealer_Raporlar/MalzemeSevkRaporu">Malzeme Sevk Raporu</a></li>
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                        </li>
+                                    }
+                                }
+
 
 
                             </ul><!-- End .menu -->

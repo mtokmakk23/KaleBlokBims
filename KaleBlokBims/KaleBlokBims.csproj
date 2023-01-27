@@ -183,6 +183,7 @@
     <Compile Include="Controllers\Dealer_FiyatListesiController.cs" />
     <Compile Include="Controllers\Dealer_HesapEkstresiController.cs" />
     <Compile Include="Controllers\Dealer_IrsaliyelerController.cs" />
+    <Compile Include="Controllers\Dealer_KullaniciEklemeController.cs" />
     <Compile Include="Controllers\Dealer_LoginController.cs" />
     <Compile Include="Controllers\Dealer_RaporlarController.cs" />
     <Compile Include="Controllers\Dealer_SiparislerController.cs" />
@@ -198,12 +199,16 @@
     <Compile Include="Models\BayiKullanicilari.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BayiKullaniciYetkileri.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classlar\LINQResultToDataTable.cs" />
     <Compile Include="Models\Classlar\MailGonderme.cs" />
     <Compile Include="Models\Classlar\MD5.cs" />
     <Compile Include="Models\Classlar\SabitTanimlar.cs" />
     <Compile Include="Models\Classlar\SiparisFormuOlustur.cs" />
     <Compile Include="Models\Classlar\SmsGonderme.cs" />
+    <Compile Include="Models\Classlar\Yetkiler.cs" />
     <Compile Include="Models\KayitliAdresler.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1942,6 +1947,7 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\ProductImages\gorselHazirlanıyor.png" />
     <Content Include="Global.asax" />
     <Content Include="lib\bootstrap\bootstrap.min.css" />
     <Content Include="lib\isotope\jquery.isotope.min.js" />
@@ -2104,6 +2110,7 @@
     <Content Include="Views\Admin_Reports\BayiBaglantiBakiyeRaporu.cshtml" />
     <Content Include="Views\Password\Index.cshtml" />
     <Content Include="Views\Logger\Index.cshtml" />
+    <Content Include="Views\Dealer_KullaniciEkleme\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

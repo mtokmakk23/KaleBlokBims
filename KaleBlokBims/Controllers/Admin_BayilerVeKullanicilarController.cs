@@ -88,6 +88,17 @@ namespace KaleBlokBims.Controllers
                 bayiKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
                 db.BayiKullanicilari.Add(bayiKullanicisi);
                 db.SaveChanges();
+
+                var yetki = db.BayiKullaniciYetkileri.Where(x => x.KullaniciID.ToString() == bayiKullanicisi.LOGICALREF.ToString()).FirstOrDefault();
+                if (yetki == null)
+                {
+                    yetki = new Models.BayiKullaniciYetkileri();
+                    yetki.FirmaAdminiMi = true;
+                    yetki.KullaniciID = Convert.ToInt32(bayiKullanicisi.LOGICALREF);
+                    db.BayiKullaniciYetkileri.Add(yetki);
+                    db.SaveChanges();
+                }
+
             }
             else
             {
@@ -98,6 +109,8 @@ namespace KaleBlokBims.Controllers
                 if (cpassword.Length==4)
                 {
                     bayiKullanicisi.Sifre = md5.MD5Sifrele(cpassword);
+                    bayiKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
+
                 }
                 bayiKullanicisi.Status = cAktif;
                 bayiKullanicisi.GSM = cphone;
@@ -134,6 +147,7 @@ namespace KaleBlokBims.Controllers
                 adminKullanicisi.AdiSoyadi = ccname;
                 if (ccpassword.Length == 4)
                 {
+                    adminKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
                     adminKullanicisi.Sifre = md5.MD5Sifrele(ccpassword);
                 }
                 adminKullanicisi.Statu = ccAktif;

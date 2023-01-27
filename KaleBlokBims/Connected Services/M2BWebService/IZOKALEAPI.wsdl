@@ -106,6 +106,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="Marka" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="SPECODE1" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="SPECODE2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResimUrl" type="s:string" />
           <s:element minOccurs="1" maxOccurs="1" name="PaketKatsayi" type="s:double" />
           <s:element minOccurs="1" maxOccurs="1" name="M2Katsayi" type="s:double" />
           <s:element minOccurs="1" maxOccurs="1" name="M3Katsayi" type="s:double" />

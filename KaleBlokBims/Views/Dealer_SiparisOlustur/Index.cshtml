@@ -318,8 +318,8 @@
                     productList += '<div class="product product-list">';
                     productList += ' <div class="row">';
                     productList += '       <div class="col-6 col-lg-2">';
-                    productList += '           <figure class="product-media" style="max-width: 105px; ">';
-                    productList += '             <img src = "/assets/images/gorselHazirlanıyor.png" alt = "Product image" class="product-image" >';
+                    productList += '           <figure class="product-media" style="max-width: 115px; ">';
+                    productList += '             <img src = "' + result[i].ResimUrl+'" alt = "Product image" class="product-image" >';
                     productList += '           </figure>';
                     productList += '       </div>';
                     productList += '       <div class="col-6 col-lg-3 order-lg-last">';
@@ -339,7 +339,8 @@
                     productList += '           <div class="product-body product-action-inner">';
                     productList += '             <div class="product-cat"> <a href="#">' + result[i].MalzemeKodu + '</a></div>';
                     productList += '             <h3 class="product-title"><a href="#">' + result[i].MalzemeAdi + '</a></h3>';
-                    productList += '             <div class="product-content p-0 m-0 pt-3 text-center"><p> </p></div>';
+                    productList += '             <h3 class="product-title mt-3" style="font-weight:bold"><a href="#">' + result[i].MalzemeAciklama + '</a></h3>';
+                   // productList += '             <div class="product-content p-0 pt-3 text-center"><p>' + result[i].MalzemeAciklama + '</p></div>';
                     productList += '           </div>';
                     productList += '       </div>';
                     productList += ' </div>';

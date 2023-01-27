@@ -16,7 +16,7 @@ namespace KaleBlokBims.Controllers
             return View();
         }
         [HttpPost]
-        public string LogKayitlari(string ip, string sayfaLinki)
+        public string LogKayitlari()
         {
             var db = new Models.IZOKALEPORTALEntities();
             var query = from a in db.Log
