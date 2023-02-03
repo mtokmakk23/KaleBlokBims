@@ -3,10 +3,14 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Admin_Master.cshtml";
 }
+@using KaleBlokBims.Models.Classlar
+@{
 
+    var yetkiler = Yetkiler.AdminKullaniciYetkisi();
+}
 @section scripts
 {
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
 }
 <script>
@@ -16,8 +20,39 @@
 
             TumBayiler();
             AdminBilgileri();
+            duyurular();
           //  buildTable($('#table'), 8, 1)
         }
+    function duyurular() {
+        loading(true);
+        $.ajax({
+            url: '/Admin_Anasayfa/Duyurular/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                loading(false);
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    if (Boolean(result[i].AcilirMesajMi)) {
+                        // alert((result[i].AcilirMesajGenisligi));
+                        Swal.fire({
+                            title: result[i].Baslik,
+                            icon: 'info',
+                            html: "<div style='text-align:left'>" + result[i].Icerik + "</div>",
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                            width: (result[i].AcilirMesajGenisligi),
+                        })
+                    } else {
+                       
+                    }
+                    $(".duyurular").append(result[i].Baslik + "<br/>");
+                    $(".duyurular").append(result[i].Icerik + "<hr/>");
+                }
+            }
+        });
+
+    }
 
     function TumBayiler() {
         $.ajax({
@@ -33,7 +68,7 @@
                         'field1': result[i].BayiKodu,
                         'field2': result[i].BayiAdi,
                         'field3': "<a class='btn btn-primary btn-sm text-white' onclick='sistemeGir(" + result[i].LOGICALREF + ")'>Sisteme Gir</a>"
-                        
+
                     });
 
                 }
@@ -44,7 +79,7 @@
 
                 //    $("#bayiler tbody").append("<tr><td>" + result[i]["BayiKodu"] + "</td><td>" + result[i]["BayiAdi"] + "</td><td><a class='btn btn-primary btn-sm text-white' onclick='sistemeGir(" + result[i]["LOGICALREF"] + ")'>Sisteme Gir</a></td></tr>");
                 //}
-                
+
 
             }
         });
@@ -143,30 +178,36 @@
                         </a>
                     </h2>
                 </div>
+                <div class="card-body duyurular"></div>
             </div><!-- End .col-lg-6 -->
-            <div class="col-lg-6">
-                <table id="bayiler" class="table table-striped table-sm"
-                       data-show-export="true"
-                       data-auto-refresh="true"
-                       data-export-types="['excel']"
-                       data-export-options='{"fileName": "Bayi Listesi"}'
-                       data-locale="tr-TR"
-                       data-search="true">
-                    <thead>
-                        <tr>
-                            <th data-field="field1">Bayi Kodu</th>
-                            <th data-field="field2">Bayi Adı</th>
-                            <th data-field="field3"></th>
-                    
-                        </tr>
-                    </thead>
+            @{ if (Convert.ToBoolean(yetkiler.BayiAdinaGiris))
+                {
+                    <div class="col-lg-6">
+                        <table id="bayiler" class="table table-striped table-sm"
+                               data-show-export="true"
+                               data-auto-refresh="true"
+                               data-export-types="['excel']"
+                               data-export-options='{"fileName": "Bayi Listesi"}'
+                               data-locale="tr-TR"
+                               data-search="true">
+                            <thead>
+                                <tr>
+                                    <th data-field="field1">Bayi Kodu</th>
+                                    <th data-field="field2">Bayi Adı</th>
+                                    <th data-field="field3"></th>
 
-                </table>
-               
+                                </tr>
+                            </thead>
+
+                        </table>
 
 
 
-            </div>
+
+                    </div>
+                }
+            }
+
         </div><!-- End .row -->
         <hr class="mt-4 mb-5">
         <!-- End .stores -->

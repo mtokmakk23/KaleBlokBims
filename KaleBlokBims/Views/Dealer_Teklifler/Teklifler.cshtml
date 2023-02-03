@@ -1,0 +1,249 @@
+﻿
+@{
+    ViewBag.Title = "Teklifler";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+@section scripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+}
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<script>
+    window.onload = function () {
+        TumTeklifler();
+    }
+    function TumTeklifler() {
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Teklifler/TumTeklifler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                var Gindex = -1;
+                $('#table').bootstrapTable({
+                    columns: [{
+                        field: 'ReferansNo',
+                        title: "ReferansNo",
+                        sortable: true
+                    }, {
+                        field: 'Durum',
+                        title: "Durum",
+                        sortable: true
+                    }, {
+                        field: 'TeklifSonGecerlilikTarihi',
+                        title: "Son Geçerlilik Tarihi",
+                        sortable: true
+                    }, {
+                        field: 'FiyatListesi',
+                        title: "Fiyat Listesi",
+                        sortable: true
+                    }, {
+                        field: 'Adres',
+                        title: "Adres",
+                        sortable: true
+                    }, {
+                        field: 'SipariseDonduMu',
+                        title: "Siparişe Döndü Mü",
+                        sortable: true
+                    }, {
+                        field: 'MailAdresi',
+                        title: "Teklifi Oluşturan",
+                        sortable: true
+                    }, {
+                        field: 'LOGICALREF',
+                        title: " ",
+                        formatter: function (value, row) {
+                            return '<a class="btn btn-warning btn-sm" onclick="DownloadPdf(' + value + ')">PDF</a>';
+                        }
+                    }],
+                    exportTypes: ['excel'],
+                    exportOptions: {
+                        fileName: 'Teklifler'
+                    },
+                    data: result,
+                    locale: 'tr-TR',
+                    detailView: 8 > 1,
+                    onExpandRow: function (index, row, $detail) {
+                        if (Gindex != index)
+                            $('#table').bootstrapTable('collapseRow', Gindex);
+                        Gindex = index;
+                        SiparisDetaylari(row, $detail);
+
+                    }
+                });
+            }
+        });
+    }
+
+    function SiparisDetaylari(row, $detail) {
+        if (row.Durum == "AÇIK") {
+            $detail.html('<div id="teklifDetayi' + row.LOGICALREF + '">' + $(".temp").html() + '</div>');
+            $("#teklifDetayi" + row.LOGICALREF + " .refNo").val(row.ReferansNo);
+            $("#teklifDetayi" + row.LOGICALREF + " .siparisSilButton").attr("onclick", "siparisiSil(" + row.LOGICALREF + ")");
+        } else {
+            $detail.html('<div class="alert alert-danger m-3">' + row.Durum + '</div>');
+        }
+    }
+    function Validate(data, status, xhr) {
+        loading(false);
+        var result = JSON.parse(data);
+        if (Boolean(result.IsSuccessStatusCode)) {
+           // TumTeklifler();
+            $(".detail-view td").html('<div class="alert alert-success m-3">Teklif Onaylandı</div>');
+            Swal.fire({
+                title: '<strong>Teklif Onaylandı</strong>',
+                icon: 'success',
+                showCloseButton: true,
+                showCancelButton: false,
+                focusConfirm: false,
+                confirmButtonText:
+                    '<a download="Sipariş Formu.pdf" href="data:application/octet-stream;base64,' + result.Content + '" class="text-white"><i class="fa-solid fa-download"></i>Sipariş Formunu İndir</a>',
+
+            });
+        } else {
+            HataMesaji(result.ErrorMessage);
+        }
+    }
+
+    function siparisiSil(baslikLREF) {
+       
+            Swal.fire({
+                title: 'Emin Misiniz?',
+                text: "Bu Teklif Kalıcı Olarak Silinecektir.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'EVET'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var theData = {
+                        baslikLREF: baslikLREF,
+                        SilinmeSebebi: $("#siparisDetayi" + baslikLREF + " .siparisSilmeSebebi").val()
+                    }
+                    loading(true);
+                    $.ajax({
+                        url: '/Dealer_Teklifler/teklifiSil/',
+                        type: 'POST',
+                        dataType: 'text',
+                        data: theData,
+                        success: function (sonuc) {
+                            loading(false);
+                            if (sonuc == "ok") {
+                                window.location.reload();
+                            } else {
+                                HataMesaji(sonuc);
+                            }
+                        }
+                    });
+                }
+            })
+        
+    }
+    function DownloadPdf(baslikLREF) {
+        var theData = {
+            baslikLREF: baslikLREF,
+        }
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Teklifler/DownloadPdf/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                loading(false);
+                var result = JSON.parse(data);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    const linkSource = `data:application/pdf;base64,${result.Content}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = "Teklif.pdf";
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
+                } else {
+                    HataMesaji(result.ErrorMessage);
+                }
+            }
+        });
+    }
+</script>
+<table class="table-striped table-sm" id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-export="true"></table>
+
+<div class="temp" style="display:none">
+    @using (Ajax.BeginForm("TeklifAktar", "Dealer_Teklifler", new AjaxOptions { HttpMethod = "POST", OnSuccess = "return Validate(data, status, xhr);",OnBegin="return loading(true);" }))
+    {
+        <table class="table table-summary w-50">
+            <tbody>
+                <tr class="summary-subtotal">
+                    <td>Referans No:</td>
+                    <td colspan="3"><textarea class="refNo form-control" rows="1" name="refNo" readonly></textarea></td>
+
+                </tr><!-- End .summary-subtotal -->
+                <tr class="summary-subtotal">
+                    <td>İlgili Kişi:</td>
+                    <td><input type="text" class="ilgiliKisi form-control" name="ilgiliKisi" /></td>
+                    <td>İlgili Kişi Telefon:</td>
+                    <td><input type="text" class="ilgiliKisiTel form-control" name="ilgiliKisiTel" /></td>
+                </tr><!-- End .summary-subtotal -->
+                <tr class="summary-subtotal">
+                    <td>Detaylı Sevk Adresi:</td>
+                    <td colspan="3"><textarea class="detayliAdres form-control" rows="3" name="detayliAdres"></textarea></td>
+
+                </tr><!-- End .summary-subtotal -->
+                <tr class="summary-subtotal">
+                    <td>Ödeme Tipi:</td>
+                    <td>
+                        <select id="swal-input1" class="odemeTipi form-control" name="odemeTipi">
+                            <option>Seçiniz</option>
+                            <option>Nakit</option>
+                            <option>Bağlantı Ödemesi</option>
+                            <option>Kredi Kartı Tek Çekim</option>
+                            <option>Kredi Kartı Taksit</option>
+                            <option>30 GÜN VADE</option>
+                            <option>60 GÜN VADE</option>
+                            <option>90 GÜN VADE</option>
+                        </select>
+                    </td>
+                    <td>Sipariş Notu:</td>
+                    <td><input type="text" class="siparisNotu form-control" name="siparisNotu" /></td>
+                </tr><!-- End .summary-subtotal -->
+
+            </tbody>
+        </table>
+
+
+        <div class="row">
+            <div class="col-md-6 m-1">
+                <button type="submit" class="btn btn-outline-primary-2 btn-minwidth-sm">
+                    <span>KAYDET</span>
+                    <i class="icon-long-arrow-right"></i>
+                </button>
+            </div>
+            <div class="col-md-6 row mt-5">
+                <div class="col-md-9">
+                    <textarea class="siparisSilmeSebebi form-control" placeholder="Teklifi Silme Sebebini Yazınız"></textarea>
+                </div>
+                <div class="col-md-3">
+                    <a class="siparisSilButton btn btn-danger">Teklifi Sil</a>
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>

@@ -1,0 +1,190 @@
+﻿
+@{
+    ViewBag.Title = "TumTeklifler";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+}
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<script>
+    window.onload = function () {
+        TumTeklifler();
+    }
+    function TumTeklifler() {
+        loading(true);
+        $.ajax({
+            url: '/Admin_Teklif/_TumTeklifler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                var Gindex = -1;
+                $('#table').bootstrapTable({
+                    columns: [{
+                        field: 'ReferansNo',
+                        title: "ReferansNo",
+                        sortable: true
+                    }, {
+                        field: 'BayiAdi',
+                        title: "Bayi Adı",
+                        sortable: true
+                    }, {
+                        field: 'Durum',
+                        title: "Durum",
+                        sortable: true,
+                        filterControl: "select"
+                    }, {
+                        field: 'TeklifSonGecerlilikTarihi',
+                        title: "Son Geçerlilik Tarihi",
+                        sortable: true
+                    }, {
+                        field: 'FiyatListesi',
+                        title: "Fiyat Listesi",
+                        sortable: true
+                    }, {
+                        field: 'Adres',
+                        title: "Adres",
+                        sortable: true
+                    }, {
+                        field: 'SipariseDonduMu',
+                        title: "Siparişe Döndü Mü",
+                        sortable: true
+                    }, {
+                        field: 'MailAdresi',
+                        title: "Teklifi Oluşturan",
+                        sortable: true
+                    }, {
+                        field: 'SilinmeSebebi',
+                        title: "Silinme Sebebi",
+                        sortable: true
+                    }, {
+                        field: 'LOGICALREF',
+                        title: " ",
+                        formatter: function (value, row) {
+                            return '<a class="btn btn-warning btn-sm" onclick="DownloadPdf(' + value + ')">PDF</a>';
+                        }
+                    }],
+                    exportTypes: ['excel'],
+                    exportOptions: {
+                        fileName: 'Teklifler'
+                    },
+                    data: result,
+                    locale: 'tr-TR',
+                    detailView: 10 > 1,
+                    onExpandRow: function (index, row, $detail) {
+                        if (Gindex != index)
+                            $('#table').bootstrapTable('collapseRow', Gindex);
+                        Gindex = index;
+                        SiparisDetaylari(row, $detail);
+
+                    }
+                });
+            }
+        });
+    }
+
+    function SiparisDetaylari(row, $detail) {
+        if (row.Durum == "AÇIK") {
+            $detail.html('<div id="teklifDetayi' + row.LOGICALREF + '">' + $(".temp").html() + '</div>');
+            $("#teklifDetayi" + row.LOGICALREF + " .siparisSilButton").attr("onclick", "siparisiSil(" + row.LOGICALREF + ")");
+        } else {
+            $detail.html('<div class="alert alert-danger m-3">' + row.Durum + '</div>');
+        }
+    }
+
+
+    function siparisiSil(baslikLREF) {
+
+        Swal.fire({
+            title: 'Emin Misiniz?',
+            text: "Bu Teklif Kalıcı Olarak Silinecektir.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'EVET'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var theData = {
+                    baslikLREF: baslikLREF,
+                    SilinmeSebebi: $("#siparisDetayi" + baslikLREF + " .siparisSilmeSebebi").val()
+                }
+                loading(true);
+                $.ajax({
+                    url: '/Admin_Teklif/teklifiSil/',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: theData,
+                    success: function (sonuc) {
+                        loading(false);
+                        if (sonuc == "ok") {
+                            window.location.reload();
+                        } else {
+                            HataMesaji(sonuc);
+                        }
+                    }
+                });
+            }
+        })
+
+    }
+    function DownloadPdf(baslikLREF) {
+        var theData = {
+            baslikLREF: baslikLREF,
+        }
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Teklifler/DownloadPdf/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                loading(false);
+                var result = JSON.parse(data);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    const linkSource = `data:application/pdf;base64,${result.Content}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = "Teklif.pdf";
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
+                } else {
+                    HataMesaji(result.ErrorMessage);
+                }
+            }
+        });
+    }
+</script>
+<table class="table-striped table-sm" id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-filter-control="true"
+       data-show-export="true"></table>
+
+<div class="temp" style="display:none">
+
+    <div class="row">
+
+        <div class="col-md-6 row mt-5">
+            <div class="col-md-9">
+                <textarea class="siparisSilmeSebebi form-control" placeholder="Teklifi Silme Sebebini Yazınız"></textarea>
+            </div>
+            <div class="col-md-3">
+                <a class="siparisSilButton btn btn-danger">Teklifi Sil</a>
+            </div>
+        </div>
+    </div>
+
+</div>

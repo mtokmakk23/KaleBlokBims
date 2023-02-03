@@ -17,9 +17,18 @@ namespace KaleBlokBims.Controllers
         public ActionResult Index()
         {
 
-            return View();
+            var yetkiler = Yetkiler.AdminKullaniciYetkisi();
+            if (!Convert.ToBoolean(yetkiler.KullaniciTanimlama))
+            {
+                return RedirectToAction("Index", "Admin_Anasayfa");
+            }
+            else
+            {
+                return View();
+            }
+
         }
-       
+
 
         [HttpPost]
         public string bayiler()
@@ -27,60 +36,74 @@ namespace KaleBlokBims.Controllers
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             return JsonConvert.SerializeObject(servis.Bayiler());
         }
-      
 
+        [HttpPost]
+        public string adminKullaniciYetkileri(string kullaniciId)
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+            var yetkiler = db.AdminKullaniciYetkisi.Where(x => x.KullaniciID.ToString() == kullaniciId);
+            if (yetkiler.Count() > 0)
+            {
+                return JsonConvert.SerializeObject(yetkiler);
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(db.AdminKullaniciYetkisi.Where(x => x.KullaniciID.ToString() == "0"));
+            }
+
+        }
         [HttpPost]
         public string bayiKullanicilari()
         {
-          
+
             var db = new Models.IZOKALEPORTALEntities();
 
-            return JsonConvert.SerializeObject(db.BayiKullanicilari.OrderByDescending(x=>x.LOGICALREF));
+            return JsonConvert.SerializeObject(db.BayiKullanicilari.OrderByDescending(x => x.LOGICALREF));
         }
         [HttpPost]
         public string adminKullanicilari()
         {
-          
+
             var db = new Models.IZOKALEPORTALEntities();
 
-            return JsonConvert.SerializeObject(db.AdminKullanicilari.OrderByDescending(x=>x.LOGICALREF));
+            return JsonConvert.SerializeObject(db.AdminKullanicilari.OrderByDescending(x => x.LOGICALREF));
         }
         [HttpPost]
-        public void kullaniciSil(string LREF,string adminMi)
+        public void kullaniciSil(string LREF, string adminMi)
         {
             var db = new Models.IZOKALEPORTALEntities();
 
-            if (adminMi=="0")
+            if (adminMi == "0")
             {
                 db.Database.ExecuteSqlCommand("delete from BayiKullanicilari where LOGICALREF=" + LREF);
-            } 
-            if (adminMi=="1")
+            }
+            if (adminMi == "1")
             {
                 db.Database.ExecuteSqlCommand("delete from AdminKullanicilari where LOGICALREF=" + LREF);
             }
-           
+
         }
         [HttpPost]
-        public string bayikullaniciDuzenle(string cbayi,string cname,string cemail,string cphone,string cpassword,bool cAktif = false)
+        public string bayikullaniciDuzenle(string cbayi, string cname, string cemail, string cphone, string cpassword, bool cAktif = false)
         {
             string cbayii = cbayi;
             string cemaill = cemail;
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             var tumBayiler = servis.Bayiler();
             MD5 md5 = new MD5();
-            if (cbayii == null || cbayii.ToString().Trim()=="" || cbayii.ToString().Trim() == "-1")
+            if (cbayii == null || cbayii.ToString().Trim() == "" || cbayii.ToString().Trim() == "-1")
             {
                 return "Bayi Seçmelisiniz";
             }
             var db = new Models.IZOKALEPORTALEntities();
             var bayiKullanicisi = db.BayiKullanicilari.Where(x => x.MailAdresi == cemaill).FirstOrDefault();
-            if (bayiKullanicisi==null)
+            if (bayiKullanicisi == null)
             {
                 bayiKullanicisi = new Models.BayiKullanicilari();
                 bayiKullanicisi.AdiSoyadi = cname;
                 bayiKullanicisi.AdminMi = true;
                 bayiKullanicisi.BayiKodu = cbayii;
-                bayiKullanicisi.BayiAdi = tumBayiler.Where(x=>x.BayiKodu.Equals(cbayii)).FirstOrDefault().BayiAdi;
+                bayiKullanicisi.BayiAdi = tumBayiler.Where(x => x.BayiKodu.Equals(cbayii)).FirstOrDefault().BayiAdi;
                 bayiKullanicisi.MailAdresi = cemaill;
                 bayiKullanicisi.Sifre = md5.MD5Sifrele(cpassword);
                 bayiKullanicisi.Status = cAktif;
@@ -106,7 +129,7 @@ namespace KaleBlokBims.Controllers
                 bayiKullanicisi.AdminMi = true;
                 bayiKullanicisi.BayiKodu = cbayii;
                 bayiKullanicisi.BayiAdi = tumBayiler.Where(x => x.BayiKodu.Equals(cbayii)).FirstOrDefault().BayiAdi;
-                if (cpassword.Length==4)
+                if (cpassword.Length == 4)
                 {
                     bayiKullanicisi.Sifre = md5.MD5Sifrele(cpassword);
                     bayiKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
@@ -116,18 +139,24 @@ namespace KaleBlokBims.Controllers
                 bayiKullanicisi.GSM = cphone;
                 db.SaveChanges();
             }
-            return "ok";
-           
+            return "#ok";
+
+        }
+        [HttpPost]
+        public void adminYetkileriKaydet(string LREF, string yetkiler)
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+            db.Database.ExecuteSqlCommand("update AdminKullaniciYetkisi set " + yetkiler.Substring(0, yetkiler.Length - 1) + " where KullaniciID=" + LREF);
+
         }
 
-
         [HttpPost]
-        public string adminkullaniciDuzenle( string ccname, string ccemail, string ccphone, string ccpassword, bool ccAktif = false)
+        public string adminkullaniciDuzenle(string ccname, string ccemail, string ccphone, string ccpassword, bool ccAktif = false)
         {
             string cemaill = ccemail;
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             var tumBayiler = servis.Bayiler();
-            MD5 md5 = new MD5();            
+            MD5 md5 = new MD5();
             var db = new Models.IZOKALEPORTALEntities();
             var adminKullanicisi = db.AdminKullanicilari.Where(x => x.MailAdresi == cemaill).FirstOrDefault();
             if (adminKullanicisi == null)
@@ -140,6 +169,11 @@ namespace KaleBlokBims.Controllers
                 adminKullanicisi.GSM = ccphone;
                 adminKullanicisi.SifreDegistirmeTarihi = DateTime.Now.AddDays(-360);
                 db.AdminKullanicilari.Add(adminKullanicisi);
+                db.SaveChanges();
+
+                var yetki = new Models.AdminKullaniciYetkisi();
+                yetki.KullaniciID =Convert.ToInt32(adminKullanicisi.LOGICALREF);
+                db.AdminKullaniciYetkisi.Add(yetki);
                 db.SaveChanges();
             }
             else
@@ -154,7 +188,7 @@ namespace KaleBlokBims.Controllers
                 adminKullanicisi.GSM = ccphone;
                 db.SaveChanges();
             }
-            return "ok";
+            return "#ok " + adminKullanicisi.LOGICALREF;
 
         }
     }

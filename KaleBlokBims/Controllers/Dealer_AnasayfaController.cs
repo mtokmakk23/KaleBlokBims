@@ -23,14 +23,21 @@ namespace KaleBlokBims.Controllers
             ViewBag.BaglantiOzeti = servis.BaglantiBakiyeOzeti(Session["BayiKodu"].ToString());
             var tumBayiler = servis.Bayiler();
             ViewBag.BayiBilgileri = JsonConvert.SerializeObject(tumBayiler.Where(x => x.BayiKodu == Session["BayiKodu"].ToString()));
-            if (Session["AdminMi"].ToString()=="0")
+            if (Session["AdminMi"].ToString() == "0")
             {
                 var db = new Models.IZOKALEPORTALEntities();
                 var mailAdresi = Session["MailAdresi"].ToString();
                 db.BayiKullanicilari.Where(x => x.MailAdresi == mailAdresi).FirstOrDefault().GeciciSifre = "";
             }
-           
+
             return View();
+        }
+        [HttpPost]
+        public string Duyurular()
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+            var query = db.Duyurular.Where(x=>x.BayiDuyurusuMu==true && x.BaslangicTarihi<DateTime.Now && x.BitisTarihi>DateTime.Now);
+            return JsonConvert.SerializeObject(query);
         }
         [HttpPost]
         public string UrunSepettenCikar(string LOGICALREF)
@@ -86,7 +93,7 @@ namespace KaleBlokBims.Controllers
                     if (baslik.BaglantiLref != -1)
                     {
                         var servis = new M2BWebService.ZOKALEAPISoapClient();
-                        var liste = servis.SecilebilirFiyatListeleri(baslik.BayiKodu).Where(x=>x.baglantiLREF.ToString()==baslik.BaglantiLref.ToString()).FirstOrDefault();
+                        var liste = servis.SecilebilirFiyatListeleri(baslik.BayiKodu).Where(x => x.baglantiLREF.ToString() == baslik.BaglantiLref.ToString()).FirstOrDefault();
                         var malzemeler = db.SiparisIcerikleri.Where(x => x.BaslikLREF == baslik.LOGICALREF).ToList();
                         double toplamTutar = 0;
                         foreach (var item in malzemeler)
@@ -102,10 +109,10 @@ namespace KaleBlokBims.Controllers
                             }
                         }
 
-                        if (Convert.ToDouble(liste.bakiye)+1000<toplamTutar)
+                        if (Convert.ToDouble(liste.bakiye) + 1000 < toplamTutar)
                         {
                             response.IsSuccessStatusCode = false;
-                            response.ErrorMessage = "En Fazla "+liste.bakiye+" TL Tutarında Sipariş Girebilirsiniz.";
+                            response.ErrorMessage = "En Fazla " + liste.bakiye + " TL Tutarında Sipariş Girebilirsiniz.";
                             return JsonConvert.SerializeObject(response);
                         }
                     }

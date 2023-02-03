@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Evraklar";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+<style>
+    td {
+        text-align: center;
+    }
+</style>
+<script>
+    window.onload = function () {
+        tumBelgeler();
+    }
+
+    var docType = "";
+    function fileClick(docTypee) {
+        docType = docTypee;
+        $("#file").click();
+    }
+
+    function readmultifiles(input) {
+        console.log(input.files.length);
+        if (input.files.length < 1) {
+           // HataMesaji("Belge Seçmelisiniz.");
+            return;
+        }
+        if (input.files.size > 209715200) {
+            HataMesaji("En Fazla 200 MB 'lık Belge Yükleyebilirsiniz.");
+            return;
+        };
+        var formData = new FormData();
+        var file = document.getElementById("file").files[0];
+        formData.append("file", file);
+        formData.append("docType", docType);
+
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Evraklar/EvrakKaydet/',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                input.file = "";
+                loading(false);
+                if (data == "ok") {
+                    tumBelgeler();
+                    OnayMesaji("Dosya Kaydedildi");
+                } else {
+                    HataMesaji(data);
+                }
+            }
+        });
+    }
+
+
+    function tumBelgeler() {
+        $("#evraklarTablosu tbody").html("");
+        $.ajax({
+            url: '/Dealer_Evraklar/TumEvraklar/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#evraklarTablosu tbody").append('' +
+                        '<tr>' +
+                        '<td>' + (result[i].BayilikSozlesmesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].BayilikSozlesmesi + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF+",\"BayilikSozlesmesi\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].BayiPortalSozlesmesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].BayiPortalSozlesmesi + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"BayiPortalSozlesmesi\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].CariHesapSozlesmesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].CariHesapSozlesmesi + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"CariHesapSozlesmesi\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].VergiLevhasi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].VergiLevhasi + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"VergiLevhasi\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].ImzaSirkusu == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].ImzaSirkusu + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"ImzaSirkusu\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].TicaretSicilGazetesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].TicaretSicilGazetesi + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"TicaretSicilGazetesi\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].NufusCuzdaniFotokopisi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].NufusCuzdaniFotokopisi + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"NufusCuzdaniFotokopisi\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '<td>' + (result[i].Diger == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].Diger + "'><i class='fa-solid fa-arrows-to-eye'></i></a><a onclick='evrakSil(" + result[i].LOGICALREF +",\"Diger\")' class='btn btn-outline-danger btn-sm' style='float:right'><i class='fa-solid fa-trash'></i></a>") + '</td>' +
+                        '</tr>' +
+                        '');
+                }
+            }
+        });
+    }
+
+    function evrakSil(LOGICALREF,docType) {
+        Swal.fire({
+            title: 'Emin Misiniz?',
+            text: docType+" Dosyasını Kalıcı Olarak Silinecektir.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'EVET'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var theData = {
+                    LOGICALREF: LOGICALREF,
+                    docType: docType
+                }
+                loading(true);
+                $.ajax({
+                    url: '/Dealer_Evraklar/EvrakSil/',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: theData,
+                    success: function (sonuc) {
+                        loading(false);
+                        if (sonuc == "ok") {
+                            tumBelgeler();
+                            OnayMesaji("Dosya Silindi");
+                        } else {
+                            HataMesaji(sonuc);
+                        }
+                    }
+                });
+            }
+        })
+    }
+</script>
+
+<table id="evraklarTablosu" class="table table-bordered table-sm mt-2">
+    <thead>
+        <tr>
+            <th>Bayilik Sözleşmesi  <a class="btn btn-primary btn-sm" onclick="fileClick('BayilikSozlesmesi')">...</a></th>
+            <th>Bayi Portal Sözleşmesi <a class="btn btn-primary btn-sm" onclick="fileClick('BayiPortalSozlesmesi')">...</a></th>
+            <th>Cari Hesap Sözleşmesi <a class="btn btn-primary btn-sm" onclick="fileClick('CariHesapSozlesmesi')">...</a></th>
+            <th>Vergi Levhası <a class="btn btn-primary btn-sm" onclick="fileClick('VergiLevhasi')">...</a></th>
+            <th>İmza Sirküsü <a class="btn btn-primary btn-sm" onclick="fileClick('ImzaSirkusu')">...</a></th>
+            <th>Ticaret Sicil Gazetesi <a class="btn btn-primary btn-sm" onclick="fileClick('TicaretSicilGazetesi')">...</a></th>
+            <th>Nüfus Cüzdanı Fotokopisi <a class="btn btn-primary btn-sm" onclick="fileClick('NufusCuzdaniFotokopisi')">...</a></th>
+            <th>Diğer <a class="btn btn-primary btn-sm" onclick="fileClick('Diger')">...</a></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<input type="file" id="file" onchange="readmultifiles(this)" accept="image/*,.pdf,.xls,.xlsx,.doc,.docx,.pptx" style="display:none" />

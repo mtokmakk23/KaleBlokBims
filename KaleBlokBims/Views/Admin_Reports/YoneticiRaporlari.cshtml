@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "YoneticiRaporlari";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+}
+<style>
+    td {
+        white-space: nowrap;
+    }
+</style>
+<script>
+    var raporlarDizisi = ["ABC_AAY_ODEME_RAPOR",
+        "AAY_TAHSILAT_RAPOR",
+        "KNN_2022_SATINALMASATIS",
+        "ANT_KASA_BAKIYE_2022",
+        "ANT_BANKA_DOKUM_121",
+        "KNN_2022_URETIMPARAPOR"];
+    var raporlarDizisiLabel = ["ÖDEME HAREKETLERİ",
+        "SON SATIŞ TAHSİLAT",
+        "SATINALMA SATIŞ",
+        "KASA BAKİYESİ",
+        "BANKA BAKİYESİ",
+        "ÜRETİM RAPORU"];
+
+    window.onload = function () {
+        for (var i = 0; i < raporlarDizisi.length; i++) {
+            raporlar(i);
+        }
+        // 
+      //  setInterval(function () { console.log($('.filter-control input').val()); }, 1000);
+    }
+    var sayac = 0;
+    function raporlar(k) {
+        var raporAdi = raporlarDizisi[k];
+        var raporAdiLable = raporlarDizisiLabel[k];
+        $("#raporlar").append('' +
+            '<div class="card-header mb-1" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">' +
+            '<h2 class="card-title">' +
+            '<a onclick="$(\'.div' + raporAdi + '\').toggle(\'fast\')">' +
+            '' + raporAdiLable + '' +
+            '</a>' +
+            '</h2>' +
+            '</div>' +
+            '<div class="div' + raporAdi + '"><table class="table-striped table-sm" id="' + raporAdi + '"' +
+            'data-toolbar="#toolbar" ' +
+            'data-search="true" ' +
+            'data-pagination="true" ' +
+            'data-show-export ="true" ' +
+            'data-filter-control="true"' +
+            'data-export-data-type="all" ></table></div><hr/>' +
+            '');
+        loading(true);
+        var theData = {
+            raporAdi: raporAdi
+        }
+        $.ajax({
+            url: '/Admin_Reports/YoneticiRaporlariServis/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                sayac++;
+                if (sayac == raporlarDizisi.length) {
+                    loading(false);
+                }
+
+                var result = JSON.parse(sonuc);
+                eval('var objBaslik=' + sonuc);
+
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    if (x.toLowerCase().indexOf("tarih") == -1) {
+                        columns.push({
+                            field: 'field' + i,
+                            title: x,
+                            sortable: true
+
+                        })
+                    } else {
+
+                        columns.push({
+                            field: 'field' + i,
+                            title: x,
+                            sortable: true,
+                            filterControl: "datepicker",
+                            
+                        })
+                    }
+
+                    i++;
+                }
+
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                $('#' + raporAdi).bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    exportTypes: ['excel'],
+                    locale: 'tr-TR',
+                    data: data,
+                    exportOptions: {
+                        fileName: raporAdiLable
+                    },
+                });
+               
+                
+            }
+        });
+    }
+
+</script>
+
+<div id="raporlar" class="mt-3"></div>
+
+
+

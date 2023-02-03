@@ -22,7 +22,13 @@ namespace KaleBlokBims.Controllers
            
             return View();
         }
-
+        [HttpPost]
+        public string Duyurular()
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+            var query = db.Duyurular.Where(x => x.AdminDuyurusuMu == true && x.BaslangicTarihi < DateTime.Now && x.BitisTarihi > DateTime.Now);
+            return JsonConvert.SerializeObject(query);
+        }
         [HttpPost]
         public string bayiAdinaSistemeGir(string LOGICALREF)
         {

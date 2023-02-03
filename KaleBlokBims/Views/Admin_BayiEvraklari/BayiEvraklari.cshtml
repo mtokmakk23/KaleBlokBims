@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "BayiEvraklari";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+<style>
+    td{
+        text-align:center;
+    }
+        td:nth-child(1), td:nth-child(2) {
+            text-align: left;
+        }
+</style>
+<script>
+    window.onload = function () {
+        tumBelgeler();
+    }
+
+    function tumBelgeler() {
+        $("#evraklarTablosu tbody").html("");
+        $.ajax({
+            url: '/Admin_BayiEvraklari/TumEvraklar/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $("#evraklarTablosu tbody").append('' +
+                        '<tr>' +
+                        '<td>' + result[i].BayiKodu+'</td>'+
+                        '<td>' + result[i].BayiAdi+'</td>'+
+                        '<td>' + (result[i].BayilikSozlesmesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].BayilikSozlesmesi + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].BayiPortalSozlesmesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].BayiPortalSozlesmesi + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].CariHesapSozlesmesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].CariHesapSozlesmesi + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].VergiLevhasi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].VergiLevhasi + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].ImzaSirkusu == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].ImzaSirkusu + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].TicaretSicilGazetesi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].TicaretSicilGazetesi + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].NufusCuzdaniFotokopisi == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].NufusCuzdaniFotokopisi + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '<td>' + (result[i].Diger == null ? "" : "<a target='_blank' class='btn btn-outline-primary btn-sm' href='" + result[i].Diger + "'><i class='fa-solid fa-arrows-to-eye'></i>&#10004;</a>") + '</td>' +
+                        '</tr>' +
+                        '');
+                }
+                $("#evraklarTablosu").bootstrapTable({
+                    exportTypes: ['excel'],
+                    locale: 'tr-TR',
+                    exportOptions: {
+                        fileName: 'Evraklar'
+                    },
+                });
+            }
+        });
+    }
+</script>
+
+<table id="evraklarTablosu" class="table table-bordered table-sm mt-2"
+        data-toolbar="#toolbar"
+       data-search="true"
+       data-pagination="true"
+       data-show-export="true"
+       data-export-data-type="all">
+    <thead>
+        <tr>
+            <th>Bayi Kodu</th>
+            <th>Bayi Adı</th>
+            <th>Bayilik Sözleşmesi</th>
+            <th>Bayi Portal Sözleşmesi</th>
+            <th>Cari Hesap Sözleşmesi</th>
+            <th>Vergi Levhası</th>
+            <th>İmza Sirküsü</th>
+            <th>Ticaret Sicil Gazetesi</th>
+            <th>Nüfus Cüzdanı Fotokopisi</th>
+            <th>Diğer</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+

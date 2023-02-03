@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9" />
+    <title>@ViewBag.Title</title>
     @*<meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>@ViewBag.Title</title>
+
         <meta name="keywords" content="HTML5 Template">
         <meta name="description" content="Molla - Bootstrap eCommerce Template">
         <meta name="author" content="p-themes">*@
@@ -116,6 +117,10 @@
                                 <ul>
                                     <li><a><i class="fa fa-arrow-right" aria-hidden="true"></i>@Session["BayiAdi"].ToString()</a></li>
                                     <li><a><i class="fa-regular fa-user"></i>@Session["AdiSoyadi"].ToString()</a></li>
+                                    @{ if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.BelgeleriGorme))
+                                        {
+                                            <li><a href="/Dealer_Evraklar/Evraklar"><i class="fa-solid fa-folder-open"></i>Evraklar</a></li>
+                                        } }
                                     @{ if (Convert.ToBoolean(yetkiler.FirmaAdminiMi))
                                         {
                                             <li><a href="/Dealer_KullaniciEkleme/Index"><i class="fa-solid fa-users-gear"></i>Kullanıcılar</a></li>
@@ -153,22 +158,44 @@
                                         </li>
                                     }
                                 }
-                                @{
-                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisOlusturma))
-                                    {
-                                        <li class="megamenu-container">
-                                            <a href="/Dealer_SiparisOlustur/Index">Sipariş Oluştur</a>
-                                        </li>
-                                    }
-                                }
-                                @{
-                                    if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisleriGorme))
-                                    {
-                                        <li class="megamenu-container">
-                                            <a href="/Dealer_Siparisler/Index">Siparişler</a>
-                                        </li>
-                                    }
-                                }
+                                <li class="megamenu-container">
+                                    <a href="#" class="sf-with-ul">Sipariş</a>
+                                    <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                                        <div class="menu-col">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisOlusturma))
+                                                            {
+                                                                <li class="megamenu-container">
+                                                                    <a href="/Dealer_SiparisOlustur/Index">Sipariş Oluştur</a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisleriGorme))
+                                                            {
+                                                                <li class="megamenu-container">
+                                                                    <a href="/Dealer_Siparisler/Index">Siparişler</a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.TeklifleriGorme))
+                                                            {
+                                                                <li class="megamenu-container">
+                                                                    <a href="/Dealer_Teklifler/Teklifler">Teklifler<span class="badge bg-primary ml-2" style="margin-left:3px">Yeni</span></a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
                                 @{
                                     if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.IrsaliyeleriGorme))
                                     {
@@ -192,7 +219,7 @@
                                 <li class="megamenu-container">
                                     <a href="https://kaleblokbims.netahsilat.com/" target="_blank">Kale Tahsilat</a>
                                 </li>
-                                <li>
+                                <li class="megamenu-container">
                                     <a href="#" class="sf-with-ul">Satış Sonrası Hizmetler</a>
                                     <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
                                         <div class="menu-col">
@@ -213,7 +240,7 @@
                                 @{
                                     if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.RaporlariGorme))
                                     {
-                                        <li>
+                                        <li class="megamenu-container">
                                             <a href="#" class="sf-with-ul">Raporlar</a>
                                             <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
                                                 <div class="menu-col">
@@ -307,6 +334,15 @@
                                     <nav class="mobile-nav">
                                         <div class="dropdown-cart-products mt-1">
                                         </div>
+                                        <div class="row p-3 border mt-1">
+                                            <label class="col-md-6" style="color:black;font-weight:bold">Ara Toplam</label>
+                                            <label class="col-md-6 araToplam text-right" style="text-align: right; color: black; font-weight: bold "></label>
+                                            <label class="col-md-6" style="color: black; font-weight: bold ">Kdv Toplam</label>
+                                            <label class="col-md-6 kdvToplam text-right" style="text-align: right; color: black; font-weight: bold "></label>
+                                            <label class="col-md-6" style="color: black; font-weight: bold ">Genel Toplam</label>
+                                            <label class="col-md-6 genelToplam" style="text-align: right; color: black; font-weight: bold "></label>
+                                        </div>
+
                                         <div class="dropdown-cart-action mt-2">
                                             <div class="form-group row w-100">
                                                 <label class="col-md-4" style="color:black;font-weight:bold">Ödeme Tipi:</label>

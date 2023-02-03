@@ -175,11 +175,14 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Controllers\Admin_AnasayfaController.cs" />
+    <Compile Include="Controllers\Admin_BayiEvraklariController.cs" />
     <Compile Include="Controllers\Admin_BayilerVeKullanicilarController.cs" />
     <Compile Include="Controllers\Admin_BekleyenSiparislerController.cs" />
     <Compile Include="Controllers\Admin_LoginController.cs" />
     <Compile Include="Controllers\Admin_ReportsController.cs" />
+    <Compile Include="Controllers\Admin_TeklifController.cs" />
     <Compile Include="Controllers\Dealer_AnasayfaController.cs" />
+    <Compile Include="Controllers\Dealer_EvraklarController.cs" />
     <Compile Include="Controllers\Dealer_FiyatListesiController.cs" />
     <Compile Include="Controllers\Dealer_HesapEkstresiController.cs" />
     <Compile Include="Controllers\Dealer_IrsaliyelerController.cs" />
@@ -188,12 +191,19 @@
     <Compile Include="Controllers\Dealer_RaporlarController.cs" />
     <Compile Include="Controllers\Dealer_SiparislerController.cs" />
     <Compile Include="Controllers\Dealer_SiparisOlusturController.cs" />
+    <Compile Include="Controllers\Dealer_TekliflerController.cs" />
     <Compile Include="Controllers\LoggerController.cs" />
     <Compile Include="Controllers\PasswordController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminKullanicilari.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AdminKullaniciYetkisi.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BayiEvraklari.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BayiKullanicilari.cs">
@@ -208,7 +218,11 @@
     <Compile Include="Models\Classlar\SabitTanimlar.cs" />
     <Compile Include="Models\Classlar\SiparisFormuOlustur.cs" />
     <Compile Include="Models\Classlar\SmsGonderme.cs" />
+    <Compile Include="Models\Classlar\TeklifFormuOlustur.cs" />
     <Compile Include="Models\Classlar\Yetkiler.cs" />
+    <Compile Include="Models\Duyurular.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\KayitliAdresler.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -234,6 +248,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SiparisIcerikleri.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TeklifBasliklari.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TeklifIcerikleri.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1769,6 +1789,9 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YonetimRaporlariResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -1947,6 +1970,7 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\BayiEvraklari\gorselHazirlanıyor.png" />
     <Content Include="Files\ProductImages\gorselHazirlanıyor.png" />
     <Content Include="Global.asax" />
     <Content Include="lib\bootstrap\bootstrap.min.css" />
@@ -1997,7 +2021,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\bootstratTable_TR.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -2111,9 +2134,16 @@
     <Content Include="Views\Password\Index.cshtml" />
     <Content Include="Views\Logger\Index.cshtml" />
     <Content Include="Views\Dealer_KullaniciEkleme\Index.cshtml" />
+    <Content Include="Views\Admin_Reports\YoneticiRaporlari.cshtml" />
+    <Content Include="Views\Admin_Teklif\TeklifOlustur.cshtml" />
+    <Content Include="Views\Dealer_Teklifler\Teklifler.cshtml" />
+    <Content Include="Views\Admin_Teklif\TumTeklifler.cshtml" />
+    <Content Include="Views\Dealer_Evraklar\Evraklar.cshtml" />
+    <Content Include="Views\Admin_BayiEvraklari\BayiEvraklari.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

@@ -1744,6 +1744,13 @@ namespace KaleBlokBims.M2BWebService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MalzemeListesi", ReplyAction="*")]
         System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.MalzemeListesiResponse> MalzemeListesiAsync(KaleBlokBims.M2BWebService.MalzemeListesiRequest request);
         
+        // CODEGEN: Generating message contract since element name tabloAdi from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/YonetimRaporlari", ReplyAction="*")]
+        KaleBlokBims.M2BWebService.YonetimRaporlariResponse YonetimRaporlari(KaleBlokBims.M2BWebService.YonetimRaporlariRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/YonetimRaporlari", ReplyAction="*")]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.YonetimRaporlariResponse> YonetimRaporlariAsync(KaleBlokBims.M2BWebService.YonetimRaporlariRequest request);
+        
         // CODEGEN: Generating message contract since element name BayiKodu from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SecilebilirFiyatListeleri", ReplyAction="*")]
         KaleBlokBims.M2BWebService.SecilebilirFiyatListeleriResponse SecilebilirFiyatListeleri(KaleBlokBims.M2BWebService.SecilebilirFiyatListeleriRequest request);
@@ -2297,6 +2304,74 @@ namespace KaleBlokBims.M2BWebService {
         
         public MalzemeListesiResponseBody(string MalzemeListesiResult) {
             this.MalzemeListesiResult = MalzemeListesiResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class YonetimRaporlariRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="YonetimRaporlari", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.YonetimRaporlariRequestBody Body;
+        
+        public YonetimRaporlariRequest() {
+        }
+        
+        public YonetimRaporlariRequest(KaleBlokBims.M2BWebService.YonetimRaporlariRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class YonetimRaporlariRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string tabloAdi;
+        
+        public YonetimRaporlariRequestBody() {
+        }
+        
+        public YonetimRaporlariRequestBody(string tabloAdi) {
+            this.tabloAdi = tabloAdi;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class YonetimRaporlariResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="YonetimRaporlariResponse", Namespace="http://tempuri.org/", Order=0)]
+        public KaleBlokBims.M2BWebService.YonetimRaporlariResponseBody Body;
+        
+        public YonetimRaporlariResponse() {
+        }
+        
+        public YonetimRaporlariResponse(KaleBlokBims.M2BWebService.YonetimRaporlariResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class YonetimRaporlariResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string YonetimRaporlariResult;
+        
+        public YonetimRaporlariResponseBody() {
+        }
+        
+        public YonetimRaporlariResponseBody(string YonetimRaporlariResult) {
+            this.YonetimRaporlariResult = YonetimRaporlariResult;
         }
     }
     
@@ -4013,6 +4088,31 @@ namespace KaleBlokBims.M2BWebService {
             inValue.Body.GuncelUSD = GuncelUSD;
             inValue.Body.GuncelEUR = GuncelEUR;
             return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).MalzemeListesiAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        KaleBlokBims.M2BWebService.YonetimRaporlariResponse KaleBlokBims.M2BWebService.IZOKALEAPISoap.YonetimRaporlari(KaleBlokBims.M2BWebService.YonetimRaporlariRequest request) {
+            return base.Channel.YonetimRaporlari(request);
+        }
+        
+        public string YonetimRaporlari(string tabloAdi) {
+            KaleBlokBims.M2BWebService.YonetimRaporlariRequest inValue = new KaleBlokBims.M2BWebService.YonetimRaporlariRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.YonetimRaporlariRequestBody();
+            inValue.Body.tabloAdi = tabloAdi;
+            KaleBlokBims.M2BWebService.YonetimRaporlariResponse retVal = ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).YonetimRaporlari(inValue);
+            return retVal.Body.YonetimRaporlariResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.YonetimRaporlariResponse> KaleBlokBims.M2BWebService.IZOKALEAPISoap.YonetimRaporlariAsync(KaleBlokBims.M2BWebService.YonetimRaporlariRequest request) {
+            return base.Channel.YonetimRaporlariAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.YonetimRaporlariResponse> YonetimRaporlariAsync(string tabloAdi) {
+            KaleBlokBims.M2BWebService.YonetimRaporlariRequest inValue = new KaleBlokBims.M2BWebService.YonetimRaporlariRequest();
+            inValue.Body = new KaleBlokBims.M2BWebService.YonetimRaporlariRequestBody();
+            inValue.Body.tabloAdi = tabloAdi;
+            return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).YonetimRaporlariAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

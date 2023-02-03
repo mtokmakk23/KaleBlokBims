@@ -13,7 +13,39 @@
             BaglantiOzeti();
             BayiBilgileri();
           //  buildTable($('#table'), 8, 1)
-        }
+            duyurular();
+    }
+
+    function duyurular() {
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Anasayfa/Duyurular/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                loading(false);
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    if (Boolean(result[i].AcilirMesajMi)) {
+                       // alert((result[i].AcilirMesajGenisligi));
+                        Swal.fire({
+                            title: result[i].Baslik,
+                            icon: 'info',
+                            html: "<div style='text-align:left'>"+result[i].Icerik+"</div>",
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                            width: (result[i].AcilirMesajGenisligi),
+                        })
+                    } else {
+
+                    }
+                        $(".duyurular").append(result[i].Baslik+"<br/>");
+                        $(".duyurular").append(result[i].Icerik+"<hr/>");
+                }
+            }
+        });
+
+    }
 
     function BayiBilgileri() {
          var sonuc = ('@Html.Raw(ViewBag.BayiBilgileri)');
@@ -167,14 +199,14 @@
                         </a>
                     </h2>
                 </div>
-                <div class="card-body">
-                    <b>Değerli bayilerimiz;</b><br />
+                <div class="card-body duyurular">
+                    @*<b>Değerli bayilerimiz;</b><br />
 
-                    &ensp;&ensp;&ensp;17.01.2023 tarihi itibariyle <b>BAYİ PORTAL</b> uygulamamız başlamış bulunmaktadır.<br />
+                        &ensp;&ensp;&ensp;17.01.2023 tarihi itibariyle <b>BAYİ PORTAL</b> uygulamamız başlamış bulunmaktadır.<br />
 
-                    &ensp;&ensp;&ensp;Siparişlerinizin tamamı <b>BAYİ PORTAL</b> üzerinden alınacak olup işlemlerinizin tamamı, bu ekrandan devam edecektir.<br />
+                        &ensp;&ensp;&ensp;Siparişlerinizin tamamı <b>BAYİ PORTAL</b> üzerinden alınacak olup işlemlerinizin tamamı, bu ekrandan devam edecektir.<br />
 
-                    &ensp;&ensp;&ensp;Siparişlerinizin daha sağlıklı işlenebilmesi ve sevkiyatta sıkıntı yaşamamanız adına siparişlerimizi <b>08:00 ve 17:00</b> saatleri arasında geçerseniz sistem daha sağlıklı işleyecektir.<br />
+                        &ensp;&ensp;&ensp;Siparişlerinizin daha sağlıklı işlenebilmesi ve sevkiyatta sıkıntı yaşamamanız adına siparişlerimizi <b>08:00 ve 17:00</b> saatleri arasında geçerseniz sistem daha sağlıklı işleyecektir.<br />*@
                 </div>
             </div><!-- End .col-lg-6 -->
         </div><!-- End .row -->

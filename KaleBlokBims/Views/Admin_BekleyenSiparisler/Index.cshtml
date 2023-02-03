@@ -53,8 +53,7 @@
                             $('#table').bootstrapTable('collapseRow', Gindex);
                         Gindex = index;
                         SiparisDetaylari(row, $detail);
-                        // $detail.html("selam");
-                        //irsaliyeIcerigi(result[index]["stFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+                        
                     }
                 });
             }
@@ -219,7 +218,6 @@
     }
     function SozlesmeBilgileri(row) {
 
-        console.log(row);
         $("#siparisDetayi" + row.LOGICALREF + " .sozlesmeNo").val((row.BaglantiLref == "-1" ? "" : row.BaglantiLref));
         //var theData = {
         //    BayiKodu: row.BayiKodu,
@@ -467,7 +465,7 @@
            data-show-export="true"></table>
 
     <div class="temp" style="display:none">
-        @using (Ajax.BeginForm("siparisAktar", "Admin_BekleyenSiparisler", new AjaxOptions { HttpMethod = "POST", OnSuccess = "return Validate(data, status, xhr);", }))
+        @using (Ajax.BeginForm("siparisAktar", "Admin_BekleyenSiparisler", new AjaxOptions { HttpMethod = "POST", OnSuccess = "return Validate(data, status, xhr);" }))
         {
             <div class="row mt-1">
                 <div class="col-md-3">

@@ -1,4 +1,4 @@
-// Main Js File
+ï»¿// Main Js File
 $(document).ready(function () {
     'use strict';
    
@@ -868,7 +868,7 @@ function acikSiparisler() {
 
             var result = JSON.parse(sonuc);
             if (Boolean(result.IsSuccessStatusCode)) {
-                if (result.Content == "Açýk Sipariþ Yok") {
+                if (result.Content == "AÃ§Ä±k SipariÅŸ Yok") {
                     acikSiparislerYuklendiMi = true;
                     return;
                 }
@@ -892,7 +892,7 @@ function acikSiparisler() {
                         ' </div >' +
                         '<figure class="product-image-container">' +
                         '    <a class="product-image" style="font-family: Arial, Helvetica, sans-serif">' +
-                        '        <img src="/assets/images/gorselHazirlanýyor.png" alt="product">' +
+                        '        <img src="/assets/images/gorselHazirlanÄ±yor.png" alt="product">' +
                         '    </a>' +
                         '</figure>' +
                         '    <a onclick="UrunSepettenCikar(' + icerik[i].LOGICALREF + ')" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>' +
@@ -902,9 +902,9 @@ function acikSiparisler() {
                     KdvToplam += (parseFloat(icerik[i].Miktar) * parseFloat(icerik[i].HesaplanmisBirimFiyatiTL)) * parseFloat(icerik[i].Kdv) / 100;
 
                 }
-                $(".araToplam").html(formatMoney(araToplam) + " TL");
-                $(".kdvToplam").html(formatMoney(KdvToplam) + " TL");
-                $(".genelToplam").html(formatMoney(araToplam + KdvToplam) + " TL");
+                $(".araToplam").html("â‚º "+formatMoney(araToplam) + " TL");
+                $(".kdvToplam").html("â‚º " +formatMoney(KdvToplam) + " TL");
+                $(".genelToplam").html("â‚º " +formatMoney(araToplam + KdvToplam) + " TL");
             }
         }
     });
@@ -918,11 +918,11 @@ function SepetiOnayla(step) {
         sepetOnaylaOdemeTipi = "";
         sepetOnaylaSiparisNotu = "";
         Swal.fire({
-            title: 'Sipariþ Notu Ekle',
+            title: 'SipariÅŸ Notu Ekle',
             html:
-                '<b style="float:left">Ödeme Tipi:</b><select id="swal-input1" class="swal2-select" style="float:right"><option>Seçiniz</option><option>Nakit</option><option>Baðlantý Ödemesi</option><option>Kredi Kartý Tek Çekim</option><option>Kredi Kartý Taksit</option><option>30 GÜN VADE</option><option>60 GÜN VADE</option><option>90 GÜN VADE</option></select>' +
+                '<b style="float:left">Ã–deme Tipi:</b><select id="swal-input1" class="swal2-select" style="float:right"><option>SeÃ§iniz</option><option>Nakit</option><option>BaÄŸlantÄ± Ã–demesi</option><option>Kredi KartÄ± Tek Ã‡ekim</option><option>Kredi KartÄ± Taksit</option><option>30 GÃœN VADE</option><option>60 GÃœN VADE</option><option>90 GÃœN VADE</option></select>' +
                 '<div style="clear:both"></div>' +
-                '<b style="float:left">Sipariþ Notu:</b><textarea id="swal-input2" class="form-control"  maxlength="100"></textarea>',
+                '<b style="float:left">SipariÅŸ Notu:</b><textarea id="swal-input2" class="form-control"  maxlength="100"></textarea>',
             focusConfirm: false,
             preConfirm: () => {
                 sepetOnaylaOdemeTipi = $("#swal-input1 option:selected").text();
@@ -932,8 +932,8 @@ function SepetiOnayla(step) {
             }
         });
         //Swal.fire({
-        //    title: 'Sepet Onaylansýn Mý?',
-        //    text: "Sipariþ Kontrol Edildikten Sonra Sisteme Aktarýlacaktýr.",
+        //    title: 'Sepet OnaylansÄ±n MÄ±?',
+        //    text: "SipariÅŸ Kontrol Edildikten Sonra Sisteme AktarÄ±lacaktÄ±r.",
         //    icon: 'warning',
         //    showCancelButton: true,
         //    confirmButtonColor: '#3085d6',
@@ -948,7 +948,7 @@ function SepetiOnayla(step) {
     if (step == 1) {
 
         Swal.fire({
-            title: 'Sipariþ Onaylansýn Mý?',
+            title: 'SipariÅŸ OnaylansÄ±n MÄ±?',
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'EVET',
@@ -979,13 +979,13 @@ function SepetiOnayla(step) {
                             }
                             acikSiparisler();
                             Swal.fire({
-                                title: '<strong>Sipariþ Onaylandý</strong>',
+                                title: '<strong>SipariÅŸ OnaylandÄ±</strong>',
                                 icon: 'success',
                                 showCloseButton: true,
                                 showCancelButton: false,
                                 focusConfirm: false,
                                 confirmButtonText:
-                                    '<a download="Sipariþ Formu.pdf" href="data:application/octet-stream;base64,' + result.Content + '" class="text-white"><i class="fa-solid fa-download"></i>Ön Sipariþ Formunu Ýndir</a>',
+                                    '<a download="SipariÅŸ Formu.pdf" href="data:application/octet-stream;base64,' + result.Content + '" class="text-white"><i class="fa-solid fa-download"></i>SipariÅŸ Formunu Ä°ndir</a>',
 
                             });
 
@@ -1004,6 +1004,7 @@ function SepetiOnayla(step) {
     }
 
 }
+
 function UrunSepettenCikar(LOGICALREF) {
     var theData = {
         LOGICALREF: LOGICALREF
@@ -1056,7 +1057,7 @@ function TextboxaHarfGirisiniEngelleVirgulHaric(myfield, e, dec) {
     else
         return false;
 }
-function formatMoney(n, c, d, t) {//sayý noktalý olarak gelmeli
+function formatMoney(n, c, d, t) {//sayÄ± noktalÄ± olarak gelmeli
     var c = isNaN(c = Math.abs(c)) ? 2 : c,
         d = d == undefined ? "," : d,
         t = t == undefined ? "." : t,
@@ -1074,7 +1075,7 @@ function formatMoney(n, c, d, t) {//sayý noktalý olarak gelmeli
 function loading(step) {
     if (step == true) {
         Swal.fire({
-            title: 'Lütfen Bekleyin!',
+            title: 'LÃ¼tfen Bekleyin!',
             timerProgressBar: true,
             allowOutsideClick: false,
             didOpen: () => {
@@ -1095,14 +1096,14 @@ function loading(step) {
 
 function OnayMesaji(text) {
     Swal.fire(
-        'BAÞARILI',
+        'BAÅžARILI',
         text,
         'success'
     )
 }
 function UyariMesaji(text) {
     Swal.fire(
-        'DÝKKAT!',
+        'DÄ°KKAT!',
         text,
         'warning'
     )

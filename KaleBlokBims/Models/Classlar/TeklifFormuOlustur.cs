@@ -1,5 +1,4 @@
 ﻿using iTextSharp.text;
-using pdf= iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
@@ -7,13 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
+using pdf = iTextSharp.text;
 
 namespace KaleBlokBims.Models.Classlar
 {
-    public class SiparisFormuOlustur
+    public class TeklifFormuOlustur
     {
-
-        public byte[] siparisFormu(int LOGICALREF)
+        public byte[] teklifFormu(int LOGICALREF)
         {
             #region fields
             var db = new IZOKALEPORTALEntities();
@@ -32,30 +31,25 @@ namespace KaleBlokBims.Models.Classlar
 
 
             #region utils
-            var siparisBasligi = (from fb in db.SiparisBasliklari
+            var teklifBasligi = (from fb in db.TeklifBasliklari
                                   where fb.LOGICALREF == LOGICALREF
                                   select new
                                   {
-                                      fb.AdresBasligi,
                                       fb.FiyatListesi,
                                       fb.BayiKodu,
                                       fb.BayiAdi,
                                       fb.EklenmeTarihi,
                                       fb.Ilce,
-                                      fb.IlgiliKisi,
-                                      fb.IlgiliKisiTel,
+                                      fb.TeklifSonGecerlilikTarihi,
                                       fb.Il,
-                                      fb.SevkAdresi,
                                       fb.FabrikaTeslimMi,
                                       fb.LOGICALREF,
-                                      fb.FisiOlusturanAdminMi,
                                       fb.MailAdresi,
-                                      fb.OdemeTipi,
-                                      fb.SiparisNotu
+                                     
                                   }).FirstOrDefault();
 
-            var siparisIcerigi = (from fb in db.SiparisBasliklari
-                                  join fi in db.SiparisIcerikleri on fb.LOGICALREF equals fi.BaslikLREF
+            var teklifIcerigi = (from fb in db.TeklifBasliklari
+                                  join fi in db.TeklifIcerikleri on fb.LOGICALREF equals fi.BaslikLREF
                                   where fi.BaslikLREF == LOGICALREF
                                   select new
                                   {
@@ -75,8 +69,7 @@ namespace KaleBlokBims.Models.Classlar
                                       fi.Birimi,
                                       fi.HesaplanmisBirimFiyatiTL,
                                       TOPLAM = "",
-                                      fb.OdemeTipi,
-                                      fb.SiparisNotu,
+                                      
                                       fb.BayiKodu,
                                       fb.BayiAdi
                                   }).ToList();
@@ -116,7 +109,7 @@ namespace KaleBlokBims.Models.Classlar
             PdfPTable aliciBil = new PdfPTable(1);
             aliciBil.WidthPercentage = 100f;
 
-            cell = new PdfPCell(new Phrase(siparisBasligi.BayiAdi, new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.BOLD, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(teklifBasligi.BayiAdi, new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.BOLD, BaseColor.BLACK)));
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             cell.PaddingTop = 10;
             cell.Border = PdfPCell.NO_BORDER;
@@ -130,51 +123,52 @@ namespace KaleBlokBims.Models.Classlar
             cell.PaddingTop = 10;
             aliciBil.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase((siparisBasligi.FabrikaTeslimMi == true ? "Fabrika Teslim" : siparisBasligi.SevkAdresi + " " + siparisBasligi.Il + "/" + siparisBasligi.Ilce).ToUpper(), new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase((teklifBasligi.FabrikaTeslimMi == true ? "Fabrika Teslim" : teklifBasligi.Il + "/" + teklifBasligi.Ilce).ToUpper(), new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             cell.Border = PdfPCell.NO_BORDER;
             aliciBil.AddCell(cell);
-            cell = new PdfPCell(new Phrase(siparisBasligi.IlgiliKisi + " - " + siparisBasligi.IlgiliKisiTel, new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase("", new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             cell.Border = PdfPCell.NO_BORDER;
             aliciBil.AddCell(cell);
             #endregion
 
-            #region SiparisBilgileri
-            PdfPTable siparisBil = new PdfPTable(2);
-            siparisBil.WidthPercentage = 100f;
-            siparisBil.SetWidths(new float[] { 30f, 70f });
+            #region TeklifBilgileri
+            PdfPTable teklifBil = new PdfPTable(2);
+            teklifBil.WidthPercentage = 100f;
+            teklifBil.SetWidths(new float[] { 30f, 70f });
 
-            cell = new PdfPCell(new Phrase("SİPARİŞ BİLGİLERİ", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.BOLD, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase("TEKLİF BİLGİLERİ", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.BOLD, BaseColor.BLACK)));
             cell.BackgroundColor = cell.BackgroundColor = (new BaseColor(System.Drawing.ColorTranslator.FromHtml("#eee")));
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             cell.Colspan = 2;
-            siparisBil.AddCell(cell);
+            teklifBil.AddCell(cell);
 
             cell = new PdfPCell(new Phrase("Tarih:", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
-            siparisBil.AddCell(cell);
-            cell = new PdfPCell(new Phrase(Convert.ToDateTime(siparisBasligi.EklenmeTarihi).ToString("dd.MM.yyyy"), new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            teklifBil.AddCell(cell);
+            cell = new PdfPCell(new Phrase(Convert.ToDateTime(teklifBasligi.EklenmeTarihi).ToString("dd.MM.yyyy"), new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
-            siparisBil.AddCell(cell);
+            teklifBil.AddCell(cell);
             cell = new PdfPCell(new Phrase("Ref:", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
-            siparisBil.AddCell(cell);
-            cell = new PdfPCell(new Phrase(siparisBasligi.BayiKodu + "-" + siparisBasligi.LOGICALREF, new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            teklifBil.AddCell(cell);
+            cell = new PdfPCell(new Phrase(teklifBasligi.BayiKodu + "-" + teklifBasligi.LOGICALREF, new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
-            siparisBil.AddCell(cell);
-
+            teklifBil.AddCell(cell);
+            cell = new PdfPCell(new Phrase("Opsiyon:", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell.Border = PdfPCell.NO_BORDER;
+            teklifBil.AddCell(cell);
+            cell = new PdfPCell(new Phrase(Convert.ToDateTime(teklifBasligi.TeklifSonGecerlilikTarihi).ToString("dd.MM.yyyy"), new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell.Border = PdfPCell.NO_BORDER;
+            teklifBil.AddCell(cell);
 
             cell = new PdfPCell(new Phrase("Oluşturan:", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
-            siparisBil.AddCell(cell);
-            cell = new PdfPCell(new Phrase(
-                (siparisBasligi.FisiOlusturanAdminMi == true) ?
-                db.AdminKullanicilari.Where(x => x.MailAdresi == siparisBasligi.MailAdresi).FirstOrDefault().AdiSoyadi + " (Admin)" :
-                db.BayiKullanicilari.Where(x => x.MailAdresi == siparisBasligi.MailAdresi).FirstOrDefault().AdiSoyadi + " (Bayi)",
-                new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            teklifBil.AddCell(cell);
+            cell = new PdfPCell(new Phrase(db.AdminKullanicilari.Where(x => x.MailAdresi == teklifBasligi.MailAdresi).FirstOrDefault().AdiSoyadi + " (Admin)",new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
-            siparisBil.AddCell(cell);
+            teklifBil.AddCell(cell);
             #endregion
 
             cell = new PdfPCell(saticiBil);
@@ -187,7 +181,7 @@ namespace KaleBlokBims.Models.Classlar
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             adresVeTarihTablo.AddCell(cell);
 
-            cell = new PdfPCell(siparisBil);
+            cell = new PdfPCell(teklifBil);
             cell.Border = PdfPCell.NO_BORDER;
             cell.Rowspan = 2;
             adresVeTarihTablo.AddCell(cell);
@@ -196,7 +190,7 @@ namespace KaleBlokBims.Models.Classlar
             cell.Border = PdfPCell.NO_BORDER;
             adresVeTarihTablo.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("SİPARİŞ FORMU", new pdf.Font(STF_Helvetica_Turkish, 12, pdf.Font.BOLD, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase("TEKLİF FORMU", new pdf.Font(STF_Helvetica_Turkish, 12, pdf.Font.BOLD, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             cell.VerticalAlignment = Element.ALIGN_CENTER;
             adresVeTarihTablo.AddCell(cell);
@@ -248,7 +242,7 @@ namespace KaleBlokBims.Models.Classlar
             double toplamKdv = 0;
             double toplamTutar = 0;
 
-            foreach (var item in siparisIcerigi.Where(x => x.LINETYPE == 0))
+            foreach (var item in teklifIcerigi.Where(x => x.LINETYPE == 0))
             {
                 tutar = Math.Round(Convert.ToDouble(item.HesaplanmisBirimFiyatiTL * item.Miktar), 2);
                 toplamTutar += tutar;
@@ -272,7 +266,7 @@ namespace KaleBlokBims.Models.Classlar
                 cell.Border = PdfPCell.NO_BORDER;
                 malzemeBilgileri.AddCell(cell);
 
-                foreach (var item2 in siparisIcerigi.Where(x => x.IndiriminUygulanacagiLOGICALREF == item.LOGICALREF))
+                foreach (var item2 in teklifIcerigi.Where(x => x.IndiriminUygulanacagiLOGICALREF == item.LOGICALREF))
                 {
                     toplamIndirim += Math.Round(Convert.ToDouble(item2.IndirimTutari) + (Convert.ToDouble(item2.IndirimTutari) * (Convert.ToDouble(item.Kdv) / 100)), 2);
                     cell = new PdfPCell(new Phrase("İndirim", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.ITALIC, BaseColor.BLACK)));
@@ -367,11 +361,11 @@ namespace KaleBlokBims.Models.Classlar
             #region sipariş detayları
             PdfPTable detayBilgileri = new PdfPTable(1);
             detayBilgileri.WidthPercentage = 99f;
-            cell = new PdfPCell(new Phrase("Ödeme Bilgisi: " + siparisBasligi.OdemeTipi, new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(" ", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             detayBilgileri.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("Sipariş Notu: " + siparisBasligi.SiparisNotu, new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(" ", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             detayBilgileri.AddCell(cell);
 
@@ -471,5 +465,4 @@ namespace KaleBlokBims.Models.Classlar
 
         }
     }
-   
 }

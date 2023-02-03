@@ -31,7 +31,7 @@
             success: function (data) {
                 var result = JSON.parse(data);
                 kayitliAdreslerArray = result;
-                $(".kayitliAdresler").html("<option value='-1'>Seçiniz</option>");
+                $(".kayitliAdresler").html("<option value='-1'>Yeni Adres</option>");
                 for (var i = 0; i < result.length; i++) {
                     $(".kayitliAdresler").append("<option value='" + result[i].LOGICALREF + "'>" + result[i].AdresBasligi + "</option>");
 
@@ -46,6 +46,8 @@
                         $(".fabrikaTeslimMi").attr("checked", Boolean(bekleyenBaslikBilgileri[0].FabrikaTeslimMi));
                         if (Boolean(bekleyenBaslikBilgileri[0].FabrikaTeslimMi)) {
                             $('.adresBilgileriDivi').hide();
+                        } else {
+                            $('.adresBilgileriDivi').show();
                         }
 
 
@@ -64,6 +66,7 @@
         var adresLogicalref = $(".kayitliAdresler option:selected").val();
         if (adresLogicalref == "-1") {
             $(".adresBasligi").val("");
+            $(".adresBasligi").attr("disabled", false);
             $(".ilgiliKisi").val("");
             $(".ilgiliKisiTel").val("");
             $(".detayliAdres").val("");
@@ -75,6 +78,7 @@
             for (var i = 0; i < result.length; i++) {
                 if (result[i].LOGICALREF == adresLogicalref) {
                     $(".adresBasligi").val(result[i].AdresBasligi);
+                    $(".adresBasligi").attr("disabled", true);
                     $(".ilgiliKisi").val(result[i].IlgiliKisi);
                     $(".ilgiliKisiTel").val(result[i].IlgiliKisiTel);
                     $(".detayliAdres").val(result[i].DetayliAdres);
@@ -104,6 +108,8 @@
                     $(".fabrikaTeslimMi").attr("checked", Boolean(result[i].FabrikaTeslimMi));
                     if (Boolean(result[i].FabrikaTeslimMi)) {
                         $('.adresBilgileriDivi').hide();
+                    } else {
+                        $('.adresBilgileriDivi').show();
                     }
                 }
             }
@@ -351,6 +357,7 @@
             }
         });
     }
+
     function SepeteEkle(i) {
         var miktar = $(".miktar" + i).val();
         if (miktar == "") {
@@ -409,13 +416,14 @@
             NakliyeBirimSeti: MalzemeFiyatlari[i].NakliyeBirimSeti,
             SistemKalemiMi: false
         }
-
+        loading(true);
         $.ajax({
             url: '/Dealer_SiparisOlustur/SepeteEkle/',
             type: 'POST',
             dataType: 'text',
             data: theData,
             success: function (sonuc) {
+                loading(false);
                 var result = JSON.parse(sonuc);
                 if (Boolean(result.IsSuccessStatusCode)) {
                     $(".miktar" + i).val("");
@@ -529,19 +537,6 @@
             <div class="toolbox">
             </div><!-- End .toolbox -->
             <div class="products mb-3">
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div><!-- End .products -->
 
         </div><!-- End .col-lg-9 -->

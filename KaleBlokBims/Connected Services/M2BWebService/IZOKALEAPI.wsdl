@@ -150,6 +150,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="YonetimRaporlari">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="tabloAdi" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="YonetimRaporlariResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="YonetimRaporlariResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="SecilebilirFiyatListeleri">
         <s:complexType>
           <s:sequence>
@@ -562,6 +576,12 @@
   <wsdl:message name="MalzemeListesiSoapOut">
     <wsdl:part name="parameters" element="tns:MalzemeListesiResponse" />
   </wsdl:message>
+  <wsdl:message name="YonetimRaporlariSoapIn">
+    <wsdl:part name="parameters" element="tns:YonetimRaporlari" />
+  </wsdl:message>
+  <wsdl:message name="YonetimRaporlariSoapOut">
+    <wsdl:part name="parameters" element="tns:YonetimRaporlariResponse" />
+  </wsdl:message>
   <wsdl:message name="SecilebilirFiyatListeleriSoapIn">
     <wsdl:part name="parameters" element="tns:SecilebilirFiyatListeleri" />
   </wsdl:message>
@@ -721,6 +741,10 @@
       <wsdl:input message="tns:MalzemeListesiSoapIn" />
       <wsdl:output message="tns:MalzemeListesiSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="YonetimRaporlari">
+      <wsdl:input message="tns:YonetimRaporlariSoapIn" />
+      <wsdl:output message="tns:YonetimRaporlariSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="SecilebilirFiyatListeleri">
       <wsdl:input message="tns:SecilebilirFiyatListeleriSoapIn" />
       <wsdl:output message="tns:SecilebilirFiyatListeleriSoapOut" />
@@ -854,6 +878,15 @@
     </wsdl:operation>
     <wsdl:operation name="MalzemeListesi">
       <soap:operation soapAction="http://tempuri.org/MalzemeListesi" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="YonetimRaporlari">
+      <soap:operation soapAction="http://tempuri.org/YonetimRaporlari" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1109,6 +1142,15 @@
     </wsdl:operation>
     <wsdl:operation name="MalzemeListesi">
       <soap12:operation soapAction="http://tempuri.org/MalzemeListesi" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="YonetimRaporlari">
+      <soap12:operation soapAction="http://tempuri.org/YonetimRaporlari" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

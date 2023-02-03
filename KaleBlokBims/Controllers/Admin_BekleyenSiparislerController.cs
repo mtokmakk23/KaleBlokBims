@@ -1,4 +1,5 @@
 ﻿using KaleBlokBims.Models;
+using KaleBlokBims.Models.Classlar;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -14,7 +15,16 @@ namespace KaleBlokBims.Controllers
         // GET: Admin_BekleyenSiparisler
         public ActionResult Index()
         {
-            return View();
+            var yetkiler = Yetkiler.AdminKullaniciYetkisi();
+            if (!Convert.ToBoolean(yetkiler.SiparisAktarma))
+            {
+                return RedirectToAction("Index", "Admin_Anasayfa");
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         [HttpPost]

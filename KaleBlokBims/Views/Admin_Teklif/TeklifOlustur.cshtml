@@ -1,0 +1,731 @@
+﻿
+@{
+    ViewBag.Title = "TeklifOlustur";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+<script>
+    var bekleyenBaslikBilgileri;
+    window.onload = function () {
+        acikSiparisler();
+        var timer = setInterval(function () {
+            if (Boolean(acikSiparislerYuklendiMi)) {
+                clearInterval(timer);
+                TumBayiler();
+            }
+        }, 100);
+
+
+    }
+
+    var acikSiparislerYuklendiMi = false;
+    var bekleyenBaslikBilgileri;
+    function acikSiparisler() {
+        $(".dropdown-cart-products .table tbody").html("");
+        $(".cart-count").html("0");
+        $(".araToplam").html("");
+        $(".kdvToplam").html("");
+        $(".genelToplam").html("");
+        loading(true);
+        $.ajax({
+            url: '/Admin_Teklif/acikTeklifler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    acikSiparislerYuklendiMi = true;
+                    if (result.Content == "Açık Sipariş Yok") {
+
+                        return;
+                    }
+                    bekleyenBaslikBilgileri = JSON.parse(result.Content);
+                    var icerik = JSON.parse(bekleyenBaslikBilgileri[0].Malzemeler);
+                    $(".dropdown-cart-products .table tbody").html("");
+                    var araToplam = 0;
+                    var KdvToplam = 0;
+                    //////////////////////////////////////////////////
+                    var sayac = -1;
+                    $(".EklenenUrunSayisi").html(icerik.length);
+                    for (var i = 0; i < icerik.length; i++) {
+                        
+                        sayac++;
+                        $(".dropdown-cart-products .table tbody").append('<tr class="rows' + icerik[i].LOGICALREF + '">' +
+                            '<td><a class="btn btn-danger" onclick="deleteRow(0,' + icerik[i].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
+                            '<td><a class="btn btn-warning" onclick="newRow(2,' + icerik[i].LOGICALREF + ',' + sayac + ',' + (parseFloat(icerik[i].HesaplanmisBirimFiyatiTL) - parseFloat(icerik[i].NakliyeFiyatiTL)) + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                            '<td>' + icerik[i].Turu + '</td>' +
+                            '<td>' + icerik[i].MalzemeKodu + '</td>' +
+                            '<td>' + icerik[i].MalzemeAdi + '</td>' +
+                            '<td>' + formatMoney(icerik[i].Miktar) + ' ' + icerik[i].Birimi + '</td>' +
+                            '<td>' + formatMoney(parseFloat(icerik[i].HesaplanmisBirimFiyatiTL) - parseFloat(icerik[i].NakliyeFiyatiTL)) + ' TL</td>' +
+                            '<td>' + icerik[i].HesaplamaDetayliAciklama + '</td>' +
+                            +'</tr>');
+                        var indirimler = icerik[i].Indirimler;
+                        for (var j = 0; j < indirimler.length; j++) {
+                            sayac++;
+                            $(".dropdown-cart-products .table tbody").append('<tr class="rows' + indirimler[j].LOGICALREF + '">' +
+                                '<td><a class="btn btn-danger" onclick="deleteRow(0,' + indirimler[j].LOGICALREF + ')"><i class="fa-solid fa-trash"></i></a></td>' +
+                                '<td></td>' +
+                                '<td>İndirim</td>' +
+                                '<td></td>' +
+                                '<td>' + indirimler[j].IndirimAciklamasi + '</td>' +
+                                '<td>%' + ((parseFloat(indirimler[j].IndirimTutari) * 100) / parseFloat(indirimler[j].HesaplanmisBirimFiyatiTL)) + '</td>' +
+                                '<td>' + formatMoney(indirimler[j].IndirimTutari) + ' TL</td>' +
+                                '<td></td>' +
+                                +'</tr>');
+                        }
+
+                        var nakliyeler = icerik[i].Nakliyeler;
+                        for (var j = 0; j < nakliyeler.length; j++) {
+                            sayac++;
+                            $(".dropdown-cart-products .table tbody").append('<tr class="rows' + nakliyeler[j].LOGICALREF + '">' +
+                                '<td></td>' +
+                                '<td></td>' +
+                                '<td>Hizmet</td>' +
+                                '<td>' + nakliyeler[j].NakliyeKodu + '</td>' +
+                                '<td>' + nakliyeler[j].NakliyeAdi + '</td>' +
+                                '<td>' + formatMoney(nakliyeler[j].Miktar) + ' x ' + nakliyeler[j].NakliyeBirimSeti + '</td>' +
+                                '<td>' + nakliyeler[j].NakliyeFiyatiTL + ' TL</td>' +
+                                '<td></td>' +
+                                +'</tr>');
+
+                        }
+
+
+
+                    }
+                    $(".araToplam").html(formatMoney(araToplam) + " TL");
+                    $(".kdvToplam").html(formatMoney(KdvToplam) + " TL");
+                    $(".genelToplam").html(formatMoney(araToplam + KdvToplam) + " TL");
+                }
+
+            }
+        });
+    }
+
+    function TumBayiler() {
+        loading(true);
+        $.ajax({
+            url: '/Admin_BayilerVeKullanicilar/bayiler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                $(".bayiListesi").append("<option value='-1'>Seçiniz</option>");
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $(".bayiListesi").append("<option value='" + result[i].BayiKodu + "'>" + result[i].BayiAdi + "</option>");
+                }
+
+                if (bekleyenBaslikBilgileri != undefined) {
+                    if (bekleyenBaslikBilgileri.length > 0) {
+                        $('.bayiListesi option[value="' + bekleyenBaslikBilgileri[0].BayiKodu + '"]').attr('selected', 'selected');
+                        fiyatListeleri();
+                    }
+                }
+            }
+        });
+    }
+
+    function fiyatListeleri() {
+        $(".fiyatListeleri").html("<option value='-2'>Seçiniz</option>");
+        var bayiKodu = $(".bayiListesi option:selected").val();
+        if (bayiKodu == -1) {
+            UyariMesaji("Bayi Seçilmelidir.");
+            return;
+        }
+        var theData = {
+            bayiKodu: bayiKodu
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Teklif/FiyatListeleri/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                loading(false);
+                var result = JSON.parse(data);
+                for (var i = 0; i < result.length; i++) {
+                    $(".fiyatListeleri").append("<option data-baglantiLREF='" + result[i].baglantiLREF + "' value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + " " + ((result[i].baglantiLREF != -1) ? " Kalan Tutar: " + (result[i].bakiye) + " TL" : "") + "</option>");
+
+                }
+                if (bekleyenBaslikBilgileri != undefined) {
+                    if (bekleyenBaslikBilgileri.length > 0) {
+                        $('.fiyatListeleri option[value="' + bekleyenBaslikBilgileri[0].FiyatListesi + '"]').attr('selected', 'selected');
+                        iller();
+                    }
+                }
+            }
+        });
+    }
+
+    //---------------------------------------------------------------------------------------------------
+    var illerArray;
+    function iller() {
+        loading(true);
+        $.ajax({
+            url: '/Dealer_SiparisOlustur/Iller/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                loading(false);
+                var result = JSON.parse(data);
+                illerArray = result;
+                $(".il").html("<option value='-1'>Seçiniz</option>");
+                for (var i = 0; i < result.length; i++) {
+                    $(".il").append("<option value='" + result[i].LOGICALREF + "'>" + result[i].IlAdi + "</option>");
+
+                }
+                if (bekleyenBaslikBilgileri != undefined) {
+                    if (bekleyenBaslikBilgileri.length > 0) {
+                        do {
+                            var LillerSelect = document.getElementById("iller");
+                            for (var j = 0; j < LillerSelect.options.length; j++) {
+                                if (LillerSelect.options[j].text == bekleyenBaslikBilgileri[0].Il) {
+                                    LillerSelect.options[j].setAttribute("selected", "selected");
+
+                                } else {
+                                    LillerSelect.options[j].removeAttribute("selected");
+                                }
+                            }
+                        } while (LillerSelect.options.length == 0);
+
+                        ilceler();
+                        var LilcelerSelect = document.getElementById("ilceler");
+
+                        do {
+                            for (var j = 0; j < LilcelerSelect.options.length; j++) {
+                                if (LilcelerSelect.options[j].text == bekleyenBaslikBilgileri[0].Ilce) {
+                                    LilcelerSelect.options[j].setAttribute("selected", "selected");
+
+                                } else {
+                                    LilcelerSelect.options[j].removeAttribute("selected");
+                                }
+                            }
+                        } while (LilcelerSelect.options.length == 0);
+                        $(".fabrikaTeslimMi").attr("checked", Boolean(bekleyenBaslikBilgileri[0].FabrikaTeslimMi));
+                        Gruplar();
+                        UrunDiviniAc();
+                    }
+                }
+            }
+        });
+    }
+
+    function ilceler() {
+        var result = illerArray;
+        var ilKodu = $(".il option:selected").val();
+
+        $(".ilce").html("<option value='-1'>Seçiniz</option>");
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].LOGICALREF == ilKodu) {
+                var ilceler = result[i].Ilceler;
+                for (var j = 0; j < ilceler.length; j++) {
+                    $(".ilce").append("<option value='" + ilceler[j].LOGICALREF + "'>" + ilceler[j].IlceAdi + "</option>");
+                }
+
+            }
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------------
+
+
+    function Gruplar() {
+        $(".gruplar").html("");
+        var fiyatListesi = $(".fiyatListeleri option:selected").val();
+        if (fiyatListesi == "-2") {
+            return;
+        }
+        var theData = {
+            fiyatListesi: fiyatListesi
+        }
+        $.ajax({
+            url: '/Dealer_SiparisOlustur/Gruplar/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var gruplarStr = ' <div class="widge">';
+                var anaMenuler = JSON.parse(data);
+                for (var i = 0; i < anaMenuler.length; i++) {
+                    gruplarStr += ' <h3 class="widget-title">';
+                    gruplarStr += ' <div class="summary summary-cart p-2 m-0 bg-primary text-white" style="cursor:pointer" data-anaGrup="' + anaMenuler[i].OzelKod + '" data-altGrup="" onclick="fiyatlariGetir(this)">' + anaMenuler[i].MenuAdi + '</div>';
+                    gruplarStr += ' </h3>';
+                    gruplarStr += ' <div class="collapse show">';
+                    gruplarStr += ' <div class="widget-body">';
+                    gruplarStr += ' <div class="filter-items filter-items-count">';
+                    var altMenuler = anaMenuler[i].AltMenuler;
+                    for (var j = 0; j < altMenuler.length; j++) {
+                        gruplarStr += '  <div class="form-check filter-item" style="cursor:pointer;margin-left: 0;cursor:pointer">';
+                        gruplarStr += '  <label class="form-check-label" for="anaMenu' + i + 'altMenu' + j + '" onclick="fiyatlariGetir(this)" data-anaGrup="' + anaMenuler[i].OzelKod + '" data-altGrup="' + altMenuler[j].AltMenuOzelKod + '">' + altMenuler[j].AltMenuAdi + '</label>';
+                        gruplarStr += '  </div>';
+                    }
+                    gruplarStr += '</div>';
+                    gruplarStr += '</div>';
+                    gruplarStr += '</div>';
+
+                }
+                gruplarStr += '</div>';
+                $(".gruplar").html(gruplarStr);
+
+            }
+        });
+
+
+    }
+    function UrunDiviniAc() {
+        var fiyatListesi = $(".fiyatListeleri option:selected").val();
+        var bayiKodu = $(".bayiListesi option:selected").val();
+        var il = $(".il option:selected").val();
+        var ilce = $(".ilce option:selected").val();
+        var fabrikaTeslimMi = $('.fabrikaTeslimMi').is(':checked');
+
+        if (bayiKodu == "-1") {
+            HataMesaji("Bayi Seçilmelidir.");
+            return;
+        }
+
+        if (fiyatListesi == "-2") {
+            HataMesaji("Fiyat Listesi Seçilmelidir.");
+            return;
+        }
+
+        if (!Boolean(fabrikaTeslimMi)) {
+            if (il == "-1" || ilce == "-1") {
+                HataMesaji("İl ve İlçe Seçilmelidir.");
+                return;
+            }
+        }
+        $(".siparisBilgileri input[type=checkbox]").attr("disabled", true);
+        $(".siparisBilgileri select").attr("disabled", true);
+        $(".urunlerDivi").show("fast");
+        $(".btn-order").remove();
+    }
+
+    var MalzemeFiyatlari;
+    function fiyatlariGetir(check) {
+        var bayiKodu = $(".bayiListesi option:selected").val();
+        var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
+        var il = $(".il option:selected").val();
+        var ilce = $(".ilce option:selected").val();
+        var fabrikaTeslimMi = $('.fabrikaTeslimMi').is(':checked');
+
+        var theData = {
+            bayiKodu: bayiKodu,
+            FiyatListesiKodu: fiyatListesiKodu,
+            baglantiLREF: baglantiLREF,
+            SPECODE1: $(check).attr("data-anaGrup"),
+            SPECODE2: $(check).attr("data-altGrup"),
+            Il: il,
+            Ilce: ilce,
+            fabrikaTeslimMi: Boolean(fabrikaTeslimMi),
+            GuncelUSD: GuncelUSD,
+            GuncelEUR: GuncelEUR,
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Teklif/MalzemeFiyatlariniGetir/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                MalzemeFiyatlari = result;
+                var productList = "";
+
+                for (var i = 0; i < result.length; i++) {
+                    productList += '<div class="product product-list">';
+                    productList += ' <div class="row">';
+                    productList += '       <div class="col-6 col-lg-2">';
+                    productList += '           <figure class="product-media" style="max-width: 115px; ">';
+                    productList += '             <img src = "' + result[i].ResimUrl + '" alt = "Product image" class="product-image" >';
+                    productList += '           </figure>';
+                    productList += '       </div>';
+                    productList += '       <div class="col-6 col-lg-3 order-lg-last">';
+                    if (parseFloat(result[i].HesaplanmisBirimFiyatiTL) > 0) {
+                        productList += '           <div class="product-list-action p-0">';
+                        productList += '             <div class="product-price" style="font-weight:bold"> ' + formatMoney(result[i].HesaplanmisBirimFiyatiTL) + ' TL</div>';
+                        productList += '             <input type="text" class="miktar' + i + ' sadeceSayi form-control mb-1" style="width:50%;float:left" placeholder="Miktar Yazınız" />';
+                        productList += '             <h6 class="product-cat" style="float:left;font-weight:bold;margin-left:2px">' + result[i].Birim + '</h6>';
+                        productList += '             <a onclick="SepeteEkle(' + i + ')" style="clear:both;cursor:pointer" class="btn-product btn-cart"><span>Sepete Ekle</span></a>';
+                        productList += '           </div>';
+                    } else {
+                        productList += '<div class="alert alert-danger">Fiyat Yok</div>';
+                    }
+
+                    productList += '       </div>';
+                    productList += '       <div class="col-lg-6">';
+                    productList += '           <div class="product-body product-action-inner">';
+                    productList += '             <div class="product-cat"> <a href="#">' + result[i].MalzemeKodu + '</a></div>';
+                    productList += '             <h3 class="product-title" style="font-size:12px"><a href="#">' + result[i].MalzemeAdi + '</a></h3>';
+                    productList += '             <h3 class="product-title mt-3" style="font-weight:bold;font-size:12px"><a href="#">' + result[i].MalzemeAciklama + '</a></h3>';
+                    // productList += '             <div class="product-content p-0 pt-3 text-center"><p>' + result[i].MalzemeAciklama + '</p></div>';
+                    productList += '           </div>';
+                    productList += '       </div>';
+                    productList += ' </div>';
+                    productList += '</div>';
+                }
+
+                $(".products").html(productList);
+            }
+        });
+    }
+    function SepeteEkle(i) {
+        var miktar = $(".miktar" + i).val();
+        if (miktar == "") {
+            UyariMesaji("Miktar Boş Geçilemez.");
+            return;
+        }
+        if (parseFloat(miktar) == 0) {
+            UyariMesaji("Miktar 0(Sıfır) Olamaz.");
+            return;
+        }
+        if (parseFloat(MalzemeFiyatlari[i].HesaplanmisBirimFiyatiTL) == 0) {
+            UyariMesaji("Fiyatı 0(Sıfır) Olan Ürün Sepete Eklenemez.");
+            return;
+        }
+        var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
+        var il = $(".il option:selected").text();
+        var ilce = $(".ilce option:selected").text();
+        var adresBasligi = $(".adresBasligi").val();
+        var ilgiliKisi = $(".ilgiliKisi").val();
+        var ilgiliKisiTel = $(".ilgiliKisiTel").val();
+        var detayliAdres = $(".detayliAdres").val();
+        var fabrikaTeslimMi = $('.fabrikaTeslimMi').is(':checked');
+        var bayiKodu = $(".bayiListesi option:selected").val();
+        var bayiAdi = $(".bayiListesi option:selected").text();
+
+
+        var theData = {
+            bayiKodu: bayiKodu,
+            bayiAdi: bayiAdi,
+            fiyatListesi: fiyatListesiKodu,
+            baglantiLREF: baglantiLREF,
+            adresBasligi: adresBasligi,
+            IlgiliKisi: ilgiliKisi,
+            IlgiliKisiTel: ilgiliKisiTel,
+            SevkAdresi: detayliAdres,
+            Il: il,
+            Ilce: ilce,
+            FabrikaTeslimMi: fabrikaTeslimMi,
+            MalzemeKodu: MalzemeFiyatlari[i].MalzemeKodu,
+            MalzemeAdi: MalzemeFiyatlari[i].MalzemeAdi,
+            Birim: MalzemeFiyatlari[i].Birim,
+            AnaGrup: MalzemeFiyatlari[i].SPECODE1,
+            AltGrup: MalzemeFiyatlari[i].SPECODE2,
+            Miktar: miktar,
+            HesaplanmisBirimFiyatiTL: MalzemeFiyatlari[i].HesaplanmisBirimFiyatiTL,
+            BaseFiyat: MalzemeFiyatlari[i].BaseFiyat,
+            BaseDoviz: MalzemeFiyatlari[i].BaseDoviz,
+            NakliyeFiyatiTL: MalzemeFiyatlari[i].NakliyeMasrafiTL,
+            GuncelEUR: MalzemeFiyatlari[i].GuncelEUR,
+            GuncelUSD: MalzemeFiyatlari[i].GuncelUSD,
+            SabitUSD: MalzemeFiyatlari[i].sozlesmeUSD,
+            SabitEUR: MalzemeFiyatlari[i].sozlesmeEUR,
+            HesaplamaDetayliAciklama: MalzemeFiyatlari[i].HesaplamaDetayliAciklama,
+            Kdv: MalzemeFiyatlari[i].Kdv,
+            NakliyeKartiLref: MalzemeFiyatlari[i].NakliyeKartiLref,
+            NakliyeKodu: MalzemeFiyatlari[i].NakliyeKodu,
+            NakliyeAdi: MalzemeFiyatlari[i].NakliyeAdi,
+            NakliyeBirimSeti: MalzemeFiyatlari[i].NakliyeBirimSeti,
+            SistemKalemiMi: false
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Teklif/SepeteEkle/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    $(".miktar" + i).val("");
+                    acikSiparisler();
+                    OnayMesaji(result.Content);
+                } else {
+                    HataMesaji(result.ErrorMessage);
+                }
+            }
+        });
+
+    }
+    function UrunSepettenCikar(LOGICALREF) {
+        var theData = {
+            LOGICALREF: LOGICALREF
+        }
+        $.ajax({
+            url: '/Admin_Teklif/UrunSepettenCikar/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    acikSiparisler();
+                } else {
+                    HataMesaji(result.ErrorMessage);
+                }
+            }
+        });
+    }
+
+
+    function newRow(step, itemRef, i, fiyat) {
+        if (step == "2") {
+            $(".dropdown-cart-products table tbody tr:eq(" + i + ")").after('<tr class="ek' + itemRef + '">' +
+                '<td colspan="1"><a onclick="indirimiKaydet(' + itemRef + ')" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i></a></td>' +
+                '<td><input type="text" class="gizliFiyat form-control" value="' + fiyat + '" style="display:none"/></td>' +
+                '<td><select class="lineType form-control"><option val="2">İndirim</option></select></td>' +
+                '<td colspan="2"><input type="text" class="indirimAciklamasi form-control" placeholder="İndirim Açıklaması Yazınız"/></td>' +
+                '<td><input type="text" onkeyup="indirimHesapla(' + itemRef + ',0)" class="indirimYuzdesi sadeceSayi form-control" placeholder="Yüzde Olarak İndirim"/></td>' +
+                '<td colspan="2"><input type="text" onkeyup="indirimHesapla(' + itemRef + ',1)" class="indirimTutari sadeceSayi form-control" placeholder="Fiyat Olarak İndirim"/></td>' +
+                +'</tr>');
+        }
+
+    }
+
+    function deleteRow(step, itemRef) {
+        if (step == 0) {
+            Swal.fire({
+                title: 'Emin Misiniz?',
+                text: "Satırı Silmek İstediğinizden Emin Misiniz?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'EVET'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteRow(1, itemRef);
+                }
+            })
+        } else {
+            var theData = {
+                itemRef: itemRef
+            }
+            $.ajax({
+                url: '/Admin_Teklif/deleteRow/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (sonuc) {
+                    if (sonuc == "ok") {
+                        acikSiparisler();
+                    }
+                }
+            });
+        }
+
+    }
+    function indirimHesapla(itemRef, step) {
+
+        if (step == 0) {
+            $(".ek" + itemRef + " .indirimTutari").val(parseFloat($(".ek" + itemRef + " .indirimYuzdesi").val()) * parseFloat($(".ek" + itemRef + " .gizliFiyat").val()) / 100);
+        } else {
+            $(".ek" + itemRef + " .indirimYuzdesi").val(parseFloat($(".ek" + itemRef + " .indirimTutari").val()) * 100 / parseFloat($(".ek" + itemRef + " .gizliFiyat").val()));
+
+        }
+
+    }
+
+    function indirimiKaydet(itemRef) {
+        var indirimAciklamasi = $(".ek" + itemRef + " .indirimAciklamasi").val();
+        var indirimTutari = parseFloat($(".ek" + itemRef + " .indirimTutari").val());
+        if (indirimAciklamasi.length < 5) {
+            UyariMesaji("İndirim Açıklaması En Az 5 Karakter Olmalıdır");
+            return;
+        }
+        if (parseFloat(indirimTutari) <= 0) {
+            UyariMesaji("İndirim Tutarı 0(Sıfır) dan Küçük Olamaz");
+            return;
+        }
+        var theData = {
+            itemREF: itemRef,
+            lineType: $(".ek" + itemRef + " .lineType option:selected").val(),
+            indirimAciklamasi: indirimAciklamasi,
+            indirimTutari: indirimTutari,
+            HesaplanmisBirimFiyatiTL: $(".ek" + itemRef + " .gizliFiyat").val()
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Teklif/indirimiKaydet/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (sonuc) {
+                loading(false);
+                if (sonuc == "ok") {
+                    acikSiparisler();
+                } else {
+                    HataMesaji(sonuc);
+                }
+
+            }
+        });
+    }
+    function TeklifiKaydet() {
+        Swal.fire({
+            title: 'Emin Misiniz?',
+            text: "Teklif Kaydedilirse Bayilere Bilgi Maili Gidecektir.Teklif Kaydedilsin Mi?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'EVET'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var gecerlilikTarihi = $("#sonGecerlilikTarihi").val();
+                var theData = {
+                    gecerlilikTarihi: gecerlilikTarihi,
+                }
+                loading(true);
+                $.ajax({
+                    url: '/Admin_Teklif/TeklifiKaydet/',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: theData,
+                    success: function (sonuc) {
+                        loading(false);
+                        if (sonuc == "ok") {
+                            OnayMesaji("Teklif Oluşturuldu");
+                            acikSiparisler();
+                            window.location = "/Admin_Teklif/TeklifOlustur";
+                        } else {
+                            HataMesaji(sonuc);
+                        }
+
+                    }
+                });
+            }
+        })
+        
+    }
+</script>
+
+<div class="row mt-1">
+    
+    <div class="col-md-8 m-auto siparisBilgileri">
+        <a class="btn btn-success mb-1 text-white" style="float:right" onclick="$('.eklenenUrunBilgileri').show('slow');$('.siparisBilgileri').hide('fast');">
+            Sepet <span class="badge badge-warning bg-warning text-black EklenenUrunSayisi">0</span>
+        </a>
+        <div class="cart">
+
+            <div class="row">
+
+                <aside class="col-sm-3">
+                    <div class="summary summary-cart">
+                        <h3 class="summary-title">BAYİ SEÇİNİZ</h3><!-- End .summary-title -->
+                        <table class="table table-summary">
+                            <tbody>
+                                <tr class="summary-subtotal">
+                                    <td><select class="bayiListesi form-control" onchange="fiyatListeleri()"></select></td>
+                                </tr><!-- End .summary-subtotal -->
+
+                            </tbody>
+                        </table><!-- End .table table-summary -->
+                    </div><!-- End .summary -->
+                </aside>
+                <aside class="col-sm-3">
+                    <div class="summary summary-cart">
+                        <h3 class="summary-title">FİYAT LİSTESİ SEÇİNİZ</h3><!-- End .summary-title -->
+                        <table class="table table-summary">
+                            <tbody>
+                                <tr class="summary-subtotal">
+                                    <td><select class="fiyatListeleri form-control" onchange="Gruplar(); iller();"></select></td>
+                                </tr><!-- End .summary-subtotal -->
+
+                            </tbody>
+                        </table><!-- End .table table-summary -->
+                    </div><!-- End .summary -->
+                </aside>
+                <aside class="col-sm-6">
+                    <div class="summary summary-cart">
+                        <h3 class="summary-title">SEVK BİLGİLERİNİ DOLDURUNUZ</h3><!-- End .summary-title -->
+                        <table class="table table-summary">
+                            <tbody>
+                                <tr class="summary-subtotal 0 adresBilgileriDivi">
+                                    <td class="border-0">İl:</td>
+                                    <td class="border-0"><select class="il form-control" id="iller" onchange="ilceler()"><option value="-1">Seçiniz</option></select></td>
+                                    <td class="border-0">İlçe:</td>
+                                    <td class="border-0"><select class="ilce form-control" id="ilceler"><option value="-1">Seçiniz</option></select></td>
+
+                                </tr><!-- End .summary-subtotal -->
+                                <tr class="summary-subtotal">
+                                    <td colspan="4">Fabrika Teslim:<input type="checkbox" style="margin-left:5px" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input" onchange="$('.adresBilgileriDivi').toggle();"></td>
+
+                                </tr><!-- End .summary-subtotal -->
+
+                            </tbody>
+                        </table><!-- End .table table-summary -->
+                        <a href="#" onclick="UrunDiviniAc()" class="btn btn-outline-primary-2 btn-order btn-block">FİYATLARI GETİR</a>
+                    </div><!-- End .summary -->
+                </aside>
+
+
+                <div class="urunlerDivi page-content mt-1 pt-3" style="border-top: .1rem solid #ebebeb;display:none">
+                    <div class="row">
+                        <aside class="col-lg-3 order-lg-first" style="border-right: .1rem solid #ebebeb;">
+                            <div class="gruplar sidebar sidebar-shop" style="font-size:10px">
+
+                                <div class="widge">
+                                    <h3 class="widget-title">
+                                        <a href="#">
+                                            Gruplar Yükleniyor...
+                                        </a>
+                                    </h3><!-- End .widget-title -->
+                                    <!-- End .collapse -->
+                                </div><!-- End .widget -->
+
+                            </div>
+                        </aside><!-- End .col-lg-3 -->
+                        <div class="col-lg-9">
+                            <div class="toolbox">
+                            </div><!-- End .toolbox -->
+                            <div class="products mb-3">
+                            </div><!-- End .products -->
+
+                        </div><!-- End .col-lg-9 -->
+
+                    </div><!-- End .row -->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-8 m-auto eklenenUrunBilgileri" style="display:none">
+        <a class="btn btn-success mb-1 text-white" style="float:right" onclick="$('.eklenenUrunBilgileri').hide('fast');$('.siparisBilgileri').show('slow');">Ürün Ekle</a>
+        <h5 class="mb-0">Sepetteki Ürünler</h5><hr class="mt-1 mb-1 " />
+        <div class="dropdown-cart-products">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Türü</th>
+                        <th>Kodu</th>
+                        <th>Açıklaması</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
+                        <th>Fiyat Açıklaması</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="form-group w-25 mt-3">
+           
+            <label class="fw-bold">Teklif Son Geçerlilik Tarihi:</label><br />
+            <input type="date" class="form-control" id="sonGecerlilikTarihi" />
+            <a class="btn btn-primary text-white mt-2 m-auto" onclick="TeklifiKaydet()">KAYDET</a>
+        </div>
+    </div>
+</div>

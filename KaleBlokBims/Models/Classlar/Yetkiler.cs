@@ -19,5 +19,11 @@ namespace KaleBlokBims.Models.Classlar
             return JsonConvert.DeserializeObject<BayiKullaniciYetkileri>(HttpContext.Current.Session["Yetkiler"].ToString());
            
         }
+
+        public static AdminKullaniciYetkisi AdminKullaniciYetkisi()
+        {           
+            return JsonConvert.DeserializeObject<AdminKullaniciYetkisi>(HttpContext.Current.Session["AdminYetkiler"].ToString());
+
+        }
     }
 }

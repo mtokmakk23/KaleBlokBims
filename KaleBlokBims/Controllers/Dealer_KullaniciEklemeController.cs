@@ -43,6 +43,12 @@ namespace KaleBlokBims.Controllers
         public string kullaniciKaydet(string cAktif,string cname, string cemail,string cphone,string cpassword,string yetkiler)
         {
             RestSharp.RestResponse response = new RestSharp.RestResponse();
+            if (cname.Trim()=="" || cemail.Trim()=="" || cphone=="")
+            {
+                response.IsSuccessStatusCode = false;
+                response.ErrorMessage = "Lütfen Tüm Alanları Doldurunuz.";
+                return JsonConvert.SerializeObject(response);
+            }
             try
             {
                 MD5 md5 = new MD5();

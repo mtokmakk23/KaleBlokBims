@@ -26,5 +26,6 @@ namespace KaleBlokBims.Models
         public Nullable<bool> SikayetleriGorme { get; set; }
         public Nullable<bool> BelgeleriGorme { get; set; }
         public Nullable<bool> FirmaAdminiMi { get; set; }
+        public Nullable<bool> TeklifleriGorme { get; set; }
     }
 }

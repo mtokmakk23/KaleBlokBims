@@ -60,6 +60,7 @@ namespace KaleBlokBims.Controllers
                 Session["KullaniciId"] = kullanici.LOGICALREF;
                 Session["MailAdresi"] = kullanici.MailAdresi;
                 Session["AdminMi"] = "1";
+                Session["AdminYetkiler"] = JsonConvert.SerializeObject(db.AdminKullaniciYetkisi.Where(x=>x.KullaniciID==kullanici.LOGICALREF).FirstOrDefault());
                 FormsAuthentication.SetAuthCookie(kullanici.LOGICALREF.ToString(), false);
                 if (Convert.ToDateTime(kullanici.SifreDegistirmeTarihi).AddDays(60) < DateTime.Now)
                 {
