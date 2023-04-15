@@ -25,5 +25,6 @@ namespace KaleBlokBims.Models
         public Nullable<bool> TeklifYetkisi { get; set; }
         public Nullable<bool> EvrakYetkisi { get; set; }
         public Nullable<bool> LogKayitlariGorme { get; set; }
+        public Nullable<bool> Anket { get; set; }
     }
 }

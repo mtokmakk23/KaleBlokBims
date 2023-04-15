@@ -1,0 +1,538 @@
+﻿
+@{
+    ViewBag.Title = "SikayetOlustur";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+
+<script>
+
+    function sikayetOlustur(btn) {
+
+        var fileUpload = $("#file").get(0);
+        var files = fileUpload.files;
+
+        // Create FormData object
+        var formData = new FormData();
+
+        // Looping over all files and add it to FormData object
+        for (var i = 0; i < files.length; i++) {
+            formData.append(files[i].name, files[i]);
+        }
+
+        var formNo = $(".gorunen .bayiKodu").html().trim() + "-" + $(".gorunen .formNo").html().trim();
+        var formTarihi = $(".gorunen .formTarihi").html().trim();
+        var bayiKodu = $(".gorunen .bayiKodu").html().trim();
+        var bayiUnvani = $(".gorunen .bayiUnvani").html().trim();
+        var santiyeAdi = $(".gorunen .santiyeAdi").val();
+        var irtibatKurulacakKisi = $(".gorunen .irtibatKurulacakKisi").val();
+        var irtibatNo = $(".gorunen .irtibatNo").val();
+        var siparisNo = $(".gorunen .siparisNo").val();
+        var irsaliyeNo = $(".gorunen .irsaliyeNo").val();
+        var faturaNo = $(".gorunen .faturaNo").val();
+        var urunGrubu = "";
+        var sikayetBasligi = "";
+        $('.urunGrubuSikayetBasligiDivi').find('input').each(function () {
+            if ($(this).attr('type') == "checkbox" && $(this).attr('name') == "urunGrubu" && $(this).is(':checked')) {
+                urunGrubu += $(this).attr('data-urungrubu') + " # ";
+            }
+            if ($(this).attr('type') == "checkbox" && $(this).attr('name') == "sikayetBasligi" && $(this).is(':checked')) {
+                sikayetBasligi += $(this).attr('data-bildirimSebebi') + " # ";
+            }
+        });
+        var urunAciklamasi = $(".gorunen .urunAciklamasi").val();
+        var detayliAciklama = $(".gorunen .detayliAciklama").val();
+        var partiNo = $(".gorunen .partiNo").val();
+        var uretimTarihi = $(".gorunen .uretimTarihi").val();
+        var urunMiktari = $(".gorunen .urunMiktari").val();
+        var teslimTarihi = $(".gorunen .teslimTarihi").val();
+        if ($(".gorunen .teslimTarihi").val() + "" == "NaN-undefined-NaN") {
+            teslimTarihi = "";
+        }
+        if ($(".gorunen .uretimTarihi").val() + "" == "NaN-undefined-NaN") {
+            uretimTarihi = "";
+        }
+        if (santiyeAdi.trim() == "") {
+            UyariMesaji("Lütfen Şantiye Adını Yazınız.");
+            return;
+        }
+        if (urunAciklamasi.trim() == "") {
+            UyariMesaji("Lütfen Malzeme Açıklaması Bölümüne Ürün Adını Yazınız.");
+            return;
+        }
+        if (detayliAciklama.trim() == "") {
+            UyariMesaji("Lütfen Detaylı Açıklama Bölümüne Şikayetinizi Yazınız.");
+            return;
+        }
+        if (partiNo.trim() == "") {
+            UyariMesaji("Lütfen Parti Numarasını Yazınız.");
+            return;
+        }
+        if (urunGrubu.trim() == "") {
+            UyariMesaji("Lütfen Ürün Grubunu Seçiniz.");
+            return;
+        }
+
+        if (sikayetBasligi.trim() == "") {
+            UyariMesaji("Lütfen Şikayeti Sebebini Seçiniz.");
+            return;
+        }
+        Swal.fire({
+            title: 'Şikayeti Oluşturduktan Sonra Değişiklik Yapılamaz!\n Şikayet Oluşturulsun Mu?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'EVET',
+            denyButtonText: `HAYIR`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var theData = {
+                    santiyeAdi: santiyeAdi,
+                    irtibatKurulacakKisi: irtibatKurulacakKisi,
+                    irtibatNo: irtibatNo,
+                    urunGrubu: urunGrubu,
+                    sikayetBasligi: sikayetBasligi,
+                    urunAciklamasi: urunAciklamasi,
+                    detayliAciklama: detayliAciklama,
+                    partiNo: partiNo,
+                    uretimTarihi: uretimTarihi,
+                    urunMiktari: urunMiktari,
+                    teslimTarihi: teslimTarihi
+                }
+                loading(true);
+                $.ajax({
+                    url: '/Dealer_Sikayet/SikayetOlustur/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: theData,
+                    success: function (res) {
+                        loading(false);
+                        if (Boolean(res.IsSuccessStatusCode)) {
+                            formData.append("LOGICALREF", res.Content);
+                            loading(true);
+                            $.ajax({
+                                url: '/Dealer_Sikayet/BelgeleriKaydet/',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function (res) {
+
+                                    loading(false);
+                                    if (Boolean(res.IsSuccessStatusCode)) {
+                                        //input.file = "";
+                                        $(btn).remove();
+                                        OnayMesajiToast("Şikayet Listesine Yönlendiriliyorsunuz",1500);
+                                        OnayMesaji("Şikayet Oluşturuldu");
+                                        setTimeout(function () {
+                                            window.location = "/Dealer_Sikayet/SikayetListesi";
+                                        }, 1500);
+                                       
+                                    } else {
+                                        HataMesaji(res.ErrorMessage);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            HataMesaji(res.ErrorMessage);
+                        }
+                    }
+                });
+            }
+        })
+
+
+
+
+
+    }
+</script>
+
+<div class="col-md-10 m-auto mt-2 shadow-lg border p-5 gorunen">
+    <div class="row bolumler">
+
+
+
+
+
+        <div class="col-lg-4">
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="staticEmail" class="col-sm-4 col-form-label" style="width: 40%">Form No:</label>
+                <label class="col-sm-8 col-form-label" style="width: 60%">
+                    <span class="bayiKodu">@Session["BayiKodu"]</span>-<span runat="server" id="formNo" class="formNo"></span>
+                </label>
+            </div>
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="inputPassword" class="col-sm-4 col-form-label" style="width: 40%">Form Tarihi:</label>
+                <label class="col-sm-8 col-form-label formTarihi" style="width: 60%">
+                    @DateTime.Now.ToString("dd.MM.yyyy")
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="staticEmail" class="col-md-3 col-form-label" style="width: 40%">Bayi Kodu:</label>
+                <label class="col-md-9 col-form-label" style="width: 60%">
+                    <span>@Session["BayiKodu"]</span>
+                </label>
+            </div>
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="inputPassword" class="col-md-3 col-form-label" style="width: 40%">Bayi Adı:</label>
+                <label class="col-md-9 col-form-label bayiUnvani" style="width: 60%">
+                    @Session["BayiAdi"]
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="card-header" id="heading-1" style="border-left: 3px solid #006EB7; border-right: 3px solid #006EB7; border-bottom: 0.1rem solid #ebebeb; border-top: 0.1rem solid #ebebeb; font-size: 12px">
+        <h2 class="card-title">
+            <a style="font-size:14px">
+                İrtibat Bilgileri
+            </a>
+        </h2>
+    </div>
+    <div class="row bolumler">
+
+
+
+        <div class="col-lg-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-md-5 col-form-label">Şantiye Adı:<i class="fas fa-asterisk fa-xs" style="color: crimson; vertical-align:middle ;"></i></label>
+                <div class="col-md-8 input-group">
+                    <input type="text" autocomplete="off" class="form-control form-control-lg santiyeAdi" name="msg" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-5 col-form-label">İrtibat Kurulacak Kişi:</label>
+                <div class="col-sm-8 input-group">
+                    <input type="text" autocomplete="off" maxlength="50" class="form-control form-control-lg irtibatKurulacakKisi" name="msg" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-5 col-form-label">İrtibat No:</label>
+                <div class="col-sm-8 input-group">
+                    <input type="text" autocomplete="off" maxlength="20" class="form-control form-control-lg irtibatNo" name="msg" />
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="row urunGrubuSikayetBasligiDivi" style="margin: 5px; font-size: 10px">
+
+        <div class="col-md-12 bolumler" style="margin: 0;">
+
+            <div class="row ">
+
+                <div class="card-header" id="heading-1" style="border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-bottom: 0.1rem solid #ebebeb;">
+                    <h2 class="card-title">
+                        <a>
+                            Malzeme Grubu
+                        </a>
+                    </h2>
+                </div>
+                <div class="col-md-2">
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbims" data-urungrubu="BİMS" />
+                            <label for="mbims">BİMS</label>
+                        </div>
+                    </div>
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbtas" data-urungrubu="TAŞ YÜNÜ" />
+                            <label for="mbtas">TAŞ YÜNÜ</label>
+                        </div>
+                    </div>
+
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbxps" data-urungrubu="XPS" />
+                            <label for="mbxps">XPS</label>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-2">
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbeps" data-urungrubu="EPS" />
+                            <label for="mbeps">EPS</label>
+                        </div>
+                    </div>
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbcrb" data-urungrubu="KARBONLU EPS" />
+                            <label for="mbcrb">KARBONLU EPS</label>
+                        </div>
+                    </div>
+
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbasm" data-urungrubu="ASMOLEN" />
+                            <label for="mbasm">ASMOLEN</label>
+                        </div>
+                    </div>
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbsöve" data-urungrubu="SÖVE" />
+                            <label for="mbsöve">SÖVE</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbyh" data-urungrubu="YAPIŞTIRMA HARCI" />
+                            <label for="mbyh">YAPIŞTIRMA HARCI</label>
+                        </div>
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbsh" data-urungrubu="SIVA HARCI" />
+                            <label for="mbsh">SIVA HARCI</label>
+                        </div>
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbds" data-urungrubu="DEKORATİF SIVA" />
+                            <label for="mbds">DEKORATİF SIVA</label>
+                        </div>
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="mbdfmbdbmbprf" data-urungrubu="DONATI FİLESİ,DÜBEL,PROFİL" />
+                            <label for="mbdfmbdbmbprf">FİLE,DÜBEL,PROFİL</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-2">
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="urunGrubu" id="urunGrubuDiger" data-urungrubu="DİĞER" />
+                            <label for="urunGrubuDiger">DİĞER</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="row urunGrubuSikayetBasligiDivi" style="margin: 5px; font-size: 10px">
+
+        <div class="col-md-12 bolumler" style="margin: 0; ">
+            <div class="card-header" id="heading-1" style="border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-bottom: 0.1rem solid #ebebeb;">
+                <h2 class="card-title">
+                    <a>
+                        Şikayet Başlığı
+                    </a>
+                </h2>
+            </div>
+            <div class="row ">
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="dns" data-bildirimsebebi="MALZEME KALİTESİ YOĞUNLUK(DANSİTE)" />
+                            <label for="dns">MALZEME KALİTESİ YOĞUNLUK(DANSİTE)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="deforme" data-bildirimsebebi="DEFORME MALZEME" />
+                            <label for="deforme">DEFORME MALZEME</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="nakHata" data-bildirimsebebi="NAKLİYE HATASI" />
+                            <label for="nakHata">NAKLİYE HATASI</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="muhatapYok" data-bildirimsebebi="FİRMADA MUHATABA ULAŞAMAMA" />
+                            <label for="muhatapYok">FİRMADA MUHATABA ULAŞAMAMA</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="enboy" data-bildirimsebebi="MALZEME KALİTESİ ENxBOY" />
+                            <label for="enboy">MALZEME KALİTESİ ENxBOY</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="ambalaj" data-bildirimsebebi="AMBALAJ PROBLEMİ" />
+                            <label for="ambalaj">AMBALAJ PROBLEMİ</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="etiket" data-bildirimsebebi="ETİKET BİLGİLERİ HATASI" />
+                            <label for="etiket">ETİKET BİLGİLERİ HATASI</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="yetersizMalz" data-bildirimsebebi="SİPARİŞE GÖRE EKSİK MALZEME MİKTARI" />
+                            <label for="yetersizMalz">SİPARİŞE GÖRE EKSİK MALZEME MİKTARI</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="klnlk" data-bildirimsebebi="MALZEME KALİTESİ KALINLIK" />
+                            <label for="klnlk">MALZEME KALİTESİ KALINLIK</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="teslimTermin" data-bildirimsebebi="TESLİM/TERMİN TARİHİ" />
+                            <label for="teslimTermin">TESLİM/TERMİN TARİHİ</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="donusYetersiz" data-bildirimsebebi="TALEP/ŞİKAYETLERE DÖNÜŞ YAPILMAMASI" />
+                            <label for="donusYetersiz">TALEP/ŞİKAYETLERE DÖNÜŞ YAPILMAMASI</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="diger" data-bildirimsebebi="DİĞER" />
+                            <label for="diger">DİĞER</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="funkyradio funkyradio2">
+                        <div class="funkyradio-success">
+                            <input type="checkbox" name="sikayetBasligi" id="bozukluk" data-bildirimsebebi="MALZEME KALİTESİ YÜZEY BOZUKLUĞU" />
+                            <label for="bozukluk">MALZEME KALİTESİ YÜZEY BOZUKLUĞU</label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row bolumler" style="padding-top: 5px; margin-bottom: 15px; background-color: #fff1f11a">
+        <div class="col-lg-8">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-3 col-form-label">Malzeme Açıklaması:<i class="fas fa-asterisk fa-xs" style="color: crimson; vertical-align: top;"></i></label>
+                <div class="col-sm-9 input-group">
+                    <input type="text" autocomplete="off" class="form-control form-control-lg urunAciklamasi" name="msg" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-3 col-form-label">Detaylı Açıklama:<i class="fas fa-asterisk fa-xs" style="color: crimson; vertical-align: top;"></i></label>
+                <div class="col-sm-9 input-group">
+                    <textarea rows="3" class="form-control form-control-lg detayliAciklama"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-5 col-form-label">Parti No:<i class="fas fa-asterisk fa-xs" style="color: crimson; vertical-align: top;"></i></label>
+                <div class="col-sm-7 input-group">
+                    <input type="text" autocomplete="off" class="form-control form-control-lg partiNo" maxlength="20" name="msg">
+                </div>
+                <small class="col-sm-12" style="font-weight:bold;text-align:right">Etiket Üzerindeki Parti/Seri No'sunu Yazınız.</small><br />
+
+            </div>
+            <small style="color: green">OPSİYONEL</small><br />
+            <div class="form-group row">
+
+                <label for="staticEmail" class="col-sm-5 col-form-label">Üretim Tarihi:</label>
+                <div class="col-sm-7 input-group">
+                    <input type="date" class="form-control form-control-lg uretimTarihi" name="msg">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-5 col-form-label">Malzeme Miktarı:</label>
+                <div class="col-sm-7 input-group">
+                    <input type="text" autocomplete="off" maxlength="50" class="form-control form-control-lg urunMiktari" name="msg">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-5 col-form-label">Malzeme Teslim Tarihi:</label>
+                <div class="col-sm-7 input-group">
+                    <input type="date" class="form-control form-control-lg teslimTarihi" name="msg">
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-12 row">
+            <form>
+                <input type="file" accept="image/*,.mp4" id="file" multiple="true" style="opacity:0" />
+            </form>
+            <div class="form-group">
+                <a class="btn btn-warning" onclick="$('#file').click();">Resim/Video Ekle</a>
+
+            </div>
+        </div>
+        <div class="col-lg-12 row resimOnizleme">
+        </div>
+
+
+    </div>
+    <div class="col-sm-4 row mb-5 m-auto text-center">
+        <div class="form-group">
+            <a class="btn btn-primary" onclick="sikayetOlustur(this)">KAYDET</a>
+        </div>
+    </div>
+
+
+
+</div>

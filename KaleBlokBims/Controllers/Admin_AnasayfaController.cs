@@ -30,6 +30,13 @@ namespace KaleBlokBims.Controllers
             return JsonConvert.SerializeObject(query);
         }
         [HttpPost]
+        public string BayilerinAyIcindekiPortalKullanimSayilari()
+        {
+            var db = new Models.IZOKALEPORTALEntities();
+            var query = db.BayilerinPortalKullanimSayisi(DateTime.Now.ToString("yyyy-MM-01"));
+            return JsonConvert.SerializeObject(query);
+        }
+        [HttpPost]
         public string bayiAdinaSistemeGir(string LOGICALREF)
         {
             RestSharp.RestResponse response = new RestSharp.RestResponse();

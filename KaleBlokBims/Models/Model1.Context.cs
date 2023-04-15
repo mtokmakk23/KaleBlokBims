@@ -12,6 +12,8 @@ namespace KaleBlokBims.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class IZOKALEPORTALEntities : DbContext
     {
@@ -37,5 +39,24 @@ namespace KaleBlokBims.Models
         public virtual DbSet<TeklifBasliklari> TeklifBasliklari { get; set; }
         public virtual DbSet<TeklifIcerikleri> TeklifIcerikleri { get; set; }
         public virtual DbSet<BayiEvraklari> BayiEvraklari { get; set; }
+        public virtual DbSet<Sikayet> Sikayet { get; set; }
+        public virtual DbSet<SiparisVeTeklifFormuGonderilecekMailler> SiparisVeTeklifFormuGonderilecekMailler { get; set; }
+        public virtual DbSet<SikayetBildirimiAtilacakKisiler> SikayetBildirimiAtilacakKisiler { get; set; }
+        public virtual DbSet<ANKT_Master> ANKT_Master { get; set; }
+        public virtual DbSet<ANKT_SabitCevaplar> ANKT_SabitCevaplar { get; set; }
+        public virtual DbSet<ANKT_Sonuclar> ANKT_Sonuclar { get; set; }
+        public virtual DbSet<ANKT_Sorular> ANKT_Sorular { get; set; }
+        public virtual DbSet<YuklemeTalebiDetayi> YuklemeTalebiDetayi { get; set; }
+        public virtual DbSet<YuklemeTalebiMaster> YuklemeTalebiMaster { get; set; }
+        public virtual DbSet<MailSetting> MailSetting { get; set; }
+    
+        public virtual ObjectResult<BayilerinPortalKullanimSayisi_Result> BayilerinPortalKullanimSayisi(string tarih)
+        {
+            var tarihParameter = tarih != null ?
+                new ObjectParameter("Tarih", tarih) :
+                new ObjectParameter("Tarih", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<BayilerinPortalKullanimSayisi_Result>("BayilerinPortalKullanimSayisi", tarihParameter);
+        }
     }
 }

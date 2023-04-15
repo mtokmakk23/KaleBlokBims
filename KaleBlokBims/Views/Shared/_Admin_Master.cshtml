@@ -5,12 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9" />
     <title>@ViewBag.Title</title>
-    @*<meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>@ViewBag.Title</title>
-        <meta name="keywords" content="HTML5 Template">
-        <meta name="description" content="Molla - Bootstrap eCommerce Template">
-        <meta name="author" content="p-themes">*@
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="İzokale Portal">
+    <meta name="author" content="p-themes">
 
 
     <!-- Favicon -->
@@ -20,11 +20,11 @@
     <link rel="manifest" href="/assets/images/icons/site.html">
     <link rel="mask-icon" href="/assets/images/logom.png" color="#666666">
     <link rel="shortcut icon" href="/assets/images/logom.png">
-    @*<meta name="apple-mobile-web-app-title" content="Molla">
-        <meta name="application-name" content="Molla">
-        <meta name="msapplication-TileColor" content="#cc9966">
-        <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
-        <meta name="theme-color" content="#ffffff">*@
+    <meta name="apple-mobile-web-app-title" content="İzokale Portal">
+    <meta name="application-name" content="İzokale Portal">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
     <link href="/Content/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
@@ -90,7 +90,7 @@
     }
     <header class="header">
         <div class="header-top">
-            <div class="container">
+            <div class="container bg-gray" style="margin:0;max-width:none;width:auto">
                 <div class="header-left">
                     <div class="header-dropdown" style="padding:0">
                         <a href="#">Usd:<span class="GuncelUSD" style="font-weight:bold;margin:0 2px 0 2px"></span> - Eur:<span class="GuncelEUR" style="font-weight:bold;margin:0 2px 0 2px"></span></a>
@@ -103,18 +103,17 @@
 
                 </div><!-- End .header-left -->
                 <div class="header-right">
-                    @{ if (Convert.ToBoolean(yetkiler.LogKayitlariGorme))
-                        {
-                            <div style="padding:0;margin-right:15px">
-                                <a href="/Logger/Index"><i class="fa-solid fa-file-contract" style="margin-right:3px"></i>Log Kayıtları</a>
-
-                            </div>
-                        } }
 
                     <div class="header-dropdown" style="padding:0">
                         <a href="#"><i class="icon-user" test></i>@Session["AdiSoyadi"].ToString()</a>
                         <div class="header-menu">
                             <ul>
+                                @{if (Convert.ToBoolean(yetkiler.LogKayitlariGorme))
+                                    {
+                                        <li> <a href="/Logger/Index"><i class="fa-solid fa-file-contract" style="margin-right:3px"></i>Log Kayıtları</a></li>
+
+                                    }
+                                }
                                 <li><a href="/Password/Index"><i class="fa-solid fa-key" style="margin-right:3px"></i>Şifre Değiştir</a></li>
                                 <li><a href="/Admin_Login/Login"><i class="icon-close mr-2" style="margin-right:3px"></i>Çıkış Yap</a></li>
 
@@ -126,7 +125,7 @@
         </div><!-- End .header-top -->
         <div class="sticky-wrapper" style="">
             <div class="header-middle sticky-header">
-                <div class="container">
+                <div class="container" style="margin:0;max-width:none;width:auto">
                     <div class="header-left">
                         <button class="mobile-menu-toggler">
                             <span class="sr-only">Toggle mobile menu</span>
@@ -172,12 +171,47 @@
                                             <a href="/Admin_BekleyenSiparisler/Index">Bekleyen Siparişler</a>
                                         </li>
                                     } }
-                                @{ if (Convert.ToBoolean(yetkiler.EvrakYetkisi))
-                                    {
-                                        <li class="megamenu-container">
-                                            <a href="/Admin_BayiEvraklari/BayiEvraklari">Bayi Belgeleri</a>
-                                        </li>
-                                    } }
+
+                                <li class="megamenu-container">
+                                    <a href="/Admin_YuklemeTalebi/YuklemeTalepleri">Yükleme Talepleri</a>
+                                </li>
+
+                                <li class="megamenu-container">
+                                    <a href="#" class="sf-with-ul">Satış Sonrası Hizmetler</a>
+                                    <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                                        <div class="menu-col">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <ul>
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.SikayetYetkisi))
+                                                            {
+                                                                <li class="megamenu-container">
+                                                                    <a href="/Admin_Sikayet/TumSikayetler">Şikayetler</a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.Anket))
+                                                            {
+                                                                <li class="megamenu-container">
+                                                                    <a href="/Admin_Anket/TumAnketler">Anket</a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                        @{ if (Convert.ToBoolean(yetkiler.EvrakYetkisi))
+                                                            {
+                                                                <li class="megamenu-container">
+                                                                    <a href="/Admin_BayiEvraklari/BayiEvraklari">Bayi Belgeleri</a>
+                                                                </li>
+                                                            } }
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                                 @{ if (Convert.ToBoolean(yetkiler.RaporlariGorme))
                                     {
                                         <li>
@@ -205,58 +239,58 @@
 
 
                                 @*<li>
-            <a href="category.html" class="sf-with-ul">Shop</a>
-            <div class="megamenu megamenu-md" style="display: none;">
-                <div class="row no-gutters">
-                    <div class="col-md-8">
-                        <div class="menu-col">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="menu-title">Shop with sidebar</div><!-- End .menu-title -->
-                                    <ul>
-                                        <li><a href="category-list.html">Shop List</a></li>
-                                        <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
-                                        <li><a href="category.html">Shop Grid 3 Columns</a></li>
-                                        <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                                        <li><a href="category-market.html"><span>Shop Market<span class="tip tip-new">New</span></span></a></li>
-                                    </ul>
-                                    <div class="menu-title">Shop no sidebar</div><!-- End .menu-title -->
-                                    <ul>
-                                        <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
-                                        <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
-                                    </ul>
-                                </div><!-- End .col-md-6 -->
-                                <div class="col-md-6">
-                                    <div class="menu-title">Product Category</div><!-- End .menu-title -->
-                                    <ul>
-                                        <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                                        <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
-                                    </ul>
-                                    <div class="menu-title">Shop Pages</div><!-- End .menu-title -->
-                                    <ul>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="dashboard.html">My Account</a></li>
-                                        <li><a href="#">Lookbook</a></li>
-                                    </ul>
-                                </div><!-- End .col-md-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .menu-col -->
-                    </div><!-- End .col-md-8 -->
-                    <div class="col-md-4">
-                        <div class="banner banner-overlay">
-                            <a href="category.html" class="banner banner-menu">
-                                <img src="/assets/images/menu/banner-1.jpg" alt="Banner">
-                                <div class="banner-content banner-content-top">
-                                    <div class="banner-title text-white">Last <br>Chance<br><span><strong>Sale</strong></span></div><!-- End .banner-title -->
-                                </div><!-- End .banner-content -->
-                            </a>
-                        </div><!-- End .banner banner-overlay -->
-                    </div><!-- End .col-md-4 -->
-                </div><!-- End .row -->
-            </div><!-- End .megamenu megamenu-md -->
-        </li>*@
+                                        <a href="category.html" class="sf-with-ul">Shop</a>
+                                        <div class="megamenu megamenu-md" style="display: none;">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-8">
+                                                    <div class="menu-col">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="menu-title">Shop with sidebar</div><!-- End .menu-title -->
+                                                                <ul>
+                                                                    <li><a href="category-list.html">Shop List</a></li>
+                                                                    <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
+                                                                    <li><a href="category.html">Shop Grid 3 Columns</a></li>
+                                                                    <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
+                                                                    <li><a href="category-market.html"><span>Shop Market<span class="tip tip-new">New</span></span></a></li>
+                                                                </ul>
+                                                                <div class="menu-title">Shop no sidebar</div><!-- End .menu-title -->
+                                                                <ul>
+                                                                    <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
+                                                                    <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
+                                                                </ul>
+                                                            </div><!-- End .col-md-6 -->
+                                                            <div class="col-md-6">
+                                                                <div class="menu-title">Product Category</div><!-- End .menu-title -->
+                                                                <ul>
+                                                                    <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
+                                                                    <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
+                                                                </ul>
+                                                                <div class="menu-title">Shop Pages</div><!-- End .menu-title -->
+                                                                <ul>
+                                                                    <li><a href="cart.html">Cart</a></li>
+                                                                    <li><a href="checkout.html">Checkout</a></li>
+                                                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                                                    <li><a href="dashboard.html">My Account</a></li>
+                                                                    <li><a href="#">Lookbook</a></li>
+                                                                </ul>
+                                                            </div><!-- End .col-md-6 -->
+                                                        </div><!-- End .row -->
+                                                    </div><!-- End .menu-col -->
+                                                </div><!-- End .col-md-8 -->
+                                                <div class="col-md-4">
+                                                    <div class="banner banner-overlay">
+                                                        <a href="category.html" class="banner banner-menu">
+                                                            <img src="/assets/images/menu/banner-1.jpg" alt="Banner">
+                                                            <div class="banner-content banner-content-top">
+                                                                <div class="banner-title text-white">Last <br>Chance<br><span><strong>Sale</strong></span></div><!-- End .banner-title -->
+                                                            </div><!-- End .banner-content -->
+                                                        </a>
+                                                    </div><!-- End .banner banner-overlay -->
+                                                </div><!-- End .col-md-4 -->
+                                            </div><!-- End .row -->
+                                        </div><!-- End .megamenu megamenu-md -->
+                                    </li>*@
 
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -274,50 +308,113 @@
     <div class="mobile-menu-container">
         <div class="mobile-menu-wrapper">
             <span class="mobile-menu-close"><i class="icon-close"></i></span>
-            <form action="#" method="get" class="mobile-search">
-                <label for="mobile-search" class="sr-only">Search</label>
-                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required="">
-                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-            </form>
 
-            <!--<nav class="mobile-nav">
+
+            <nav class="mobile-nav">
                 <ul class="mobile-menu">
-                    <li>
+                    <li class="megamenu-container">
                         <a href="/Admin_Anasayfa/Index">Anasayfa</a>
                     </li>
-                    <li>
-                        <a href="/Admin_BayilerVeKullanicilar/Index">Bayiler ve Kullanıcılar</a>
-                    </li>
-                    <li>
-                        <a href="/Admin_BekleyenSiparisler/Index">Bekleyen Siparişler</a>
-                    </li>-->
-            @*<li>
-                    <a href="category.html">Shop<span class="mmenu-btn"></span></a>
-                    <ul>
-                        <li><a href="category-list.html">Shop List</a></li>
-                        <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
-                        <li><a href="category.html">Shop Grid 3 Columns</a></li>
-                        <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                        <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
-                        <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
-                        <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                        <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="wishlist.html">Wishlist</a></li>
-                        <li><a href="#">Lookbook</a></li>
-                    </ul>
-                </li>*@
+                    @{ if (Convert.ToBoolean(yetkiler.TeklifYetkisi))
+                        {
+                            <li>
+                                <a href="#" class="sf-with-ul">Teklifler</a>
+                                <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                                    <div class="menu-col">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <ul>
 
-            <!--</ul>
-            </nav>-->
+                                                    <li><a href="/Admin_Teklif/TeklifOlustur">Teklif Oluştur</a></li>
+                                                    <li><a href="/Admin_Teklif/TumTeklifler">Tüm Teklifler</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        } }
+                    @{ if (Convert.ToBoolean(yetkiler.KullaniciTanimlama))
+                        {
+                            <li class="megamenu-container">
+                                <a href="/Admin_BayilerVeKullanicilar/Index">Kullanıcılar</a>
+                            </li>
+                        } }
+                    @{ if (Convert.ToBoolean(yetkiler.SiparisAktarma))
+                        {
+                            <li class="megamenu-container">
+                                <a href="/Admin_BekleyenSiparisler/Index">Bekleyen Siparişler</a>
+                            </li>
+                        } }
+                    <li class="megamenu-container">
+                        <a href="/Admin_YuklemeTalebi/YuklemeTalepleri">Yükleme Talepleri</a>
+                    </li>
+                    <li class="megamenu-container">
+                        <a href="#" class="sf-with-ul">Satış Sonrası Hizmetler</a>
+                        <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                            <div class="menu-col">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul>
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.SikayetYetkisi))
+                                                {
+                                                    <li class="megamenu-container">
+                                                        <a href="/Admin_Sikayet/TumSikayetler">Şikayetler</a>
+                                                    </li>
+                                                }
+                                            }
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.Anket))
+                                                {
+                                                    <li class="megamenu-container">
+                                                        <a href="/Admin_Anket/TumAnketler">Anket</a>
+                                                    </li>
+                                                }
+                                            }
+                                            @{ if (Convert.ToBoolean(yetkiler.EvrakYetkisi))
+                                                {
+                                                    <li class="megamenu-container">
+                                                        <a href="/Admin_BayiEvraklari/BayiEvraklari">Bayi Belgeleri</a>
+                                                    </li>
+                                                } }
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    @{ if (Convert.ToBoolean(yetkiler.RaporlariGorme))
+                        {
+                            <li>
+                                <a href="#" class="sf-with-ul">Raporlar</a>
+                                <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                                    <div class="menu-col">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <ul>
+                                                    @{ if (Convert.ToBoolean(yetkiler.YoneticiRaporlariniGorme))
+                                                        {
+                                                            <li><a href="/Admin_Reports/YoneticiRaporlari">Yönetici Raporu</a></li>
+
+                                                        }
+                                                    }
+                                                    <li><a href="/Admin_Reports/BayiBaglantiBakiyeRaporu">Bağlantı Bakiye Raporu</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        } }
+
+                </ul>
+            </nav>
             <!-- End .mobile-nav -->
-            <div class="social-icons">
-                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-            </div><!-- End .social-icons -->
+
         </div><!-- End .mobile-menu-wrapper -->
     </div>
 

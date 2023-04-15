@@ -32,47 +32,47 @@ namespace KaleBlokBims.Models.Classlar
 
             #region utils
             var teklifBasligi = (from fb in db.TeklifBasliklari
-                                  where fb.LOGICALREF == LOGICALREF
-                                  select new
-                                  {
-                                      fb.FiyatListesi,
-                                      fb.BayiKodu,
-                                      fb.BayiAdi,
-                                      fb.EklenmeTarihi,
-                                      fb.Ilce,
-                                      fb.TeklifSonGecerlilikTarihi,
-                                      fb.Il,
-                                      fb.FabrikaTeslimMi,
-                                      fb.LOGICALREF,
-                                      fb.MailAdresi,
-                                     
-                                  }).FirstOrDefault();
+                                 where fb.LOGICALREF == LOGICALREF
+                                 select new
+                                 {
+                                     fb.FiyatListesi,
+                                     fb.BayiKodu,
+                                     fb.BayiAdi,
+                                     fb.EklenmeTarihi,
+                                     fb.Ilce,
+                                     fb.TeklifSonGecerlilikTarihi,
+                                     fb.Il,
+                                     fb.FabrikaTeslimMi,
+                                     fb.LOGICALREF,
+                                     fb.MailAdresi,
+                                     fb.OdemeTipi
+                                 }).FirstOrDefault();
 
             var teklifIcerigi = (from fb in db.TeklifBasliklari
-                                  join fi in db.TeklifIcerikleri on fb.LOGICALREF equals fi.BaslikLREF
-                                  where fi.BaslikLREF == LOGICALREF
-                                  select new
-                                  {
-                                      fi.LOGICALREF,
-                                      fi.IndirimAciklamasi,
-                                      fi.IndiriminUygulanacagiLOGICALREF,
-                                      fi.IndirimTutari,
-                                      fi.LINETYPE,
-                                      fi.GuncelEUR,
-                                      fi.GuncelUSD,
-                                      fi.Kdv,
-                                      fi.HesaplamaDetayliAciklama,
-                                      fi.FiyatListesi,
-                                      fi.MalzemeKodu,
-                                      fi.MalzemeAdi,
-                                      fi.Miktar,
-                                      fi.Birimi,
-                                      fi.HesaplanmisBirimFiyatiTL,
-                                      TOPLAM = "",
-                                      
-                                      fb.BayiKodu,
-                                      fb.BayiAdi
-                                  }).ToList();
+                                 join fi in db.TeklifIcerikleri on fb.LOGICALREF equals fi.BaslikLREF
+                                 where fi.BaslikLREF == LOGICALREF
+                                 select new
+                                 {
+                                     fi.LOGICALREF,
+                                     fi.IndirimAciklamasi,
+                                     fi.IndiriminUygulanacagiLOGICALREF,
+                                     fi.IndirimTutari,
+                                     fi.LINETYPE,
+                                     fi.GuncelEUR,
+                                     fi.GuncelUSD,
+                                     fi.Kdv,
+                                     fi.HesaplamaDetayliAciklama,
+                                     fi.FiyatListesi,
+                                     fi.MalzemeKodu,
+                                     fi.MalzemeAdi,
+                                     fi.Miktar,
+                                     fi.Birimi,
+                                     fi.HesaplanmisBirimFiyatiTL,
+                                     TOPLAM = "",
+
+                                     fb.BayiKodu,
+                                     fb.BayiAdi
+                                 }).ToList();
             #endregion
 
             #region form adres ve tarih kısmı
@@ -166,7 +166,7 @@ namespace KaleBlokBims.Models.Classlar
             cell = new PdfPCell(new Phrase("Oluşturan:", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             teklifBil.AddCell(cell);
-            cell = new PdfPCell(new Phrase(db.AdminKullanicilari.Where(x => x.MailAdresi == teklifBasligi.MailAdresi).FirstOrDefault().AdiSoyadi + " (Admin)",new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(db.AdminKullanicilari.Where(x => x.MailAdresi == teklifBasligi.MailAdresi).FirstOrDefault().AdiSoyadi + " (Admin)", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             teklifBil.AddCell(cell);
             #endregion
@@ -361,7 +361,7 @@ namespace KaleBlokBims.Models.Classlar
             #region sipariş detayları
             PdfPTable detayBilgileri = new PdfPTable(1);
             detayBilgileri.WidthPercentage = 99f;
-            cell = new PdfPCell(new Phrase(" ", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase("Ödeme Tipi: " + teklifBasligi.OdemeTipi, new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             detayBilgileri.AddCell(cell);
 

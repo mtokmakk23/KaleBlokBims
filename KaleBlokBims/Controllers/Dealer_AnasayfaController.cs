@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -36,7 +38,7 @@ namespace KaleBlokBims.Controllers
         public string Duyurular()
         {
             var db = new Models.IZOKALEPORTALEntities();
-            var query = db.Duyurular.Where(x=>x.BayiDuyurusuMu==true && x.BaslangicTarihi<DateTime.Now && x.BitisTarihi>DateTime.Now);
+            var query = db.Duyurular.Where(x => x.BayiDuyurusuMu == true && x.BaslangicTarihi < DateTime.Now && x.BitisTarihi > DateTime.Now);
             return JsonConvert.SerializeObject(query);
         }
         [HttpPost]
@@ -128,8 +130,12 @@ namespace KaleBlokBims.Controllers
                     }
                     SiparisFormuOlustur form = new SiparisFormuOlustur();
                     var pdfByte = form.siparisFormu(Convert.ToInt32(baslik.LOGICALREF));
-                    MailGonderme mail = new MailGonderme();
-                    mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, "Sipariş Formu", baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
+
+                  
+                        MailGonderme mail = new MailGonderme();
+                        mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, baslik.BayiKodu + "-" + baslik.LOGICALREF+" - Sipariş Formu", baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
+
+                   
                     response.IsSuccessStatusCode = true;
                     String file = Convert.ToBase64String(pdfByte);
                     response.Content = file;
@@ -144,6 +150,8 @@ namespace KaleBlokBims.Controllers
             }
 
         }
+
+
 
 
         public void sistemKalemleriEkle()

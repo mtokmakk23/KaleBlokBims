@@ -11,18 +11,99 @@
 @section scripts
 {
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 }
 <script>
 
+    window.onload = function () {
 
-        window.onload = function () {
-
+            BayilerinAyIcindekiPortalKullanimSayilari();
             TumBayiler();
             AdminBilgileri();
             duyurular();
           //  buildTable($('#table'), 8, 1)
-        }
+    }
+
+    function BayilerinAyIcindekiPortalKullanimSayilari() {
+        $.ajax({
+            url: '/Admin_Anasayfa/BayilerinAyIcindekiPortalKullanimSayilari/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                var toplamGezinme = 0;
+                var result = JSON.parse(data);
+                var dataTable = []
+                for (var i = 0; i < result.length; i++) {
+                    toplamGezinme = toplamGezinme+ parseInt(result[i].GezinmeSayisi);
+                    dataTable.push({
+                        'field1': result[i].BayiAdi,
+                        'field2': result[i].GezinmeSayisi,
+
+                    });
+                }
+                if (result.length >= 2) {
+                    for (var i = 0; i < 3; i++) {
+                          (new ApexCharts(document.querySelector("#chart" + (i + 1)), {
+                            chart: {
+                                height: 280,
+                                type: "radialBar",
+                            },
+                            series: [parseInt((parseInt(result[i].GezinmeSayisi) * 100) / toplamGezinme)],
+                            colors: ["#20E647"],
+                            plotOptions: {
+                                radialBar: {
+                                    hollow: {
+                                        margin: 0,
+                                        size: "70%",
+                                        background: "#293450"
+                                    },
+                                    track: {
+                                        dropShadow: {
+                                            enabled: true,
+                                            top: 2,
+                                            left: 0,
+                                            blur: 4,
+                                            opacity: 0.15
+                                        }
+                                    },
+                                    dataLabels: {
+                                        name: {
+                                            offsetY: -10,
+                                            color: "#fff",
+                                            fontSize: "13px"
+                                        },
+                                        value: {
+                                            color: "#fff",
+                                            fontSize: "30px",
+                                            show: true
+                                        }
+                                    }
+                                }
+                            },
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                    shade: "dark",
+                                    type: "vertical",
+                                    gradientToColors: ["#87D4F9"],
+                                    stops: [0, 100]
+                                }
+                            },
+                            stroke: {
+                                lineCap: "round"
+                            },
+                            labels: [(result[i].BayiAdi.length > 15) ? (result[i].BayiAdi).substring(0, 15) + "..." : result[i].BayiAdi]
+                        })).render();
+
+                    }
+
+                }
+                $("#bayilerPortalKullanimMiktarlari").bootstrapTable("destroy");
+                $("#bayilerPortalKullanimMiktarlari").bootstrapTable({ data: dataTable, pagination: true });
+            }
+        });
+    }
     function duyurular() {
         loading(true);
         $.ajax({
@@ -44,7 +125,7 @@
                             width: (result[i].AcilirMesajGenisligi),
                         })
                     } else {
-                       
+
                     }
                     $(".duyurular").append(result[i].Baslik + "<br/>");
                     $(".duyurular").append(result[i].Icerik + "<hr/>");
@@ -180,6 +261,21 @@
                 </div>
                 <div class="card-body duyurular"></div>
             </div><!-- End .col-lg-6 -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div id="chart1">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="chart2">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="chart3">
+                    </div>
+                </div>
+            </div>
+
             @{ if (Convert.ToBoolean(yetkiler.BayiAdinaGiris))
                 {
                     <div class="col-lg-6">
@@ -207,7 +303,27 @@
                     </div>
                 }
             }
+            <div class="col-lg-6">
 
+
+                <table id="bayilerPortalKullanimMiktarlari" class="table table-striped table-sm"
+                       data-show-export="true"
+                       data-auto-refresh="true"
+                       data-export-types="['excel']"
+                       data-export-options='{"fileName": "Bayi Gezinmeleri"}'
+                       data-locale="tr-TR"
+                       data-search="true">
+                    <thead>
+                        <tr>
+                            <th data-field="field1">Bayi Adı</th>
+                            <th data-field="field2">Gezinme Sayısı</th>
+
+                        </tr>
+                    </thead>
+
+                </table>
+
+            </div>
         </div><!-- End .row -->
         <hr class="mt-4 mb-5">
         <!-- End .stores -->

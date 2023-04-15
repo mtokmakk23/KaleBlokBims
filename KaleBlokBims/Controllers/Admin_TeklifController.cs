@@ -414,8 +414,12 @@ namespace KaleBlokBims.Controllers
 
        
         [HttpPost]
-        public string TeklifiKaydet(string gecerlilikTarihi)
+        public string TeklifiKaydet(string gecerlilikTarihi,string odemeTipi)
         {
+            if (odemeTipi== "Seçiniz")
+            {
+                return "Ödeme Tipi Seçilmelidir.";
+            }
             if (gecerlilikTarihi=="")
             {
                 return "Geçerlilik Tarihi Girilmelidir.";
@@ -431,6 +435,7 @@ namespace KaleBlokBims.Controllers
                     baslik.OnaylandiMi = true;
                     baslik.OnaylanmaTarihi = DateTime.Now;
                     baslik.SipariseDonduMu = false;
+                    baslik.OdemeTipi = odemeTipi;
                     db.SaveChanges();
                     TeklifFormuOlustur form = new TeklifFormuOlustur();
                     //form.teklifFormu(baslik.LOGICALREF);
@@ -450,7 +455,7 @@ namespace KaleBlokBims.Controllers
                     }
                     var pdfByte = form.teklifFormu(Convert.ToInt32(baslik.LOGICALREF));
                     MailGonderme mail = new MailGonderme();
-                    mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, "Teklif Formu", baslik.MailAdresi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı teklif formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
+                    mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, baslik.BayiKodu + "-" + baslik.LOGICALREF+" - Teklif Formu", baslik.MailAdresi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı teklif formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
                     return "ok";
                 }
                 else

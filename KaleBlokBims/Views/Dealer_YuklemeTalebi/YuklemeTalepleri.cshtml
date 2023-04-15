@@ -1,0 +1,372 @@
+﻿
+@{
+    ViewBag.Title = "YuklemeTalepleri";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+}
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<style>
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    td, th {
+        text-align: center
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<script>
+
+    window.onload = function () {
+
+        siparisler();
+
+        //  buildTable($('#table'), 8, 1)
+    }
+
+
+
+    function siparisler() {
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Siparisler/Siparisler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                loading(false);
+                var result = JSON.parse(sonuc);
+
+                eval('var objBaslik=' + sonuc);
+
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true,
+                        visible: (x == "orFicheRef" ? false : true),
+                        filterControl: "select"
+                    })
+                    i++;
+                }
+                columns.push({
+                    field: 'operate',
+                    title: ' ',
+                    align: 'center',
+                    valign: 'middle',
+                    clickToSelect: false,
+                    formatter: function (value, row, index) {
+                        //return '<input name="elementname"  value="'+value+'"/>';
+                        return '<button class=\'btn btn-primary \' onclick="siparisiSec(\'' + row.field0 + '\',\'' + row.field2 + '\',\'' + row.field4 + '\')" >Seç</button> ';
+                    }
+                });
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                var Gindex = -1;
+                $('#table').bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    exportTypes: ['excel'],
+                    data: data,
+                    locale: 'tr-TR',
+                    
+                    exportOptions: {
+                        fileName: 'Siparişler'
+                    },
+                    detailView: columns.length > 1,
+                    onExpandRow: function (index, row, $detail) {
+                        if (Gindex != index)
+                            $('#table').bootstrapTable('collapseRow', Gindex);
+                        Gindex = index;
+                        siparisIcerigi(result[index]["orFicheRef"], $detail.html('<table class="table-striped table-sm" style="margin-left: 15px;width:auto"></table>').find('table'));
+                    }
+                });
+
+               
+            }
+        });
+    }
+
+
+
+
+    function siparisIcerigi(orFicheRef, $detail) {
+        var theData = {
+            orFicheRef: orFicheRef,
+        }
+        $.ajax({
+            url: '/Dealer_Siparisler/SiparisDetaylari/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                var result = JSON.parse(data);
+                eval('var objBaslik=' + data);
+
+                var i; var j; var row;
+                var columns = []
+                var data = []
+                i = 0;
+                for (x in objBaslik[0]) {
+                    columns.push({
+                        field: 'field' + i,
+                        title: x,
+                        sortable: true,
+                        visible: (x == "orfLineRef" ? false : true)
+                    })
+                    i++;
+                }
+
+                for (i = 0; i < result.length; i++) {
+                    row = {}
+                    for (j = 0; j < columns.length; j++) {
+                        row['field' + j] = result[i][columns[j].title];
+                    }
+                    data.push(row);
+                }
+                $detail.bootstrapTable({
+                    columns: columns,
+                    // exportDataType: $(this).val(),
+                    //exportTypes: ['excel'],
+                    data: data,
+                 
+                });
+            }
+        });
+
+    }
+
+
+    function aracBulmaSekli(radio) {
+
+        if ($(radio).attr("id") == "kendiAracim") {
+            $(".plakalarDivi").show("fast");
+        }
+        if ($(radio).attr("id") == "aracBulunsun") {
+            $(".plakalarDivi").hide("fast");
+
+        }
+    }
+
+    function siparisiSec(orFicheRef, siparisNo, tarih) {
+        loading(true);
+        var sayac = 0;
+        var bulunanaSatir = 0;
+        $('.birinciTablo tbody tr').each(function (e) {
+            var table = $(this);
+            if ((table.text().toLowerCase().includes(siparisNo.toLowerCase()) && table.text().toLowerCase().includes(tarih.toLowerCase()))) {
+                table.show();
+                bulunanaSatir = sayac;
+            } else {
+                if (bulunanaSatir != (sayac - 1)) {
+                    if (table.text().substr(0, 3) == "SEÇ" || table.text().trim() == "") {
+                        table.hide();
+                    }
+
+                }
+            }
+            sayac += 1;
+        });
+
+        $(".yuklemeTalebiVerilecekSiparisDetayDivi").html('' +
+            '<div class="border shadow rounded p-3 m-3"><h4 class="text-black"><i class="fa-solid fa-dolly fa-sm text-warning"></i><i class="fa-solid fa-truck-moving text-primary" style="margin-right:5px"></i>Yüklenecek Miktarı Belirleyiniz.</h4><table class="table table-sm table-mobile yuklemeTalebiVerilecekSiparisDetayTablosu">' +
+            '<thead class="thead-dark">' +
+            '<tr style="background-color: cadetblue;color: white;">' +
+            '<td>Durum</td>' +
+            '<td>Malzeme Kodu</td>' +
+            '<td>Açıklama</td>' +
+            '<td>Miktar</td>' +
+            '<td>Birim</td>' +
+            '<td>Bekleyen Miktar</td>' +
+            '<td style="text-align:left">Yüklenecek Miktar</td>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+            '</tbody>' +
+            '</table>' +
+            '<div class="form-group row col-md-5 mt-4 m-auto">' +
+            '<label for="staticEmail" class="col-sm-2 col-form-label" style="font-size:13px">Araç Bulma Şekli</label>' +
+            '<div class="col-sm-5">' +
+            '<input type="radio" checked="checked" name="aracBulmaSekli" id="kendiAracim" onChange="aracBulmaSekli(this)"><label for="kendiAracim">Araç Gönderiyorum</label>' +
+            '</div>' +
+            '<div class="col-sm-5">' +
+            '<input type="radio" name="aracBulmaSekli" id="aracBulunsun" onChange="aracBulmaSekli(this)"><label for="aracBulunsun">Araç Bulunsun</label>' +
+            '</div>' +
+            '</div>' +
+            '<div class="form-group row col-md-5  m-auto">' +
+            '<label for="staticEmail" class="col-sm-2 col-form-label">Yükleme Tarihi</label>' +
+            '<div class="col-sm-10">' +
+            '<input type="date" class="form-control" id="yuklemeTarihi">' +
+            '</div>' +
+            '</div>' +
+
+            '<div class="form-group row col-md-5  m-auto plakalarDivi">' +
+            '<label for="staticEmail" class="col-sm-2 col-form-label">Plakalar</label>' +
+            '<div class="col-sm-10">' +
+            '<input type="text" class="form-control" id="plakalar">' +
+            '</div>' +
+            '</div>' +
+
+
+            '<div class="form-group row col-md-5 m-auto">' +
+            '<label for="inputPassword" class="col-sm-2 col-form-label">Açıklama</label>' +
+            '<div class="col-sm-10">' +
+            '<textarea class="form-control" id="aciklama" rows="3"></textarea>' +
+            ' <small class="form-text text-muted"></small>' +
+            '</div>' +
+            '</div>' +
+
+            '<div class="form-group" style="text-align:center">' +
+            '<input type="button" onclick="yuklemeTalebiOlustur(\'' + tarih + '\',\'' + siparisNo + '\')" class="btn btn-primary" style="margin:20px" value="KAYDET"/>' +
+            '' +
+            '</div></div>' +
+            '');
+
+        var theData = {
+            orFicheRef: orFicheRef,
+        }
+        $.ajax({
+            url: '/Dealer_Siparisler/SiparisDetaylari/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (data) {
+                if (data == "hata") { hataMesajı( "Internal Server Error"); } else if (data != "[]") {
+                    var Lresult = JSON.parse(data);
+                    for (var i = 0; i < Lresult.length; i++) {
+
+                        if (Lresult[i].durum != "Sevkedilmiş" && Lresult[i].durum.toString().trim() != "") {
+
+                            $(".yuklemeTalebiVerilecekSiparisDetayTablosu").append('' +
+                                '<tr>' +
+                                '<td>' + Lresult[i].durum + '</td>' +
+                                '<td>' + Lresult[i].malzemeKodu + '</td>' +
+                                '<td>' + Lresult[i].Aciklama + '</td>' +
+                                '<td>' + Lresult[i].miktar + '</td>' +
+                                '<td>' + Lresult[i].birim + '</td>' +
+                                '<td>' + Lresult[i].BekleyenMiktar + '</td>' +
+                                '<td><input data-birim="' + Lresult[i].birim + '" data-malzemeKodu="' + Lresult[i].malzemeKodu + '" data-malzemeAdi="' + Lresult[i].Aciklama + '" data-bekleyenMiktar="' + Lresult[i].BekleyenMiktar + '" type="text" style="border: 1px solid #dedede;float:left" /><span>' + Lresult[i].birim + '</span></td>' +
+                                '</tr>' +
+                                '');
+                        }
+
+                    }
+                } else {
+                    HataMesaji("Veri Bulunamadı.");
+                }
+                loading(false);
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                hataMesajı( customErrorMessage);
+                loading(false);
+            }
+        });
+
+    }
+
+
+
+    function yuklemeTalebiOlustur(siparisTarihi, siparisNo) {
+
+        if ($("#kendiAracim").is(":checked") && $("#plakalar").val().trim() == "") {
+            HataMesaji("Plaka Girmek Zorunludur");
+            return;
+        }
+        if ($("#aracBulunsun").is(":checked")) {
+            $("#plakalar").val("Aracı Fabrika Bulsun");
+        }
+        if ($("#yuklemeTarihi").val().trim() == "") {
+            HataMesaji( "Yükleme Tarihini Seçiniz");
+            return;
+        }
+
+        var yuklemeYapilacakMalzemelerJson = [];
+        var onay = true;
+        $('.yuklemeTalebiVerilecekSiparisDetayTablosu tbody tr td input[type="text"]').each(function (e) {
+            var inputYuklenecekMiktar = $(this);
+            var bekleyenMiktar = parseFloat(inputYuklenecekMiktar.attr("data-bekleyenmiktar").split(".").join("").replace(",", "."));
+            var yuklenecekMiktar = parseFloat(inputYuklenecekMiktar.val().split(".").join("").replace(",", "."));
+            if (yuklenecekMiktar > bekleyenMiktar) {
+                HataMesaji( inputYuklenecekMiktar.attr("data-malzemeKodu") + " - " + inputYuklenecekMiktar.attr("data-malzemeadi") + " Bekleyen Miktardan Fazla Olamaz");
+                onay = false;
+            } else {
+                var malzemeKodu = inputYuklenecekMiktar.attr("data-malzemeKodu");
+                var malzemeAdi = inputYuklenecekMiktar.attr("data-malzemeadi");
+                var birim = inputYuklenecekMiktar.attr("data-birim");
+                if (yuklenecekMiktar.toString().trim() != "NaN" && yuklenecekMiktar.toString().trim() != "0") {
+                    yuklemeYapilacakMalzemelerJson.push({
+                        malzemeKodu: malzemeKodu,
+                        malzemeAdi: malzemeAdi,
+                        bekleyenMiktar: bekleyenMiktar,
+                        yuklenecekMiktar: yuklenecekMiktar,
+                        birim: birim
+                    });
+                }
+            }
+        });
+
+        if (yuklemeYapilacakMalzemelerJson.length==0) {
+            HataMesaji( "Hiçbir Ürün Seçilmedi.");
+            return;
+        }
+        if (onay) {
+           
+            var theData = {
+                SiparisNo: siparisNo,
+                SiparisTarihi: siparisTarihi,
+                TalepAciklamasi: $("#aciklama").val(),
+                Plakalar: $("#plakalar").val(),
+                YuklemeTarihi: $("#yuklemeTarihi").val(),
+                yuklemeYapilacakMalzemelerJson: JSON.stringify(yuklemeYapilacakMalzemelerJson)
+            }
+            loading(true);
+            $.ajax({
+                url: '/Dealer_YuklemeTalebi/_yuklemeTalebiOlustur',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (msg) {
+                    loading(false);
+                    if (msg == "hata") { hataMesajı("HATA", "Internal Server Error"); } else if (msg != "[]") {
+                        if (msg == "true") {
+                            OnayMesaji("Yükleme Talebi Oluşturuldu.");
+                            setInterval(function () { window.location = "/Dealer_YuklemeTalebi/YuklemeTalepleri"; }, 1200);
+                            $(".yuklemeTalebiVerilecekSiparisDetayDivi").html("");
+                            
+                        } else {
+                            HataMesaji("Yükleme Talebi Oluşturulamadı Lütfen Tekrar Deneyiniz.");
+                        }
+
+                    }
+                }
+            });
+        }
+
+    }
+</script>
+
+<table class="table-striped table-sm" id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-filter-control="true"
+       data-show-export="true"></table>
+
+
+<div class="yuklemeTalebiVerilecekSiparisDetayDivi" style="overflow:auto">
+</div>

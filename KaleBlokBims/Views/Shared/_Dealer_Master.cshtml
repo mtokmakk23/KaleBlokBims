@@ -5,12 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9" />
     <title>@ViewBag.Title</title>
-    @*<meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <meta name="keywords" content="HTML5 Template">
-        <meta name="description" content="Molla - Bootstrap eCommerce Template">
-        <meta name="author" content="p-themes">*@
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="İzokale Portal">
+    <meta name="author" content="p-themes">
 
 
     <!-- Favicon -->
@@ -20,11 +20,11 @@
     <link rel="manifest" href="/assets/images/icons/site.html">
     <link rel="mask-icon" href="/assets/images/logom.png" color="#666666">
     <link rel="shortcut icon" href="/assets/images/logom.png">
-    @*<meta name="apple-mobile-web-app-title" content="Molla">
-        <meta name="application-name" content="Molla">
-        <meta name="msapplication-TileColor" content="#cc9966">
-        <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
-        <meta name="theme-color" content="#ffffff">*@
+    <meta name="apple-mobile-web-app-title" content="İzokale Portal">
+    <meta name="application-name" content="İzokale Portal">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="/assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
     <!-- Plugins CSS File -->
     <link href="/Content/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
@@ -87,7 +87,7 @@
         <div class="header-top sticky-wrapper">
             <div class="header-middle">
 
-                <div class="container">
+                <div class="container w-100 bg-gray" style="max-width:none">
                     <div class="header-left">
                         @{
                             if (Session["AdminMi"].ToString() == "1")
@@ -185,10 +185,15 @@
                                                             if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.TeklifleriGorme))
                                                             {
                                                                 <li class="megamenu-container">
-                                                                    <a href="/Dealer_Teklifler/Teklifler">Teklifler<span class="badge bg-primary ml-2" style="margin-left:3px">Yeni</span></a>
+                                                                    <a href="/Dealer_Teklifler/Teklifler">Teklifler</a>
                                                                 </li>
                                                             }
                                                         }
+
+                                                        <li class="megamenu-container">
+                                                            <a href="/Dealer_YuklemeTalebi/YuklemeTalepleri">Yükleme Talebi</a>
+                                                        </li>
+
                                                     </ul>
                                                 </div>
                                             </div>
@@ -226,10 +231,22 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <ul>
-                                                        <li><a href="#">Anketler <span class="badge bg-info ml-2">Yakında</span></a></li>
-                                                        <li><a href="#">Şikayetler<span class="badge bg-info ml-2">Yakında</span></a></a></li>
-                                                        <li><a href="#">Belgeler <span class="badge bg-info ml-2">Yakında</span></a></li>
-                                                        <li><a href="#">Usta Kalemler<span class="badge bg-info ml-2">Yakında</span></a></a></li>
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SikayetleriGorme))
+                                                            {
+                                                                <li class="border-top"><a href="/Dealer_Sikayet/SikayetOlustur">Şikayet Oluştur</a></li>
+                                                                <li class="border-bottom mb-3"><a href="/Dealer_Sikayet/SikayetListesi">Tüm Şikayetler</a></li>
+                                                            }
+                                                        }
+                                                        @{
+                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.AnketleriGorme))
+                                                            {
+                                                                <li><a href="/Dealer_Anket/TumAnketler">Anketler</a></li>
+                                                            }
+                                                        }
+
+                                                        <li><a href="http://kaleblokbims.com/sertifikalar" target="_blank">Sertifikalar</a></li>
+                                                        @*<li><a href="#">Usta Kalemler<span class="badge bg-info ml-2">Yakında</span></a></li>*@
                                                     </ul>
                                                 </div>
                                             </div>
@@ -407,6 +424,8 @@
             </div>
         </div><!-- End .header-middle -->
     </header>
+
+
     <div style="padding:0 5px 0 5px">
         @RenderBody()
     </div>
@@ -423,39 +442,127 @@
 
             <nav class="mobile-nav">
                 <ul class="mobile-menu">
-                    <li>
+                    <li class="megamenu-container">
                         <a href="/Dealer_Anasayfa/Index">Anasayfa</a>
                     </li>
-                    <li>
-                        <a href="/Dealer_FiyatListesi/Index">Fiyat Listesi</a>
-                    </li>
-                    <li>
-                    <li>
-                        sepet
-                        <a href="/Dealer_SiparisOlustur/Index">Sipariş Oluştur</a>
-                    </li>
-                    <li>
-                        <a href="/Dealer_Siparisler/Index">Siparişler</a>
-                    </li>
-                    <li>
-                        <a href="/Dealer_Irsaliyeler/Index">İrsaliyeler</a>
-                    </li>
-                    <li>
-                        <a href="/Dealer_HesapEkstresi/Index">Hesap Ekstresi</a>
-                    </li>
-                    <li>
-                        <a href="https://kaleblokbims.netahsilat.com/" target="_blank">Kale Tahsilat</a>
+                    @{
+                        if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.FiyatListesiGorme))
+                        {
+                            <li class="megamenu-container">
+                                <a href="/Dealer_FiyatListesi/Index">Fiyat Listesi</a>
+                            </li>
+                        }
+                    }
+                    <li class="megamenu-container">
+                        <a href="#" class="sf-with-ul">Sipariş</a>
+                        <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                            <div class="menu-col">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul>
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisOlusturma))
+                                                {
+                                                    <li class="megamenu-container">
+                                                        <a href="/Dealer_SiparisOlustur/Index">Sipariş Oluştur</a>
+                                                    </li>
+                                                }
+                                            }
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SiparisleriGorme))
+                                                {
+                                                    <li class="megamenu-container">
+                                                        <a href="/Dealer_Siparisler/Index">Siparişler</a>
+                                                    </li>
+                                                }
+                                            }
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.TeklifleriGorme))
+                                                {
+                                                    <li class="megamenu-container">
+                                                        <a href="/Dealer_Teklifler/Teklifler">Teklifler</a>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
 
-                    <li>
-                        <a href="#">Satış Sonrası Hizmetler<span class="mmenu-btn"></span></a>
-                        <ul>
-                            <li><a href="#">Anketler <span class="badge bg-info ml-2">Yakında</span></a></li>
-                            <li><a href="#">Şikayetler<span class="badge bg-info ml-2">Yakında</span></a></a></li>
-                            <li><a href="#">Belgeler <span class="badge bg-info ml-2">Yakında</span></a></li>
-                            <li><a href="#">Usta Kalemler<span class="badge bg-info ml-2">Yakında</span></a></a></li>
-                        </ul>
+                    @{
+                        if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.IrsaliyeleriGorme))
+                        {
+                            <li class="megamenu-container">
+                                <a href="/Dealer_Irsaliyeler/Index">İrsaliyeler</a>
+                            </li>
+                        }
+                    }
+                    @{
+                        if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.HesapEkstresiGorme))
+                        {
+                            <li class="megamenu-container">
+                                <a href="/Dealer_HesapEkstresi/Index">Hesap Ekstresi</a>
+                            </li>
+                        }
+                    }
+
+
+
+
+                    <li class="megamenu-container">
+                        <a href="https://kaleblokbims.netahsilat.com/" target="_blank">Kale Tahsilat</a>
                     </li>
+                    <li class="megamenu-container">
+                        <a href="#" class="sf-with-ul">Satış Sonrası Hizmetler</a>
+                        <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                            <div class="menu-col">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul>
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SikayetleriGorme))
+                                                {
+                                                    <li><a href="/Dealer_Sikayet/SikayetOlustur">Şikayet Oluştur</a></li>
+                                                    <li><a href="/Dealer_Sikayet/SikayetListesi">Tüm Şikayetler</a></li>
+                                                }
+                                            }
+                                            @{
+                                                if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.AnketleriGorme))
+                                                {
+                                                    <li><a href="/Dealer_Anket/TumAnketler">Anketler</a></li>
+                                                }
+                                            }
+                                            <li><a href="http://kaleblokbims.com/sertifikalar" target="_blank">Sertifikalar</a></li>
+                                            @*<li><a href="#">Usta Kalemler<span class="badge bg-info">Yakında</span></a></li>*@
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    @{
+                        if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.RaporlariGorme))
+                        {
+                            <li class="megamenu-container">
+                                <a href="#" class="sf-with-ul">Raporlar</a>
+                                <div class="megamenu megamenu-md" style="width: 180px; left: auto;">
+                                    <div class="menu-col">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <ul>
+                                                    <li><a href="/Dealer_Raporlar/MalzemeSevkRaporu">Malzeme Sevk Raporu</a></li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
 
                 </ul>
             </nav><!-- End .mobile-nav -->

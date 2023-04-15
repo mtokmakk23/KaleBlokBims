@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "TumSikayetler";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+}
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script>
+    window.onload = function () {
+        tumSikayetler();
+
+    }
+
+    function tumSikayetler() {
+        loading(true);
+        $(".sikayetler tbody").html("");
+        $.ajax({
+            url: '/Admin_Sikayet/_TumSikayetler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (data) {
+                var result = JSON.parse(data);
+
+                for (var i = 0; i < result.length; i++) {
+                    $(".sikayetler tbody").append('<tr>' +
+                        '<td>' + result[i]["FormNo"] + '</td>' +
+                        '<td>' + result[i]["FormTarih"] + '</td>' +
+                        '<td>' + result[i]["BayiAdi"] + '</td>' +
+                        '<td>' + result[i]["SantiyeAdi"] + '</td>' +
+                        '<td>' + result[i]["UrunGrubu"].split("#").join(",") + '</td>' +
+                        '<td>' + result[i]["BildirimSebebi"].split("#").join(",") + '</td>' +
+                        '<td>' + result[i]["Durum"] + '</td>' +
+                        '<td><a style="color:white" class="btn btn-icons btn-rounded btn-warning" href="/Admin_Sikayet/SikayetInceleme?MASLGRF=' + result[i]["LOGICALREF"] + '"><i class="fas fa-edit"></i></a> </td>' +
+                        '</tr>');
+                }
+                $('.sikayetler').bootstrapTable({
+
+                    exportTypes: ['excel'],
+                    locale: 'tr-TR',
+                    exportOptions: {
+                        fileName: "Şikayetler"
+                    },
+                });
+                loading(false);
+            }
+        });
+    }
+</script>
+
+<table style="width:100%" class="table table-striped mt-2 sikayetler"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-filter-control="true"
+       data-show-export="true">
+    <thead>
+        <tr>
+
+            <th>
+                Form No
+            </th>
+            <th>
+                Tarih
+            </th>
+            <th>
+                Bayi
+            </th>
+            <th>
+                Şantiye
+            </th>
+            <th>
+                Malzeme
+            </th>
+            <th>
+                Şikayet Sebebi
+            </th>
+            <th>
+                Durum
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

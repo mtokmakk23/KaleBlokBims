@@ -18,7 +18,6 @@ namespace KaleBlokBims.Controllers
         // GET: Dealer_Login
         public ActionResult Login()
         {
-            
             FormsAuthentication.SignOut();
             Session.RemoveAll();
             HttpContext.Request.Cookies.Clear();

@@ -89,6 +89,7 @@ namespace KaleBlokBims.Controllers
                         baslik.EklenmeTarihi = DateTime.Now;
                         baslik.FabrikaTeslimMi = Convert.ToBoolean(teklif.FabrikaTeslimMi);
                         baslik.FiyatListesi = teklif.FiyatListesi;
+                        baslik.OdemeTipi = teklif.OdemeTipi;
                         baslik.BaglantiLref = Convert.ToInt32(-1);
                         baslik.Il = teklif.Il;
                         baslik.Ilce = teklif.Ilce;
@@ -176,7 +177,7 @@ namespace KaleBlokBims.Controllers
                         SiparisFormuOlustur form = new SiparisFormuOlustur();
                         var pdfByte = form.siparisFormu(Convert.ToInt32(baslik.LOGICALREF));
                         MailGonderme mail = new MailGonderme();
-                        mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, "Sipariş Formu", baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
+                        mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, baslik.BayiKodu + "-" + baslik.LOGICALREF+ " - Sipariş Formu" , baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
                         response.IsSuccessStatusCode = true;
                         String file = Convert.ToBase64String(pdfByte);
                         response.Content = file;

@@ -60,6 +60,10 @@
     <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="KaleBlokLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\source\repos\KaleBlokLibrary\KaleBlokLibrary\obj\Debug\KaleBlokLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -175,13 +179,17 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Controllers\Admin_AnasayfaController.cs" />
+    <Compile Include="Controllers\Admin_AnketController.cs" />
     <Compile Include="Controllers\Admin_BayiEvraklariController.cs" />
     <Compile Include="Controllers\Admin_BayilerVeKullanicilarController.cs" />
     <Compile Include="Controllers\Admin_BekleyenSiparislerController.cs" />
     <Compile Include="Controllers\Admin_LoginController.cs" />
     <Compile Include="Controllers\Admin_ReportsController.cs" />
+    <Compile Include="Controllers\Admin_SikayetController.cs" />
     <Compile Include="Controllers\Admin_TeklifController.cs" />
+    <Compile Include="Controllers\Admin_YuklemeTalebiController.cs" />
     <Compile Include="Controllers\Dealer_AnasayfaController.cs" />
+    <Compile Include="Controllers\Dealer_AnketController.cs" />
     <Compile Include="Controllers\Dealer_EvraklarController.cs" />
     <Compile Include="Controllers\Dealer_FiyatListesiController.cs" />
     <Compile Include="Controllers\Dealer_HesapEkstresiController.cs" />
@@ -189,11 +197,14 @@
     <Compile Include="Controllers\Dealer_KullaniciEklemeController.cs" />
     <Compile Include="Controllers\Dealer_LoginController.cs" />
     <Compile Include="Controllers\Dealer_RaporlarController.cs" />
+    <Compile Include="Controllers\Dealer_SikayetController.cs" />
     <Compile Include="Controllers\Dealer_SiparislerController.cs" />
     <Compile Include="Controllers\Dealer_SiparisOlusturController.cs" />
     <Compile Include="Controllers\Dealer_TekliflerController.cs" />
+    <Compile Include="Controllers\Dealer_YuklemeTalebiController.cs" />
     <Compile Include="Controllers\LoggerController.cs" />
     <Compile Include="Controllers\PasswordController.cs" />
+    <Compile Include="Controllers\PublicDataController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +214,18 @@
     <Compile Include="Models\AdminKullaniciYetkisi.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ANKT_Master.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ANKT_SabitCevaplar.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ANKT_Sonuclar.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ANKT_Sorular.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BayiEvraklari.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -210,6 +233,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BayiKullaniciYetkileri.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BayilerinPortalKullanimSayisi_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Classlar\LINQResultToDataTable.cs" />
@@ -229,6 +255,9 @@
     <Compile Include="Models\Log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MailSetting.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -244,16 +273,31 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Sikayet.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SikayetBildirimiAtilacakKisiler.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SiparisBasliklari.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SiparisIcerikleri.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SiparisVeTeklifFormuGonderilecekMailler.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TeklifBasliklari.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TeklifIcerikleri.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\YuklemeTalebiDetayi.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\YuklemeTalebiMaster.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1971,6 +2015,7 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="favicon.ico" />
     <Content Include="Files\BayiEvraklari\gorselHazirlanıyor.png" />
+    <Content Include="Files\BayiSikayetleri\gorselHazirlanıyor.png" />
     <Content Include="Files\ProductImages\gorselHazirlanıyor.png" />
     <Content Include="Global.asax" />
     <Content Include="lib\bootstrap\bootstrap.min.css" />
@@ -2021,6 +2066,10 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
+    <Content Include="Files\BayiEvraklari\bayi_portal-sozlesmesi.pdf" />
+    <Content Include="Files\BayiEvraklari\bayi_sozlesmesi.pdf" />
+    <Content Include="Files\BayiEvraklari\cari-hesap_sozlesmesi.pdf" />
+    <Content Include="Files\BayiEvraklari\nakliye-araclari-isg-bilgilendirme-formu.pdf" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\bootstratTable_TR.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -2140,6 +2189,18 @@
     <Content Include="Views\Admin_Teklif\TumTeklifler.cshtml" />
     <Content Include="Views\Dealer_Evraklar\Evraklar.cshtml" />
     <Content Include="Views\Admin_BayiEvraklari\BayiEvraklari.cshtml" />
+    <Content Include="Views\Dealer_Sikayet\SikayetOlustur.cshtml" />
+    <Content Include="Views\Dealer_Sikayet\SikayetListesi.cshtml" />
+    <Content Include="Views\PublicData\SikayetDetaylari.cshtml" />
+    <Content Include="Views\Admin_Sikayet\TumSikayetler.cshtml" />
+    <Content Include="Views\Admin_Sikayet\SikayetInceleme.cshtml" />
+    <Content Include="Views\Admin_Anket\AnketOlustur.cshtml" />
+    <Content Include="Views\Admin_Anket\TumAnketler.cshtml" />
+    <Content Include="Views\Admin_Anket\AnketIslemleri.cshtml" />
+    <Content Include="Views\Dealer_Anket\TumAnketler.cshtml" />
+    <Content Include="Views\Dealer_Anket\AnketCevapla.cshtml" />
+    <Content Include="Views\Dealer_YuklemeTalebi\YuklemeTalepleri.cshtml" />
+    <Content Include="Views\Admin_YuklemeTalebi\YuklemeTalepleri.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

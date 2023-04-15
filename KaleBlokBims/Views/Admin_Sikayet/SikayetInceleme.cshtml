@@ -1,0 +1,504 @@
+﻿
+@{
+    ViewBag.Title = "SikayetInceleme";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+
+<script>
+    var Glogicalref;
+    window.onload = function () {
+        var LOGICALREF =@ViewBag.MASLGRF;
+        Glogicalref = LOGICALREF;
+        SikayetAyrinti(LOGICALREF);
+    }
+    function SikayetAyrinti(LOGICALREF) {
+        loading(true);
+        $(".resimOnizleme").html("");
+        var logicalref = LOGICALREF;
+        var theData = {
+            logicalref: logicalref,
+        }
+        $.ajax({
+            url: '/Admin_Sikayet/SikayetAyrinti/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (msg) {
+                var result = JSON.parse(msg);
+                if (result.length == 0) {
+                    HataMesaji("Şikayet Bulunamadı");
+                    return;
+                }
+
+                var theData = {
+                    logicalref: logicalref,
+                    bayiKodu: result[0]["BayiKodu"]
+                }
+                $.ajax({
+                    url: '/Admin_Sikayet/ResimleriGetir/',
+                    type: 'POST',
+                    dataType: 'text',
+                    data: theData,
+                    success: function (msg) {
+                        var resultResim = JSON.parse(msg);
+                        for (var i = 0; i < resultResim.length; i++) {
+                            if (resultResim[i].toString().indexOf("mp4") == -1) {
+                                $(".resimOnizleme").append('' +
+                                    '<div class="col-md-2 p-3">' +
+                                    '<a class="thumbnail fancybox" rel="ligthbox" onclick="privievImg(\'' + resultResim[i].toString() + '\')">' +
+                                    '<img class="img-responsive" style="height: 50px" alt="" src="' + resultResim[i].toString() + '" />' +
+                                    '</a>' +
+                                    '</div>');
+
+                            } else {
+                                //buraya videolar gelecek
+                                $(".resimOnizleme").append('' +
+                                    '<div class="col-md-auto">' +
+                                    '<video controls="" src="' + resultResim[i].toString() + '" width="250" height="250"></video>' +
+                                    '</div>');
+                            }
+                        }
+
+
+                        $(".formNo").html(result[0]["FormNo"]);
+                        $(".formTarihi").html(result[0]["FormTarih"]);
+                        $(".bayiKodu").html(result[0]["BayiKodu"]);
+                        $(".bayiUnvani").html(result[0]["BayiAdi"]);
+                        $(".santiyeAdi").html(result[0]["SantiyeAdi"]);
+                        $(".irtibatKurulacakKisi").html(result[0]["IrtibatKurulacakKisi"]);
+                        $(".irtibatNo").html(result[0]["IrtibatNo"]);
+                        $(".siparisNo").html(result[0]["Bayi_SiparisNo"]);
+                        $(".irsaliyeNo").html(result[0]["Bayi_IrsaliyeNo"]);
+                        $(".faturaNo").html(result[0]["Bayi_FaturaNo"]);
+                        $(".urunGrubu").html(result[0]["UrunGrubu"].split("#").join(","));
+                        $(".sikayetBasligi").html(result[0]["BildirimSebebi"].split("#").join(","));
+                        $(".urunAciklamasi").html(result[0]["UrunAciklama"]);
+                        $(".detayliAciklama").html(result[0]["DetayliAciklama"]);
+                        $(".partiNo").html(result[0]["PartiNo"]);
+                        $(".uretimTarihi").html(result[0]["UretimTarihi"]);
+                        $(".urunMiktari").html(result[0]["UrunMiktari"]);
+                        $(".teslimTarihi").html(result[0]["TeslimTarihi"]);
+                        $(".firmaCevabi").html(result[0]["FirmaCevabi"]);
+
+                        $(".veriGirisDivi .mevcutDurum").html(result[0]["Durum"]);
+                        document.getElementById("durum").value = result[0]["Durum"];
+                        $('.onIncelemeSekilleriDivi').find('input').each(function () {
+                            if ($(this).attr('type') == "radio" && $(this).attr('value') == result[0]["OnIncelemeSekli"]) {
+                                $(this).attr('checked', "checked");
+                            }
+
+                        });
+
+                        $(".veriGirisDivi .onIncelemeSorumlusu").val(result[0]["OnIncelemeSorumlusu"]);
+                        $(".veriGirisDivi .onIncelemeSonucu").val(result[0]["OnIncelemeSonucu"]);
+                        $(".veriGirisDivi .yapilanIslemSorumlusu").val(result[0]["OnIncelemeYapilanIslemSorumlusu"]);
+                        $(".veriGirisDivi .yapilanIslemler").val(result[0]["OnIncelemeYapilanIsler"]);
+                        $(".veriGirisDivi .musteriyeYapilanGeriDonus").val(result[0]["FirmaCevabi"]);
+
+                        $(".veriGirisDivi .sikayetMaliyeti").val(result[0]["SikayetMaliyeti"]);
+                        $(".veriGirisDivi .sorumluDepartman").val(result[0]["SorumluDepartman"]);
+                        $(".veriGirisDivi .kokNedenAnalizi").val(result[0]["KokNedenAnalizi"]);
+
+                        if (result[0]["FirmaCevabi"] == null || result[0]["FirmaCevabi"] == "") {
+
+                            $("#alert").hide("fast");
+                        }
+                        loading(false);
+                        $("#sikayetAyrinti").modal("show");
+
+                        if (result[0]["FirmaCevabi"] != null && result[0]["FirmaCevabi"] != "") {
+                            $("#alert").css("display", "none");
+                            $("#alert").show("slow");
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+    function privievImg(path) {
+        Swal.fire({
+            width: 'auto',
+            imageUrl: path,
+            imageWidth: 'auto',
+            imageHeight: 'auto',
+        })
+
+    }
+    function OnIncelemeKaydet() {
+
+        var onIncelemeSekli = "";
+        var onIncelemeSorumlusu = $(".veriGirisDivi .onIncelemeSorumlusu").val();
+        var onIncelemeSonucu = $(".veriGirisDivi .onIncelemeSonucu").val();
+        var yapilanIslemSorumlusu = $(".veriGirisDivi .yapilanIslemSorumlusu").val();
+        var yapilanIslemler = $(".veriGirisDivi .yapilanIslemler").val();
+        var musteriyeYapilanGeriDonus = $(".veriGirisDivi .musteriyeYapilanGeriDonus").val();
+
+        var sikayetMaliyeti = $(".veriGirisDivi .sikayetMaliyeti").val();
+        var sorumluDepartman = $(".veriGirisDivi .sorumluDepartman").val();
+        var kokNedenAnalizi = $(".veriGirisDivi .kokNedenAnalizi").val();
+        var mevcutDurum = $(".veriGirisDivi .mevcutDurum").html();
+
+        var durum = $("#durum").val();
+        $('.onIncelemeSekilleriDivi').find('input').each(function () {
+            if ($(this).attr('type') == "radio" && $(this).is(':checked')) {
+                onIncelemeSekli = $(this).attr('value');
+            }
+        });
+       
+
+            var theData = {
+                logicalref: Glogicalref,
+                onIncelemeSekli: onIncelemeSekli,
+                onIncelemeSorumlusu: onIncelemeSorumlusu,
+                onIncelemeSonucu: onIncelemeSonucu,
+                yapilanIslemSorumlusu: yapilanIslemSorumlusu,
+                yapilanIslemler: yapilanIslemler,
+                musteriyeYapilanGeriDonus: musteriyeYapilanGeriDonus,
+                durum: durum,
+                sikayetMaliyeti: sikayetMaliyeti,
+                sorumluDepartman: sorumluDepartman,
+                kokNedenAnalizi: kokNedenAnalizi,
+                mevcutDurum: mevcutDurum
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Sikayet/OnIncelemeKaydet/',
+            type: 'POST',
+            dataType: 'text',
+            data: theData,
+            success: function (msg) {           
+                if (msg == "true") {
+                    OnayMesaji("Kaydedildi.");
+                    window.location = "/Admin_Sikayet/TumSikayetler";
+                } else {
+                    loading(false);
+                    HataMesaji( msg);
+                }
+            }
+        });
+    }
+
+</script>
+<div class="col-md-10 m-auto mt-2 shadow-lg border p-5">
+
+    <div class="row bolumler" style="background-color: #fff1f11a;">
+
+
+
+        <div class="col-md-4">
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="staticEmail" class="col-sm-4 col-form-label" style="width: 40%">Form No:</label>
+                <span class="col-sm-8 col-form-label" style="width: 60%; font-weight: bold">
+                    <span class="formNo"></span>
+                </span>
+            </div>
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="inputPassword" class="col-sm-4 col-form-label" style="width: 40%">Form Tarihi:</label>
+                <span class="col-sm-8 formTarihi" style="width: 60%; font-weight: bold"></span>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="staticEmail" class="col-sm-3 col-form-label" style="width: 40%">Bayi Kodu:</label>
+                <span class="col-sm-9 col-form-label" style="width: 60%; font-weight: bold">
+                    <span class="bayiKodu"></span>
+                </span>
+            </div>
+            <div class="form-group row" style="margin-bottom: 0;">
+                <label for="inputPassword" class="col-sm-3 col-form-label" style="width: 40%">Bayi Adı:</label>
+                <span class="col-sm-9 bayiUnvani" style="width: 60%; font-weight: bold"></span>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="row">
+                <label for="staticEmail" class="col-sm-4">Şantiye Adı:</label>
+                <span class="col-sm-8 santiyeAdi" style="font-weight: bold"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-5 col-form-label">İrtibat Kurulacak Kişi:</label>
+                <span class="col-sm-7 irtibatKurulacakKisi" style="font-weight: bold"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-3 col-form-label">İrtibat No:</label>
+                <span class="col-sm-9 irtibatNo" style="font-weight: bold"></span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row urunGrubuSikayetBasligiDivi" style="margin: 5px">
+
+        <div class="col-md-12 bolumler" style="margin: 0; background-color: #fff1f11a;">
+
+            <div class="row ">
+
+                <label class="col-md-2" style="font-size: 15px">Ürün Grubu</label>
+                <span class="col-md-10 urunGrubu" style="font-weight: bold"></span>
+            </div>
+            <div class="row ">
+
+                <label class="col-md-2" style="font-size: 15px">Şikayet Başlığı</label>
+                <span class="col-md-10 sikayetBasligi" style="font-weight: bold"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row bolumler" style="padding-top: 5px; margin-bottom: 15px; background-color: #fff1f11a">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-auto col-form-label">Malzeme Açıklaması:</label>
+                <span class="col-sm-8 urunAciklamasi" style="font-weight: bold"></span>
+            </div>
+
+
+        </div>
+        <div class="col-md-12">
+
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-auto col-form-label">Detaylı Açıklama:</label>
+                <span class="col-sm-8 detayliAciklama" style="font-weight: bold"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-auto col-form-label">Parti No:</label>
+                <span class="col-sm-7 partiNo" style="font-weight: bold"></span>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-auto col-form-label">Üretim Tarihi:</label>
+                <span class="col-sm-7 uretimTarihi" style="font-weight: bold"></span>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-auto col-form-label">Malzeme Miktarı:</label>
+                <span class="col-sm-7 urunMiktari" style="font-weight: bold"></span>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-auto col-form-label">Malzeme Teslim Tarihi:</label>
+                <span class="col-sm-7 teslimTarihi" style="font-weight: bold"></span>
+            </div>
+
+        </div>
+        <div class="col-md-12 row resimOnizleme">
+            @*<div class="col-md-auto">
+                    <div class="list-group gallery row">
+                        <div class="col-md-3">
+                            <video controls="" src="/images/sikayet/1/Gelen/miniResimDivi1.mp4" width="210" height="100"></video>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+
+
+    </div>
+
+
+    <div class="col-lg-12 grid-margin stretch-card veriGirisDivi">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="form-group row onIncelemeSekilleriDivi">
+                            <label class="col-sm-2 col-form-label">Ön İnceleme Şekli:</label>
+                            <div class="col-sm-auto">
+                                <div class="form-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input incelemeSekli" name="membershipRadios" value="Şikayet Yerinde İncelensin">
+                                        Şikayet Yerinde İncelensin
+                                        <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="form-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input incelemeSekli" name="membershipRadios" value="Şantiyeye Telefonla Erişim">
+                                        Şantiyeye Telefonla Erişim
+                                        <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="form-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input incelemeSekli" name="membershipRadios" value="Şikayet Reddedildi">
+                                        Şikayet Reddedildi
+                                        <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="form-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input incelemeSekli" name="membershipRadios" value="Bayiye Telefonla Erişim">
+                                        Bayiye Telefonla Erişim
+                                        <i class="input-helper"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+
+                            <label class="col-sm-2 col-form-label">Ön İnceleme Sorumlusu:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control onIncelemeSorumlusu" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Ön İnceleme Sonucu:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control onIncelemeSonucu" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Yapılan işlem Sorumlusu:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control yapilanIslemSorumlusu" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Yapılan işlemler:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control yapilanIslemler" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Şikayet Maliyeti:</label>
+                            <div class="col-sm-10">
+                                <input type="text" maxlength="49" class="form-control sikayetMaliyeti" />
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-10">
+                                <small style="font-style: italic; color: lightslategray;">Bedelsiz gönderilen malzeme + iade alınan tutar+ nakliye bedeli gibi detaylı yazınız</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Sorumlu Departman:</label>
+                            <div class="col-sm-10">
+                                <input type="text" maxlength="49" class="form-control sorumluDepartman" />
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-10">
+                                <small style="font-style: italic; color: lightslategray;">Şikayete Sebep Olan Departman.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kök Neden Analizi:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control kokNedenAnalizi" rows="5"></textarea>
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-10">
+                                <small style="font-style: italic; color: lightslategray;">Şikayetin oluşmasını sağlayan asıl (dip) sebep nedir, tekrar oluşmaması için ne tür tedbirler alınmıştır. Şikayet hakkında düzenleyici/önleyici faaliyet açılmışsa sonuçlarını yazınız.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Müşteriye Yapılan Geri Dönüş:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control musteriyeYapilanGeriDonus" rows="5"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kayıt Durumu:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control durum" id="durum">
+                                    <option value="AÇIK (YENİ KAYIT)">AÇIK (YENİ KAYIT)</option>
+                                    <option value="ÖN İNCELEMEDE">ÖN İNCELEMEDE</option>
+                                  
+                                    <option value="ERTELENDİ">ERTELENDİ</option>
+                                    <option value="KAPATILDI">KAPATILDI</option>
+                                    <option value="KAPATILDI (RED)">KAPATILDI (RED)</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 col-form-label">Mevcut Durum:</label>
+                            <small class="col-sm-10 col-form-label mevcutDurum" style="font-size: small;"></small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <input type="button" class="btn btn-primary" value="KAYDET" style="margin: auto" onclick="OnIncelemeKaydet()" />
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

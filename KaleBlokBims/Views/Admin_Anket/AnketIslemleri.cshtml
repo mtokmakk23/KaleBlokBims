@@ -1,0 +1,467 @@
+﻿
+@{
+    ViewBag.Title = "AnketIslemleri";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+<script>
+
+
+    window.onload = function () {
+
+        verileriYerlestir('@ViewBag.LOGICALREF');
+
+    }
+
+    var soruSayaci = 0;
+    var cevapSayaci = 0;
+    function verileriYerlestir(lref) {
+        var veriler = {
+            LREF: lref
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Anket/_verileriYerlestir',
+            type: 'POST',
+            data: veriler,
+            dataType: 'text',
+            success: function (msg) {
+                var result = JSON.parse(msg);
+                var resultAnketBilgileri = JSON.parse(result[0]["AnketBilgileri"]);
+                var resultAnketSorulari = JSON.parse(result[0]["AnketSorulari"]);
+                var resultAnketCevaplari = JSON.parse(result[0]["AnketCevaplari"]);
+
+                $(".anketBasligi").val(resultAnketBilgileri[0]["Baslik"]);
+                $(".baslangicTarihi").val(resultAnketBilgileri[0]["BaslangicTarihi"]);
+                $(".statu").val(resultAnketBilgileri[0]["Status"]);
+                $(".bitisTarihi").val(resultAnketBilgileri[0]["BitisTarihi"]);
+
+                if (resultAnketBilgileri[0]["AnketTipi"] == "Bayiler İçin") {
+                    $('#BayilerIcin').attr('checked', true);
+                    $('#UyeOlmayanKullanicilarIcin').attr('checked', false);
+                } else if (resultAnketBilgileri[0]["AnketTipi"] == "Üye Olmayan Kullanıcılar İçin") {
+                    $('#BayilerIcin').attr('checked', false);
+                    $('#UyeOlmayanKullanicilarIcin').attr('checked', true);
+                }
+
+
+                $(".tumSorular").html("");
+                soruSayaci = 0;
+                cevapSayaci = 0;
+                for (var i = 0; i < resultAnketSorulari.length; i++) {
+                    $(".tumSorular").append('<div class="soru_' + soruSayaci + ' row">' +
+                        '<div class="col-md-9">' +
+                        '<div class="form-group row">' +
+                        '<div class="col-sm-12">' +
+                        '<input type="text" class="soruMetni_' + soruSayaci + ' form-control" value="' + resultAnketSorulari[soruSayaci]["Metin"] + '" placeholder="Soruyu Yazınız." />' +
+                        '</div>' +
+                        '<div class="cevapTipleri_' + soruSayaci + ' col-sm-12" style="margin-left: 10px; margin-top: 5px">' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-md-auto">' +
+                        '<div class="form-group row">' +
+                        '<div class="col-sm-12">' +
+                        '<select class="cevapTipi_' + soruSayaci + ' form-control" onchange="cevapTipineGoreSecimEkle(' + soruSayaci + ')" >' +
+                        '<option>Cevap Tipini Seçiniz</option>' +
+                        '<option>Sadece Bir Cevap</option>' +
+                        '<option>Birden Çok Cevap</option>' +
+                        '<option>Metin</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-md-auto">' +
+                        '<div class="form-group row">' +
+                        '<div class="col-sm-12">' +
+                        '<a onclick="soruCikar(' + soruSayaci + ')" class="btn  btn-outline-danger">' +
+                        '<i class=" fa fa-minus" ></i>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+                    $(".cevapTipi_" + soruSayaci).val(resultAnketSorulari[soruSayaci]["CevapTipi"]);
+
+                    for (var j = 0; j < resultAnketCevaplari.length; j++) {
+                        if (resultAnketCevaplari[j]["SoruRef"] == resultAnketSorulari[soruSayaci]["LOGICALREF"]) {
+                            $(".cevapTipleri_" + soruSayaci + "").append('<div class="cevap_' + soruSayaci + '_' + cevapSayaci + ' row">' +
+                                '<div class="col-md-12">' +
+                                '<div class="form-group row">' +
+                                '<div class="col-sm-10">' +
+                                '<input type="text" class="cevapSecenegi_' + soruSayaci + '_' + cevapSayaci + ' form-control" value="' + resultAnketCevaplari[j]["Label"] + '" placeholder="Cevap Seçeneği Yazınız" />' +
+                                '</div>' +
+                                '<div class="col-sm-2">' +
+                                '<a onclick="CevapSecenegiCikar(' + soruSayaci + ',' + cevapSayaci + ')" class="btn  btn-outline-danger">' +
+                                '<i class=" fa fa-minus" ></i>' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>');
+                            cevapSayaci = cevapSayaci + 1;
+                        }
+
+                    }
+                    soruSayaci = soruSayaci + 1;
+                }
+
+                $(".tumSorular").append('<div class="soru_' + soruSayaci + ' tumSorularinUstDivi row">  ' +
+                    '<div class="col-md-9">' +
+                    '<div class="form-group row">' +
+                    '<div class="col-sm-12">' +
+                    '<input type="text" class="soruMetni_' + soruSayaci + ' form-control" placeholder="Soruyu Yazınız." />' +
+                    '</div>' +
+                    '<div class="cevapTipleri_' + soruSayaci + ' col-sm-12" style="margin-left: 10px; margin-top: 5px">' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-auto">' +
+                    '<div class="form-group row">' +
+                    '<div class="col-sm-12">' +
+                    '<select class="cevapTipi_' + soruSayaci + ' form-control" onchange="cevapTipineGoreSecimEkle(' + soruSayaci + ')" >' +
+                    '<option>Cevap Tipini Seçiniz</option>' +
+                    '<option>Sadece Bir Cevap</option>' +
+                    '<option>Birden Çok Cevap</option>' +
+                    '<option>Metin</option>' +
+                    '</select>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-auto">' +
+                    '<div class="form-group row">' +
+                    '<div class="col-sm-12">' +
+                    '<a onclick="soruEkle(this,' + soruSayaci + ')" class="btn  btn-outline-secondary">' +
+                    '<i class=" fa fa-plus" ></i>' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>');
+                if ('@ViewBag.actionName' == "examine") {
+                    $(".kaydetButton").remove();
+                    $(".btn").remove();
+                    $('.soru_' + soruSayaci).remove();
+                    $(".card-body").css("pointer-events", "none");
+                    //$("input").attr("disabled", true);
+                    //$("select").attr("disabled", true);
+                }
+                loading(false);
+            }
+        });
+    }
+
+
+    function soruEkle(btn) {
+        if ($(".soruMetni_" + soruSayaci).val().trim() == "") {
+            uyariMesajı("DİKKAT", "Soru Alanı Boş Geçilemez!");
+            return;
+        }
+        if ($(".cevapTipi_" + soruSayaci + " option:selected").val() == "Cevap Tipini Seçiniz") {
+            uyariMesajı("DİKKAT", "Lütfen Cevap Tipini Seciniz!");
+            return;
+        }
+        if ($(".cevapTipi_" + soruSayaci + " option:selected").val() == "Sadece Bir Cevap" || $(".cevapTipi_" + soruSayaci + " option:selected").val() == "Birden Çok Cevap") {
+            var cevapSecenekleri = 0;
+            $(".cevapTipleri_" + soruSayaci + " input[type=text]").each(function () {
+                if ($(this).val().trim() != "") {
+                    cevapSecenekleri = cevapSecenekleri + 1;;
+                }
+            });
+            if (cevapSecenekleri < 2) {
+                uyariMesajı("DİKKAT", "Lütfen En Az 2 Cevap Seçeneği Yazınız!");
+                return;
+            }
+        }
+        $(btn).attr("class", "btn  btn-outline-danger");
+        $(btn).attr("onclick", "soruCikar(" + soruSayaci + ")");
+        $(btn).html('<i class=" fa fa-minus" ></i>');
+        soruSayaci += 1;
+        $(".tumSorular").append('<div class="soru_' + soruSayaci + ' tumSorularinUstDivi row">  ' +
+            '<div class="col-md-9">' +
+            '<div class="form-group row">' +
+            '<div class="col-sm-12">' +
+            '<input type="text" class="soruMetni_' + soruSayaci + ' form-control" placeholder="Soruyu Yazınız." />' +
+            '</div>' +
+            '<div class="cevapTipleri_' + soruSayaci + ' col-sm-12" style="margin-left: 10px; margin-top: 5px">' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-auto">' +
+            '<div class="form-group row">' +
+            '<div class="col-sm-12">' +
+            '<select class="cevapTipi_' + soruSayaci + ' form-control" onchange="cevapTipineGoreSecimEkle(' + soruSayaci + ')" >' +
+            '<option>Cevap Tipini Seçiniz</option>' +
+            '<option>Sadece Bir Cevap</option>' +
+            '<option>Birden Çok Cevap</option>' +
+            '<option>Metin</option>' +
+            '</select>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-auto">' +
+            '<div class="form-group row">' +
+            '<div class="col-sm-12">' +
+            '<a onclick="soruEkle(this,' + soruSayaci + ')" class="btn  btn-outline-secondary">' +
+            '<i class=" fa fa-plus" ></i>' +
+            '</a>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>');
+
+
+    }
+
+    function soruCikar(indisSoruSayaci) {
+        var sonuc = confirm($(".soruMetni_" + indisSoruSayaci).val().trim() + "\nSorusunu Silmek İstiyor Musunuz?");
+        if (sonuc) {
+            $(".soru_" + indisSoruSayaci).remove();
+        }
+
+
+    }
+    function cevapTipineGoreSecimEkle(indisSoruSayaci) {
+        if ($(".cevapTipi_" + indisSoruSayaci + " option:selected").val() == "Cevap Tipini Seçiniz" || $(".cevapTipi_" + indisSoruSayaci + " option:selected").val() == "Metin") {
+            $(".cevapTipleri_" + indisSoruSayaci + "").html("");
+        }
+
+        if ($(".cevapTipi_" + indisSoruSayaci + " option:selected").val() == "Sadece Bir Cevap" || $(".cevapTipi_" + indisSoruSayaci + " option:selected").val() == "Birden Çok Cevap") {
+            $(".cevapTipleri_" + indisSoruSayaci + "").html('<div class="cevap_' + indisSoruSayaci + '_' + cevapSayaci + ' row">' +
+                '<div class="col-md-12">' +
+                '<div class="form-group row">' +
+                '<div class="col-sm-10">' +
+                '<input type="text" class="cevapSecenegi_' + indisSoruSayaci + '_' + cevapSayaci + ' form-control" placeholder="Cevap Seçeneği Yazınız" />' +
+                '</div>' +
+                '<div class="col-sm-2">' +
+                '<a onclick="CevapSecenegiEkle(' + indisSoruSayaci + ',' + cevapSayaci + ',this)" class="btn  btn-outline-secondary">' +
+                '<i class=" fa fa-plus" ></i>' +
+                '</a>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            cevapSayaci = cevapSayaci + 1;
+        }
+
+    }
+    function CevapSecenegiEkle(indisSoruSayaci, indisCevapSayaci, btn) {
+        if ($(".cevapSecenegi_" + indisSoruSayaci + "_" + indisCevapSayaci).val().trim() == "") {
+            uyariMesajı("DİKKAT", "Cevap Seçeneği Boş Geçilemez!");
+            return;
+        }
+        $(btn).attr("class", "btn  btn-outline-danger");
+        $(btn).attr("onclick", "CevapSecenegiCikar(" + indisSoruSayaci + "," + indisCevapSayaci + ")");
+        $(btn).html('<i class=" fa fa-minus" ></i>');
+        $(".cevapTipleri_" + indisSoruSayaci + "").append('<div class="cevap_' + indisSoruSayaci + '_' + cevapSayaci + ' row">' +
+            '<div class="col-md-12">' +
+            '<div class="form-group row">' +
+            '<div class="col-sm-10">' +
+            '<input type="text" class="cevapSecenegi_' + indisSoruSayaci + '_' + cevapSayaci + ' form-control" placeholder="Cevap Seçeneği Yazınız" />' +
+            '</div>' +
+            '<div class="col-sm-2">' +
+            '<a onclick="CevapSecenegiEkle(' + indisSoruSayaci + ',' + cevapSayaci + ',this)" class="btn  btn-outline-secondary">' +
+            '<i class=" fa fa-plus" ></i>' +
+            '</a>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>');
+        cevapSayaci = cevapSayaci + 1;
+    }
+    function CevapSecenegiCikar(indisSoruSayaci, indisCevapSayaci) {
+        var sonuc = confirm($('.cevapSecenegi_' + indisSoruSayaci + '_' + indisCevapSayaci).val().trim() + "\nSorusunu Silmek İstiyor Musunuz?");
+        if (sonuc) {
+            $('.cevap_' + indisSoruSayaci + '_' + indisCevapSayaci).remove();
+        }
+
+    }
+
+    var jsonStr = '{"Sorular":[]}';
+    var cevaplar = '{"Cevaplar":[]}';
+    function anketiOlustur() {
+
+        var obj = JSON.parse(jsonStr);
+        var objCevaplar = JSON.parse(cevaplar);
+        //
+        //jsonStr = JSON.stringify(obj);
+
+
+        var kayitYapilsinMi = false;
+        $(".tumSorular input[type=text]").each(function () {
+            if (($(this).attr("class")).indexOf("soruMetni") != -1) {
+
+                var lokalSoruSayaci = ($(this).attr("class").split(" ")[0]).split("soruMetni_")[1];
+                if ($(".cevapTipi_" + lokalSoruSayaci + " option:selected").val() == "Sadece Bir Cevap" || $(".cevapTipi_" + lokalSoruSayaci + " option:selected").val() == "Birden Çok Cevap") {
+
+                    $(".cevapTipleri_" + lokalSoruSayaci + " input[type=text]").each(function () {
+                        if (($(this).attr("class")).indexOf("cevapSecenegi_" + lokalSoruSayaci) != -1) {
+
+                            objCevaplar['Cevaplar'].push({ "soruID": "" + lokalSoruSayaci + "", "cevapMetni": "" + $(this).val().trim() + "" });
+
+                        }
+                    });
+                    obj['Sorular'].push({ "soruID": "" + lokalSoruSayaci + "", "status": "" + $(".cevapTipi_" + lokalSoruSayaci + " option:selected").val() + "", "soruMetni": "" + $(this).val().trim() + "" });
+                } else if ($(".cevapTipi_" + lokalSoruSayaci + " option:selected").val() == "Metin") {
+                    obj['Sorular'].push({ "soruID": "" + lokalSoruSayaci + "", "status": "" + $(".cevapTipi_" + lokalSoruSayaci + " option:selected").val() + "", "soruMetni": "" + $(this).val().trim() + "" });
+                }
+
+            }
+        });
+        //jsonStr = JSON.stringify(obj);
+        //alert(jsonStr);
+
+        var anketTipi = "";
+        if ($('#BayilerIcin').is(':checked')) {
+            anketTipi = "Bayiler İçin";
+        } else if ($('#UyeOlmayanKullanicilarIcin').is(':checked')) {
+            anketTipi = "Üye Olmayan Kullanıcılar İçin";
+        }
+        var veriler = {
+            anketTipi: anketTipi,
+            baslik: $('.anketBasligi').val(),
+            baslangicTarihi: $('.baslangicTarihi').val(),
+            bitisTarihi: $('.bitisTarihi').val(),
+            status: $(".statu option:selected").val(),
+            sorular: JSON.stringify(obj),
+            cevaplar: JSON.stringify(objCevaplar),
+            action: '@ViewBag.actionName',
+            LREF: "@ViewBag.LOGICALREF"
+        }
+        loading(true);
+        $.ajax({
+            url: '/Admin_Anket/_anketiOlusturIslem',
+            type: 'POST',
+            data: (veriler),
+            dataType: 'text',
+            success: function (msg) {
+                loading(false);
+                var result = JSON.parse(msg);
+                if (result[0]["success"] == "0") {
+                    HataMesaji( result[0]["message"]);
+                    return;
+                } else if (result[0]["success"] == "1") {
+                    $('input').val("");
+                    $('textarea').val("");
+                    $(".tumSorular").html('<div class="soru_0 row">' +
+                        '<div class="col-md-9">' +
+                        '<div class="form-group row">' +
+                        '<div class="col-sm-12">' +
+                        '<input type="text" class="soruMetni_0 form-control" placeholder="Soruyu Yazınız." />' +
+                        '</div>' +
+                        '<div class="cevapTipleri_0 col-sm-12" style="margin-left: 10px; margin-top: 5px">' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+
+                        '<div class="col-md-auto">' +
+                        '<div class="form-group row">' +
+                        '<div class="col-sm-12">' +
+                        '<select class="cevapTipi_0 form-control" onchange="cevapTipineGoreSecimEkle(0)" >' +
+                        '<option>Cevap Tipini Seçiniz</option>' +
+                        '<option>Sadece Bir Cevap</option>' +
+                        '<option>Birden Çok Cevap</option>' +
+                        '<option>Metin</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-md-auto">' +
+                        '<div class="form-group row">' +
+                        '<div class="col-sm-12">' +
+                        '<a onclick="soruEkle(this)" class="btn  btn-outline-secondary">' +
+                        '<i class=" fa fa-plus" ></i>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+                    OnayMesaji(result[0]["message"]);
+                    $(".swal-button-container").remove();
+                    setInterval(function () { window.location = "/Admin_Anket/TumAnketler"; }, 1200);
+                }
+            }
+        });
+    }
+</script>
+<div class="col-8 grid-margin m-auto border rounded mt-2">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Anket Oluştur</h4>
+            <div class="form-sample">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Anket Başlığı</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="anketBasligi form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Başlangıç Tarihi</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="baslangicTarihi form-control" placeholder="dd/mm/yyyy" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Durumu</label>
+                            <div class="col-sm-9">
+                                <select class="statu form-control">
+                                    <option>Hazırlanıyor</option>
+                                    <option>Yayında</option>
+                                    <option>Kapatıldı</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Bitiş Tarihi</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="bitisTarihi form-control" placeholder="dd/mm/yyyy" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Anket Tipi</label>
+                            <div class="col-sm-9">
+                                <input type="radio" name="anketTipi" id="BayilerIcin" checked="checked" /><label style="margin-top:4px" for="BayilerIcin">Bayiler İçin</label>&emsp;&emsp;
+                                @*<input type="radio" name="anketTipi" id="UyeOlmayanKullanicilarIcin" /><label style="margin-top:4px" for="UyeOlmayanKullanicilarIcin">Üye Olmayan Kullanıcılar İçin</label>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description">
+                Soruları Oluştur
+            </p>
+            <div class="tumSorular form-sample">
+               
+
+
+            </div>
+            <a onclick="anketiOlustur();" class="kaydetButton btn btn-primary text-white">KAYDET</a>
+        </div>
+    </div>
+
+
+</div>

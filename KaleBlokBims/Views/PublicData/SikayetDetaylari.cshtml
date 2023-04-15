@@ -1,0 +1,267 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Şikayet Detayları</title>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <script>
+        var Toast;
+
+        window.onload = function () {
+           
+            Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            var LOGICALREF =@ViewBag.LOGICALREF;
+            Toast.fire({
+                icon: 'info',
+                title: 'Şikayet Yükleniyor '
+            })
+            sikayetleriGetir(LOGICALREF);
+
+        }
+        var SikayetList;
+        function sikayetleriGetir(LOGICALREF) {
+            var theData = {
+                LOGICALREF: LOGICALREF
+            }
+            $.ajax({
+                url: '/PublicData/SikayetiGetir/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (res) {
+                   
+                    SikayetList = JSON.parse(res);
+                    SikayetAyrinti(0);
+                }
+            });
+        }
+        function SikayetAyrinti(sayac) {
+            $(".resimOnizleme").html("");
+            var logicalref = SikayetList[sayac]["LOGICALREF"];
+            var theData = {
+                logicalref: logicalref,
+                bayiKodu: SikayetList[sayac]["BayiKodu"]
+            }
+            $.ajax({
+                url: '/PublicData/ResimleriGetir/',
+                type: 'POST',
+                dataType: 'text',
+                data: theData,
+                success: function (msg) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Şikayet Yüklendi'
+                    })
+                    var result = JSON.parse(msg);
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].toString().indexOf("mp4") == -1) {
+                            $(".resimOnizleme").append('' +
+                                '<div class="col-md-2 p-3">' +
+                                '<a class="thumbnail fancybox" rel="ligthbox" onclick="privievImg(\'' + result[i].toString() + '\')">' +
+                                '<img class="img-responsive" style="height: 50px" alt="" src="' + result[i].toString() + '" />' +
+                                '</a>' +
+                                '</div>');
+
+                        } else {
+                            //buraya videolar gelecek 
+                            $(".resimOnizleme").append('' +
+                                '<div class="col-md-auto">' +
+                                '<video controls="" src="' + result[i].toString() + '" width="250" height="250"></video>' +
+                                '</div>');
+                        }
+                    }
+
+
+                    $(".formNo").html(SikayetList[sayac]["FormNo"]);
+                    $(".formTarihi").html(SikayetList[sayac]["FormTarih"]);
+                    $(".bayiKodu").html(SikayetList[sayac]["BayiKodu"]);
+                    $(".bayiUnvani").html(SikayetList[sayac]["BayiAdi"]);
+                    $(".santiyeAdi").html(SikayetList[sayac]["SantiyeAdi"]);
+                    $(".irtibatKurulacakKisi").html(SikayetList[sayac]["IrtibatKurulacakKisi"]);
+                    $(".irtibatNo").html(SikayetList[sayac]["IrtibatNo"]);
+                    $(".siparisNo").html(SikayetList[sayac]["Bayi_SiparisNo"]);
+                    $(".irsaliyeNo").html(SikayetList[sayac]["Bayi_IrsaliyeNo"]);
+                    $(".faturaNo").html(SikayetList[sayac]["Bayi_FaturaNo"]);
+                    $(".urunGrubu").html(SikayetList[sayac]["UrunGrubu"].split("#").join(","));
+                    $(".sikayetBasligi").html(SikayetList[sayac]["BildirimSebebi"].split("#").join(","));
+                    $(".urunAciklamasi").html(SikayetList[sayac]["UrunAciklama"]);
+                    $(".detayliAciklama").html(SikayetList[sayac]["DetayliAciklama"]);
+                    $(".partiNo").html(SikayetList[sayac]["PartiNo"]);
+                    $(".uretimTarihi").html(SikayetList[sayac]["UretimTarihi"]);
+                    $(".urunMiktari").html(SikayetList[sayac]["UrunMiktari"]);
+                    $(".teslimTarihi").html(SikayetList[sayac]["TeslimTarihi"]);
+                   
+                }
+            });
+        }
+
+        function privievImg(path) {
+            Swal.fire({
+                width: 'auto',
+                imageUrl: path,
+                imageWidth: 'auto',
+                imageHeight: 'auto',
+            })
+
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="content col-md-10 shadow rounded border m-auto pt-0 m-4">
+        <div class="h4 bg-primary shadow rounded border text-white p-3">ŞİKAYET DETAYI</div>
+        
+        <div class="p-4">
+            <div class="row bolumler" style="background-color: #fff1f11a;">
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <label for="staticEmail" class="col-sm-4 col-form-label" style="width: 40%">Form No:</label>
+                        <span class="col-sm-8 col-form-label" style="width: 60%; font-weight: bold">
+                            <span class="formNo"></span>
+                        </span>
+                    </div>
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <label for="inputPassword" class="col-sm-4 col-form-label" style="width: 40%">Form Tarihi:</label>
+                        <span class="col-sm-8 formTarihi" style="width: 60%; font-weight: bold"></span>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <label for="staticEmail" class="col-sm-3 col-form-label" style="width: 40%">Bayi Kodu:</label>
+                        <span class="col-sm-9 col-form-label" style="width: 60%; font-weight: bold">
+                            <span class="bayiKodu"></span>
+                        </span>
+                    </div>
+                    <div class="form-group row" style="margin-bottom: 0;">
+                        <label for="inputPassword" class="col-sm-3 col-form-label" style="width: 40%">Bayi Adı:</label>
+                        <span class="col-sm-9 bayiUnvani" style="width: 60%; font-weight: bold"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <label for="staticEmail" class="col-sm-4">Şantiye Adı:</label>
+                        <span class="col-sm-8 santiyeAdi" style="font-weight: bold"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-5 col-form-label">İrtibat Kurulacak Kişi:</label>
+                        <span class="col-sm-7 irtibatKurulacakKisi" style="font-weight: bold"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">İrtibat No:</label>
+                        <span class="col-sm-9 irtibatNo" style="font-weight: bold"></span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row urunGrubuSikayetBasligiDivi" style="margin: 5px">
+
+                <div class="col-md-12 bolumler" style="margin: 0; background-color: #fff1f11a;">
+
+                    <div class="row ">
+
+                        <label class="col-md-2" style="font-size: 15px">Ürün Grubu</label>
+                        <span class="col-md-10 urunGrubu" style="font-weight: bold"></span>
+                    </div>
+                    <div class="row ">
+
+                        <label class="col-md-2" style="font-size: 15px">Şikayet Başlığı</label>
+                        <span class="col-md-10 sikayetBasligi" style="font-weight: bold"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row bolumler" style="padding-top: 5px; margin-bottom: 15px; background-color: #fff1f11a">
+                <div class="col-md-12">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-auto col-form-label">Malzeme Açıklaması:</label>
+                        <span class="col-sm-8 urunAciklamasi" style="font-weight: bold"></span>
+                    </div>
+
+
+                </div>
+                <div class="col-md-12">
+
+
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-auto col-form-label">Detaylı Açıklama:</label>
+                        <span class="col-sm-8 detayliAciklama" style="font-weight: bold"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-auto col-form-label">Parti No:</label>
+                        <span class="col-sm-7 partiNo" style="font-weight: bold"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-auto col-form-label">Üretim Tarihi:</label>
+                        <span class="col-sm-7 uretimTarihi" style="font-weight: bold"></span>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+
+
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-auto col-form-label">Malzeme Miktarı:</label>
+                        <span class="col-sm-7 urunMiktari" style="font-weight: bold"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-auto col-form-label">Malzeme Teslim Tarihi:</label>
+                        <span class="col-sm-7 teslimTarihi" style="font-weight: bold"></span>
+                    </div>
+
+                </div>
+                <div class="col-md-12 row resimOnizleme">
+                    @*<div class="col-md-auto">
+                    <div class="list-group gallery row">
+                        <div class="col-md-3">
+                            <video controls="" src="/images/sikayet/1/Gelen/miniResimDivi1.mp4" width="210" height="100"></video>
+                        </div>
+                    </div>
+                </div>*@
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

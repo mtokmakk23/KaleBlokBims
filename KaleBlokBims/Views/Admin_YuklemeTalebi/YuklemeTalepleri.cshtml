@@ -1,0 +1,227 @@
+﻿
+@{
+    ViewBag.Title = "YuklemeTalepleri";
+    Layout = "~/Views/Shared/_Admin_Master.cshtml";
+}
+<script>
+    window.onload = function () {
+        talepleriGetir();
+    }
+    var tumFisler = "";
+
+
+    function talepleriGetir() {
+        $("#teklifler tbody").html("");
+        $("#teklifIcerigi tbody").html("");
+        $("#teklifIcerigi tfoot").html("");
+        $.ajax({
+            url: '/Admin_YuklemeTalebi/_talepleriGetir',
+            type: 'POST',
+            dataType: 'text',
+            success: function (msg) {
+                var Lresult = JSON.parse(msg);
+                tumFisler = Lresult;
+
+
+
+                for (var i = 0; i < Lresult.length; i++) {
+
+                    $("#teklifler tbody").append('<tr class="baslik' + i + '"><td><i style="cursor:pointer" onclick="talepBilgileri(this,' + Lresult[i].LOGICALREF + ',' + i + ')" class="fa fa-desktop talepIcon"></i> ' + Lresult[i].LOGICALREF + '</td>' +
+                        '<td>' + Lresult[i].BayiKodu + '</td>' +
+                        '<td>' + Lresult[i].BayiAdi + '</td>' +
+                        '<td>' + Lresult[i].SiparisTarihi + '</td>' +
+                        '<td>' + Lresult[i].SiparisNo + '</td>' +
+                        '<td>' + Lresult[i].BayiTalebiYuklemeTarihi + '</td>' +
+                        '<td>' + Lresult[i].TalepAciklamasi + '</td>' +
+                        '<td>' + Lresult[i].FirmaYuklemeTarihi + '</td>' +
+                        '<td>' + Lresult[i].FirmaAciklamasi + '</td>' +
+                        '<td>' + Lresult[i].TalepAcilisTarihi + '</td>' +
+                        '</tr>');
+                }
+
+
+            }
+        });
+    }
+
+
+    function talepBilgileri(fi, LOGICALREF, Li) {
+        loading(true);
+        $("#teklifIcerigi tbody").html("");
+        $("#teklifIcerigi tfoot").html("");
+        $("#teklifler tbody tr td:nth-child(1) i").css("color", "black");
+        $("#teklifler tbody tr").css("background-color", "white");
+        $(".baslik" + Li + "").css("background-color", "aliceblue");
+        $(fi).css("color", "blue");
+        $.ajax({
+            url: '/Admin_YuklemeTalebi/_talepBilgileri',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            data: '{"LOGICALREF":"' + LOGICALREF + '"}',
+            success: function (msg) {
+                var Lresult = JSON.parse(msg);
+
+                for (var i = 0; i < Lresult.length; i++) {
+
+                    $("#teklifIcerigi tbody").append('<tr>' +
+                        '<td>' + Lresult[i].MalzemeKodu + '</td>' +
+                        '<td>' + Lresult[i].MalzemeAciklamasi + '</td>' +
+                        '<td>' + Lresult[i].Birim + '</td>' +
+                        '<td>' + Lresult[i].BekleyenMiktar + '</td>' +
+                        '<td>' + Lresult[i].YuklemeTalepMiktari + '</td>' +
+                        '</tr>');
+
+                }
+
+                $("#teklifIcerigi tfoot").append('<tr>' +
+                    '<td colspan="5">' +
+                    '<div class="card-body" style="padding:0;width: 50%;float:left">' +
+
+                    '<div class="form-group row" >' +
+                    '<label for="exampleInputEmail2" class="col-sm-3 col-form-label">Yükleme Tarihi</label>' +
+                    '<div class="col-sm-9">' +
+                    '<input type="date" class="form-control" id="yuklemeTarihi">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="form-group row">' +
+                    '<label for="exampleInputPassword2" class="col-sm-3 col-form-label">Açıklama</label>' +
+                    '<div class="col-sm-9">' +
+                    '<textarea class="form-control" id="aciklama" rows="2"></textarea>' +
+                    '</div>' +
+                    '</div>' +
+                    '<input type="button" class="btn btn-success mr-2" onclick="talebiGuncelle(' + LOGICALREF + ')" value="KAYDET" style="float:right" />' +
+
+                    '</div>' +
+                    '<input type="button" onclick="talebiSil(' + LOGICALREF + ')" class="btn btn-danger mr-2" value="TALEBİ SİL" style="float:right" />' +
+
+                    '</td>' +
+
+                    '</tr>');
+                loading(false);
+            }
+
+        });
+
+    }
+
+    function talebiGuncelle(LOGICALREF) {
+        if ($("#yuklemeTarihi").val().trim() == "") {
+            uyariMesajı("", "Yükleme Tarihi Girmelisiniz.");
+            return;
+        }
+        $.ajax({
+            url: '/Admin_YuklemeTalebi/_talebiGuncelle',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            data: '{"LOGICALREF":"' + LOGICALREF + '","firmaTarihi":"' + $("#yuklemeTarihi").val() + '","firmaAciklamasi":"' + $("#aciklama").val() + '"}',
+            success: function (msg) {
+                if (msg == "true") {
+                    OnayMesaji("Bilgiler Kaydedildi.");
+                    talepleriGetir();
+                }
+            }
+        });
+    }
+    function talebiSil(LOGICALREF) {
+        var sonuc = confirm("Silmek İstediğinize Emin misiniz?");
+        if (sonuc) {
+            $.ajax({
+                url: '/Admin_YuklemeTalebi/_talebiSil',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'text',
+                data: '{"LOGICALREF":"' + LOGICALREF + '"}',
+                success: function (msg) {
+                    if (msg == "true") {
+                        OnayMesaji("Yükleme Talebi Silindi.");
+                        talepleriGetir();
+                    }
+                }
+            });
+        }
+
+    }
+
+
+
+    function formatDate(date) {
+
+        var day = date.getDate();
+        if (day < 10) day = "0" + day;
+        var monthIndex = (date.getMonth()) + 1;
+        if (monthIndex < 10) monthIndex = "0" + monthIndex;
+        var year = date.getFullYear();
+
+        return day + '.' + (monthIndex) + '.' + year;
+    }
+
+
+</script>
+<div class="card-header mb-1" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">
+    <h2 class="card-title">
+        <a>
+            Yükleme Talepleri
+        </a>
+    </h2>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover" id="teklifler">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Bayi Kodu</th>
+                <th>Bayi Adi</th>
+                <th>Sipariş Trh.</th>
+                <th>Sipariş No</th>
+                <th>Yükleme Tarihi</th>
+                <th>Açıklama</th>
+                <th>Firma Yük. Trh.</th>
+                <th>Firma Açıklaması</th>
+                <th>Talep Oluş. Trh.</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="col-lg-6 grid-margin stretch-card" style="max-width: 100%; flex: auto; margin: 0; padding: 0;  margin-top: 20px">
+    <div class="card" style="height: 300px; overflow: auto;">
+        <div class="card-body" style="padding: 1px">
+            <style>
+                #teklifIcerigi tbody tr td, #teklifIcerigi tfoot tr td {
+                    padding: 5px;
+                }
+
+                #teklifIcerigi tfoot tr td {
+                    border: none;
+                }
+
+                #teklifIcerigi thead tr th {
+                    padding: 5px;
+                }
+            </style>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="teklifIcerigi">
+                    <thead>
+                        <tr>
+                            <th>Kodu</th>
+                            <th>Adi</th>
+                            <th>Birim</th>
+                            <th>Bekleyen Miktar</th>
+                            <th>Yükleme Talep Edilen Miktar</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

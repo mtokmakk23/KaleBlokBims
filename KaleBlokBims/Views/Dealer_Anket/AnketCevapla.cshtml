@@ -1,0 +1,221 @@
+﻿
+@{
+    ViewBag.Title = "AnketCevapla";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+<script>
+    window.onload = function () {
+        anketiDoldur();
+    }
+    function anketiDoldur() {
+        var LREF = "@ViewBag.LOGICALREF";
+        var actionName = "@ViewBag.actionName";
+        var veriler = {
+            LREF: LREF
+        }
+        loading(true);
+        $.ajax({
+            url: '/Dealer_Anket/_anketiDoldur',
+            type: 'POST',
+            data: veriler,
+            dataType: 'text',
+            success: function (msg) {
+                var result = JSON.parse(msg);
+                var resultAnketBilgileri = JSON.parse(result[0]["AnketBilgileri"]);
+                var resultAnketSorulari = JSON.parse(result[0]["AnketSorulari"]);
+                var resultAnketCevaplari = JSON.parse(result[0]["AnketCevaplari"]);
+
+                $(".anketBasligi").html(resultAnketBilgileri[0]["Baslik"]);
+
+                var sorularVeCevaplarText = "";
+                for (var i = 0; i < resultAnketSorulari.length; i++) {
+
+
+
+
+                    sorularVeCevaplarText += '' +
+                        '<div class="row bottom-mrg extra-mrg soruDivi soru1"> ' +
+                        '<h5 class="detail-title"><i class="fa-solid fa-clipboard-question text-primary border p-2 shadow-sm rounded" style="margin-right:5px"></i>' + resultAnketSorulari[i]["Metin"] + '</h5>';
+
+
+
+
+
+
+                    for (var j = 0; j < resultAnketCevaplari.length; j++) {
+
+                        if (resultAnketCevaplari[j]["SoruRef"] == resultAnketSorulari[i]["LOGICALREF"]) {
+
+                            if (resultAnketSorulari[i]["CevapTipi"] == "Sadece Bir Cevap") {
+                                /*
+                                <div class="col-md-12 col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input type="text" class="form-control" placeholder="Email Address">
+                            </div>
+                        </div>
+                                */
+                                sorularVeCevaplarText += ' <div class="col-md-12 col-sm-12">' +
+                                    '<div class="input-group" >' +
+                                    '<span class="input-group-addon" style="padding:5px">' +
+                                    '<input type="radio" class="internship check-option checkbox" name="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '" id="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '_' + resultAnketCevaplari[j]["LOGICALREF"] + '" /></span>' +
+                                    '<label style="padding:0 0 0 5px;height:30px;" for="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '_' + resultAnketCevaplari[j]["LOGICALREF"] + '" class="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '_' + resultAnketCevaplari[j]["LOGICALREF"] + ' form-control">' + resultAnketCevaplari[j]["Label"] + '</label>' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+                            if (resultAnketSorulari[i]["CevapTipi"] == "Birden Çok Cevap") {
+                                sorularVeCevaplarText += ' <div class="col-md-12 col-sm-12">' +
+                                    '<div class="input-group" >' +
+                                    '<span class="input-group-addon" style="padding:5px">' +
+                                    '<input type="checkbox" class="internship check-option checkbox" id="check_' + resultAnketSorulari[i]["LOGICALREF"] + '_' + resultAnketCevaplari[j]["LOGICALREF"] + '" /></span>' +
+                                    '<label style="padding:0 0 0 5px;height:30px;" for="check_' + resultAnketSorulari[i]["LOGICALREF"] + '_' + resultAnketCevaplari[j]["LOGICALREF"] + '" class="check_' + resultAnketSorulari[i]["LOGICALREF"] + '_' + resultAnketCevaplari[j]["LOGICALREF"] + ' form-control">' + resultAnketCevaplari[j]["Label"] + '</label>' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+
+                        }
+
+                    }
+
+                    if (resultAnketSorulari[i]["CevapTipi"] == "Metin") {
+                        sorularVeCevaplarText += '<div class="col-md-12 col-sm-12">' +
+                            '<div class="input-group" style="display:inherit" >' +
+                            '<textarea id="textarea_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE" class="textarea_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE form-control w-100" rows="5"></textarea>' +
+                            '</div>' +
+                            '</div>';
+                    }
+                    if (resultAnketSorulari[i]["CevapTipi"] == "Sadece Bir Cevap") {
+                        sorularVeCevaplarText += ' <div class="col-md-12 col-sm-12">' +
+                            '<div class="input-group"  >' +
+                            '<span class="input-group-addon" style="padding:5px">' +
+                            '<input type="radio" class="internship check-option checkbox" name="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '" id="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE" /></span>' +
+                            '<label class="form-control" style="padding:0 0 0 5px;height:52px;" for="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE" >DİĞER&nbsp;<input type="text" style="height:30px" class="radio_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE form-control"/></label>' +
+                            '</div>' +
+                            '</div>';
+                    }
+                    if (resultAnketSorulari[i]["CevapTipi"] == "Birden Çok Cevap") {
+                        sorularVeCevaplarText += ' <div class="col-md-12 col-sm-12">' +
+                            '<div class="input-group" >' +
+                            '<span class="input-group-addon" style="padding:5px">' +
+                            '<input type="checkbox" class="internship check-option checkbox" id="check_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE" /></span>' +
+                            '<label style="padding:0 0 0 5px;height:50px;" for="check_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE" class="form-control">DİĞER&nbsp;<input type="text" class="check_' + resultAnketSorulari[i]["LOGICALREF"] + '_KALE form-control"/></label>' +
+                            '</div>' +
+                            '</div>';
+                    }
+
+
+                    sorularVeCevaplarText += '</div>';
+
+                }
+                $(".sorularAnaDiv").html(sorularVeCevaplarText);
+                if (actionName == "examine") {
+                    $(".submit").remove();
+                    $(".full-detail").css("pointer-events", "none");
+                    // $("input").attr("disabled", true);
+                    // $("textarea").attr("disabled", true);
+                }
+                loading(false);
+                cevaplariYukle();
+            }
+        });
+    }
+
+    function cevaplariYukle() {
+        var LREF ="@ViewBag.LOGICALREF";
+        var veriler = {
+            LREF: LREF
+        }
+        $.ajax({
+            url: '/Dealer_Anket/_cevaplariYukle',
+            type: 'POST',
+            data: veriler,
+            dataType: 'text',
+            success: function (msg) {
+                var result = JSON.parse(msg);
+                for (var i = 0; i < result.length; i++) {
+                    // alert("#radio_" + result[i]["MasterLRef"] + "_" + result[i]["SoruRef"]);
+                    $("#radio_" + result[i]["SoruLRef"] + "_" + result[i]["CevapLREF"]).attr('checked', true);
+                    $(".radio_" + result[i]["SoruLRef"] + "_" + result[i]["CevapLREF"]).val(result[i]["Cevap"]);
+                    $("#check_" + result[i]["SoruLRef"] + "_" + result[i]["CevapLREF"]).attr('checked', true);
+                    $(".check_" + result[i]["SoruLRef"] + "_" + result[i]["CevapLREF"]).val(result[i]["Cevap"]);
+                    $(".textarea_" + result[i]["SoruLRef"] + "_" + result[i]["CevapLREF"]).val(result[i]["Cevap"]);
+
+                }
+            }
+        });
+    }
+
+    function anketiCevapla() {
+        loading(true);
+
+        var LREF = "@ViewBag.LOGICALREF";
+
+        var jsonStr = '{"Sonuclar":[]}';
+        var obj = JSON.parse(jsonStr);
+
+
+        $(".sorularAnaDiv input[type=radio]").each(function () {
+            if ($(this).is(':checked')) {
+                if ($(this).attr("id").indexOf("KALE") == -1) {
+
+                    obj['Sonuclar'].push({ "anketID": "" + LREF + "", "soruID": "" + $(this).attr("id").split("_")[1] + "", "cevap": "" + $("." + $(this).attr("id")).html() + "" });
+
+                } else {
+                    obj['Sonuclar'].push({ "anketID": "" + LREF + "", "soruID": "" + $(this).attr("id").split("_")[1] + "", "cevap": "" + $("." + $(this).attr("id")).val() + "" });
+                }
+            }
+        });
+
+        $(".sorularAnaDiv input[type=checkbox]").each(function () {
+            if ($(this).is(':checked')) {
+                if ($(this).attr("id").indexOf("KALE") == -1) {
+
+                    obj['Sonuclar'].push({ "anketID": "" + LREF + "", "soruID": "" + $(this).attr("id").split("_")[1] + "", "cevap": "" + $("." + $(this).attr("id")).html() + "" });
+
+                } else {
+                    obj['Sonuclar'].push({ "anketID": "" + LREF + "", "soruID": "" + $(this).attr("id").split("_")[1] + "", "cevap": "" + $("." + $(this).attr("id")).val() + "" });
+                }
+            }
+        });
+
+        $(".sorularAnaDiv textarea").each(function () {
+
+            obj['Sonuclar'].push({ "anketID": "" + LREF + "", "soruID": "" + $(this).attr("id").split("_")[1] + "", "cevap": "" + $("." + $(this).attr("id")).val() + "" });
+        });
+        var veriler = {
+            Sonuclar: JSON.stringify(obj)
+        }
+
+        $.ajax({
+            url: '/Dealer_Anket/_anketiCevapla',
+            type: 'POST',
+            data: JSON.stringify(veriler),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'text',
+            success: function (msg) {
+                loading(false);
+                if (msg == "true") {
+                    OnayMesaji("Anket Başarıyla Cevaplandı");
+                    $(".swal-button-container").remove();
+                    setInterval(function () { window.location = "/Dealer_Anket/TumAnketler"; }, 1200);
+                } else {
+                    HataMesaji(msg);
+                }
+            }
+        });
+    }
+
+
+
+</script>
+<div class="col-md-8 m-auto border shadow rounded p-3 mt-2">
+    <h3 class="anketBasligi" style="text-align: center"></h3>
+    <hr style="margin: 5px 0 5px 0;" />
+    <div class=" sorularAnaDiv">
+
+    </div>
+    <div class="soruDivi submit" style="text-align: center">
+        <a onclick="anketiCevapla()" class="btn btn-primary mt-4 text-white">KAYDET</a>
+
+    </div>
+</div>

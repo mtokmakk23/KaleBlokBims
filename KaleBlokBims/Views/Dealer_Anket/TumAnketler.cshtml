@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "TumAnketler";
+    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+}
+<style>
+
+    table tbody tr td {
+        white-space: nowrap;
+    }
+
+    thead {
+        background-color: #006EB7;
+        color: white
+    }
+</style>
+<script>
+        window.onload = function () {
+
+            anketleriGetir();
+        }
+
+        function anketleriGetir() {
+            loading(true);
+            $.ajax({
+                url: '/Dealer_Anket/_anketleriGetir',
+                type: 'POST',
+               
+                dataType: 'text',
+                success: function (msg) {
+                    var result = JSON.parse(msg);
+                    $(".anketlerTablosu tbody").html("");
+
+                    for (var i = 0; i < result.length; i++) {
+
+                        var cevaplaButton = "";
+                        if (result[i]["Status"] == "Yayında") {
+                            cevaplaButton = '<a onclick="action(\'answer\',' + result[i]["LOGICALREF"] + ')" class="btn btn-primary btn-sm text-white" style="margin-left:10px">Cevapla</a>';
+                        }
+                        var inceleButton = "";
+                        if (result[i]["Status"] == "Kapatıldı") {
+                            inceleButton = '<a onclick="action(\'examine\',' + result[i]["LOGICALREF"] + ')" class="btn btn-warning btn-sm text-white">İncele</a>';
+
+                        }
+                        $(".anketlerTablosu tbody").append('' +
+                              '<tr class="birinciTabloSatir' + (i % 2) + '">' +
+                                '<td>' + result[i]["Baslik"] + '</td>' +
+                                '<td class="text-' + result[i]["textStyle"] + '">' + result[i]["Status"] + '</td>' +
+                                '<td>' + result[i]["BaslangicTarihi"] + '</td>' +
+                                '<td>' + result[i]["BitisTarihi"] + '</td>' +
+                                '<td>' +
+                                    '<div class="progress" style="float:left;width:85%;margin-top:8px">' +
+                                        '<div class="progress-bar bg-danger progress-bar-striped" role="progressbar" style="width: ' + result[i]["yuzde"] + '%" aria-valuenow="' + result[i]["yuzde"] + '" aria-valuemin="0" aria-valuemax="100"></div>' +
+                                    '</div>' +
+                                    '<b style="float:left;margin-left:1px">' + result[i]["cevaplananSoruSayisi"] + '/' + result[i]["toplamSoruSayisi"] + '</b>' +
+                                '</td>' +
+                                '<td>' + inceleButton + cevaplaButton + '</td>' +
+                            '</tr> ');
+                    }
+                    loading(false);
+                }
+            });
+        }
+
+        function action(actionName, LREF) {
+
+            window.location = "/Dealer_Anket/AnketCevapla?actionName=" + actionName + "&LOGICALREF=" + LREF;
+        }
+</script>
+
+<div class="col-md-8 grid-margin m-auto border shadow rounded mt-2">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm anketlerTablosu">
+                    <thead>
+                        <tr>
+                            <th>
+                                Anket Başlığı
+                            </th>
+                            <th>
+                                Durumu
+                            </th>
+                            <th>
+                                Başlangıç Tarihi
+                            </th>
+                            <th>
+                                Bitiş Tarihi
+                            </th>
+                            <th>
+                                Cevaplama Durumu
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>

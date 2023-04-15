@@ -54,7 +54,8 @@ namespace KaleBlokBims.Controllers
                 {
                     Directory.CreateDirectory(Server.MapPath("~") + folderPath);
                 }
-                string nameAndLocation = folderPath + docType + "_" + LOGICALREF + "_" + file.FileName;
+                var fileNameArray = file.FileName.Split('.');
+                string nameAndLocation = folderPath + docType + "_" + LOGICALREF + "_" + DateTime.Now.ToString("yyyyMMddHHmmss")+"."+ fileNameArray[fileNameArray.Length-1];
                 file.SaveAs(Server.MapPath(nameAndLocation));
 
                 db.Database.ExecuteSqlCommand("update BayiEvraklari set " + docType + "='" + (nameAndLocation) + "' where LOGICALREF=" + LOGICALREF);

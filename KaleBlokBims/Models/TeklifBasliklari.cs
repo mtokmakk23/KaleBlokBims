@@ -32,5 +32,6 @@ namespace KaleBlokBims.Models
         public Nullable<int> BaglantiLref { get; set; }
         public string BaglantiAciklamasi { get; set; }
         public Nullable<bool> SipariseDonduMu { get; set; }
+        public string OdemeTipi { get; set; }
     }
 }

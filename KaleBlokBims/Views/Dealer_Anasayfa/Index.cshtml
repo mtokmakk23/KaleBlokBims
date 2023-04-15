@@ -7,8 +7,8 @@
 <script>
 
 
-        window.onload = function () {
-
+    window.onload = function () {
+        siparisIrsaliyeSikayet();
             HesapEkstresi();
             BaglantiOzeti();
             BayiBilgileri();
@@ -136,7 +136,38 @@
         }
 
 
+    function siparisIrsaliyeSikayet() {
+        $.ajax({
+            url: '/Dealer_Siparisler/Siparisler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                $(".siparisSayisi").html(result.length);
+            }
+        });
 
+     
+        $.ajax({
+            url: '/Dealer_Irsaliyeler/Irsaliyeler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                $(".irsaliyeSayisi").html(result.length);
+            }
+        });
+
+        $.ajax({
+            url: '/Dealer_Sikayet/TumSikayetler/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                $(".sikayetSayisi").html(result.length);
+            }
+        });
+    }
 </script>
 <style>
     .card-title a:before {
@@ -157,8 +188,25 @@
         <img src="/assets/images/banners/banner.jpeg" />
         <h1 class="page-title" style="font-family: cursive;font-weight: bold;display:none">İZOKALE PORTAL</h1>
     </div><!-- End .container -->
+
+
+</div>
+<div class="col-md-6 m-auto row">
+    <div class="col-md-auto border shadow rounded text-center p-3 m-auto">
+        <h1 class="text-primary fw-bold siparisSayisi"></h1>
+        <p class="h5 text-primary opacity-50">Siparişler</p>
+    </div>
+    <div class="col-md-auto border shadow rounded text-center p-3 m-auto">
+        <h1 class="text-success fw-bold irsaliyeSayisi"></h1>
+        <p class="h5 text-success opacity-50">İrsaliyeler</p>
+    </div>
+    <div class="col-md-auto border shadow rounded text-center p-3 m-auto">
+        <h1 class="text-danger fw-bold sikayetSayisi"></h1>
+        <p class="h5 text-danger opacity-50">Şikayetler</p>
+    </div>
 </div>
 <div class="page-content pb-0 mt-5">
+
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-2 mb-lg-0">
