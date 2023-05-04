@@ -301,8 +301,10 @@ namespace KaleBlokBims.Controllers
                         break;
                     }
                 }
-
-
+                //%4 ileve
+                dolarsatisfyt=(Math.Round(Convert.ToDouble(dolarsatisfyt) * (1.04), 4)).ToString();
+                eurosatisfyt = (Math.Round(Convert.ToDouble(eurosatisfyt) * (1.04), 4)).ToString();
+                //
                 dt.Rows.Add(dolarsatisfyt, eurosatisfyt, DateTime.Now.ToString("HH:mm"));
 
                 return JsonConvert.SerializeObject(dt);
