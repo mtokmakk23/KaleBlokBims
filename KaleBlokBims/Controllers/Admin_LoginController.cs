@@ -62,7 +62,7 @@ namespace KaleBlokBims.Controllers
                 Session["AdminMi"] = "1";
                 Session["AdminYetkiler"] = JsonConvert.SerializeObject(db.AdminKullaniciYetkisi.Where(x=>x.KullaniciID==kullanici.LOGICALREF).FirstOrDefault());
                 FormsAuthentication.SetAuthCookie(kullanici.LOGICALREF.ToString(), false);
-                if (Convert.ToDateTime(kullanici.SifreDegistirmeTarihi).AddDays(60) < DateTime.Now)
+                if (Convert.ToDateTime(kullanici.SifreDegistirmeTarihi).AddDays(90) < DateTime.Now)
                 {
                     return RedirectToAction("Index", "Password");
 

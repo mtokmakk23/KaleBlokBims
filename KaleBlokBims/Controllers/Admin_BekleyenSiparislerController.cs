@@ -241,6 +241,12 @@ namespace KaleBlokBims.Controllers
         [HttpPost]
         public string siparisAktar(string tarih, string belgeNo, string referansNo,string sozlesmeNo, string cari, string odemeler, string satisElemani, string siparisNotu, string isYeri, string bolum, string fabrika, string ambar)
         {
+            if (cari == "-1")
+                return "Cari Hesap Seçilmelidir";
+            if (odemeler == "-1")
+                return "Ödemeler Seçilmelidir.";
+            if (satisElemani == "-1")
+                return "Satış Elemanı Seçilmelidir.";
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             //return "";
             M2BWebService.M2BWCFBaslik baslik = new M2BWebService.M2BWCFBaslik();
@@ -271,6 +277,7 @@ namespace KaleBlokBims.Controllers
                 {
                     baslik.Aciklama2 = siparisBasligi.SiparisNotu;
                 }
+                baslik.AdresBasligi = siparisBasligi.AdresBasligi;
                 baslik.Ambar = Convert.ToInt32(ambar).ToString();
                 baslik.BelgeNo = belgeNo;
                 baslik.Bolum = Convert.ToInt32(bolum).ToString();

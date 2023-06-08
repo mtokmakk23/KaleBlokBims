@@ -127,9 +127,9 @@
                     } else {
 
                     }
-                    $(".duyurular").append(result[i].Baslik + "<br/>");
-                    $(".duyurular").append(result[i].Icerik + "<hr/>");
-                }
+                    $(".duyurular").append("<div class='tumDuyurular duyuru" + result[i].LOGICALREF + "' " + (i == 0 ? "" : "style='display:none'") + ">" + result[i].Baslik + "<br/>" + result[i].Icerik + "<hr/></div>");
+                    $(".pagination").append('<li style="cursor:pointer" class="page-item"><a onclick="$(\'.tumDuyurular\').hide(\'fast\');$(\'.duyuru' + result[i].LOGICALREF + '\').show(\'fast\');$(\'.page-link\').removeClass(\'active\');$(this).addClass(\'active\')" class="page-link">' + (i + 1) + '</a></li>');
+             }
             }
         });
 
@@ -253,11 +253,16 @@
             </div><!-- End .col-lg-6 -->
             <div class="col-lg-6">
                 <div class="card-header" id="heading-1" style="border: 0.1rem solid #ebebeb;border-left:3px solid #006EB7;border-right:3px solid #006EB7;border-radius:3px">
-                    <h2 class="card-title">
+                    <h2 class="card-title" style="float:left">
                         <a>
                             Duyurular
                         </a>
+
                     </h2>
+                    <nav aria-label="Page navigation example" style="float:right">
+                        <ul class="pagination">
+                        </ul>
+                    </nav>
                 </div>
                 <div class="card-body duyurular"></div>
             </div><!-- End .col-lg-6 -->

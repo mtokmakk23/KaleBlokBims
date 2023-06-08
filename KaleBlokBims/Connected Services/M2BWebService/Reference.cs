@@ -1028,6 +1028,9 @@ namespace KaleBlokBims.M2BWebService {
         private string YetkiKoduField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AdresBasligiField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string Aciklama1Field;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1150,6 +1153,19 @@ namespace KaleBlokBims.M2BWebService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        public string AdresBasligi {
+            get {
+                return this.AdresBasligiField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AdresBasligiField, value) != true)) {
+                    this.AdresBasligiField = value;
+                    this.RaisePropertyChanged("AdresBasligi");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
         public string Aciklama1 {
             get {
                 return this.Aciklama1Field;
@@ -1162,7 +1178,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=7)]
         public string Aciklama2 {
             get {
                 return this.Aciklama2Field;
@@ -1175,7 +1191,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=7)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=8)]
         public string Aciklama3 {
             get {
                 return this.Aciklama3Field;
@@ -1188,7 +1204,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=8)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=9)]
         public string Aciklama4 {
             get {
                 return this.Aciklama4Field;
@@ -1201,7 +1217,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=9)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
         public string OdemeTipiKodu {
             get {
                 return this.OdemeTipiKoduField;
@@ -1214,7 +1230,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=11)]
         public string TicariIslemGrubu {
             get {
                 return this.TicariIslemGrubuField;
@@ -1227,7 +1243,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=11)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=12)]
         public string SatisElemaniKodu {
             get {
                 return this.SatisElemaniKoduField;
@@ -1240,7 +1256,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=12)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=13)]
         public string TeslimSekliKodu {
             get {
                 return this.TeslimSekliKoduField;
@@ -1253,7 +1269,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=13)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=14)]
         public string ProjeKodu {
             get {
                 return this.ProjeKoduField;
@@ -1266,7 +1282,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=14)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=15)]
         public string MusteriSiparisNo {
             get {
                 return this.MusteriSiparisNoField;
@@ -1279,7 +1295,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=15)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=16)]
         public string DokumanIzlemeNumarasi {
             get {
                 return this.DokumanIzlemeNumarasiField;
@@ -1292,7 +1308,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=16)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=17)]
         public int SozlesmeReferansi {
             get {
                 return this.SozlesmeReferansiField;
@@ -1305,7 +1321,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=17)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=18)]
         public string Isyeri {
             get {
                 return this.IsyeriField;
@@ -1318,7 +1334,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=18)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=19)]
         public string Bolum {
             get {
                 return this.BolumField;
@@ -1331,7 +1347,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=19)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=20)]
         public string Fabrika {
             get {
                 return this.FabrikaField;
@@ -1344,7 +1360,7 @@ namespace KaleBlokBims.M2BWebService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=20)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=21)]
         public string Ambar {
             get {
                 return this.AmbarField;

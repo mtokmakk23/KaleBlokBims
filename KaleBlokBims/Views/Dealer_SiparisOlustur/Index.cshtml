@@ -318,42 +318,8 @@
                 loading(false);
                 var result = JSON.parse(sonuc);
                 MalzemeFiyatlari = result;
-                var productList = "";
-
-                for (var i = 0; i < result.length; i++) {
-                    productList += '<div class="product product-list">';
-                    productList += ' <div class="row">';
-                    productList += '       <div class="col-6 col-lg-2">';
-                    productList += '           <figure class="product-media" style="max-width: 115px; ">';
-                    productList += '             <img src = "' + result[i].ResimUrl+'" alt = "Product image" class="product-image" >';
-                    productList += '           </figure>';
-                    productList += '       </div>';
-                    productList += '       <div class="col-6 col-lg-3 order-lg-last">';
-                    if (parseFloat(result[i].HesaplanmisBirimFiyatiTL) > 0) {
-                        productList += '           <div class="product-list-action p-0">';
-                        productList += '             <div class="product-price" style="font-weight:bold"> ' + formatMoney(result[i].HesaplanmisBirimFiyatiTL) + ' TL</div>';
-                        productList += '             <input type="text" class="miktar' + i + ' sadeceSayi form-control mb-1" style="width:50%;float:left" placeholder="Miktar Yazınız" />';
-                        productList += '             <h6 class="product-cat" style="float:left;font-weight:bold;margin-left:2px">' + result[i].Birim + '</h6>';
-                        productList += '             <a onclick="SepeteEkle(' + i + ')" style="clear:both" class="btn-product btn-cart"><span>Sepete Ekle</span></a>';
-                        productList += '           </div>';
-                    } else {
-                        productList += '<div class="alert alert-danger">' + result[i].HataMesaji + '</div>';
-                    }
-
-                    productList += '       </div>';
-                    productList += '       <div class="col-lg-6">';
-                    productList += '           <div class="product-body product-action-inner">';
-                    productList += '             <div class="product-cat"> <a href="#">' + result[i].MalzemeKodu + '</a></div>';
-                    productList += '             <h3 class="product-title"><a href="#">' + result[i].MalzemeAdi + '</a></h3>';
-                    productList += '             <h3 class="product-title mt-3" style="font-weight:bold"><a href="#">' + result[i].MalzemeAciklama + '</a></h3>';
-                   // productList += '             <div class="product-content p-0 pt-3 text-center"><p>' + result[i].MalzemeAciklama + '</p></div>';
-                    productList += '           </div>';
-                    productList += '       </div>';
-                    productList += ' </div>';
-                    productList += '</div>';
-                }
-
-                $(".products").html(productList);
+                $(".urunAramaText").val("");
+                urunAra();
             }
         });
     }
@@ -436,7 +402,49 @@
         });
 
     }
+    function urunAra() {
+        var productList = "";
 
+        for (var i = 0; i < MalzemeFiyatlari.length; i++) {
+
+            if ((MalzemeFiyatlari[i].MalzemeKodu).indexOf($(".urunAramaText").val()) == -1 && (MalzemeFiyatlari[i].MalzemeAdi).indexOf($(".urunAramaText").val()) == -1)
+                continue;
+
+
+            productList += '<div class="product product-list">';
+            productList += ' <div class="row">';
+            productList += '       <div class="col-6 col-lg-2">';
+            productList += '           <figure class="product-media" style="max-width: 115px; ">';
+            productList += '             <img src = "' + MalzemeFiyatlari[i].ResimUrl + '" alt = "Product image" class="product-image" >';
+            productList += '           </figure>';
+            productList += '       </div>';
+            productList += '       <div class="col-6 col-lg-3 order-lg-last">';
+            if (parseFloat(MalzemeFiyatlari[i].HesaplanmisBirimFiyatiTL) > 0) {
+                productList += '           <div class="product-list-action p-0">';
+                productList += '             <div class="product-price" style="font-weight:bold"> ' + formatMoney(MalzemeFiyatlari[i].HesaplanmisBirimFiyatiTL) + ' TL</div>';
+                productList += '             <input type="text" class="miktar' + i + ' sadeceSayi form-control mb-1" style="width:50%;float:left" placeholder="Miktar Yazınız" />';
+                productList += '             <h6 class="product-cat" style="float:left;font-weight:bold;margin-left:2px">' + MalzemeFiyatlari[i].Birim + '</h6>';
+                productList += '             <a onclick="SepeteEkle(' + i + ')" style="clear:both" class="btn-product btn-cart"><span>Sepete Ekle</span></a>';
+                productList += '           </div>';
+            } else {
+                productList += '<div class="alert alert-danger">' + MalzemeFiyatlari[i].HataMesaji + '</div>';
+            }
+
+            productList += '       </div>';
+            productList += '       <div class="col-lg-6">';
+            productList += '           <div class="product-body product-action-inner">';
+            productList += '             <div class="product-cat"> <a href="#">' + MalzemeFiyatlari[i].MalzemeKodu + '</a></div>';
+            productList += '             <h3 class="product-title"><a href="#">' + MalzemeFiyatlari[i].MalzemeAdi + '</a></h3>';
+            productList += '             <h3 class="product-title mt-3" style="font-weight:bold"><a href="#">' + MalzemeFiyatlari[i].MalzemeAciklama + '</a></h3>';
+            // productList += '             <div class="product-content p-0 pt-3 text-center"><p>' + result[i].MalzemeAciklama + '</p></div>';
+            productList += '           </div>';
+            productList += '       </div>';
+            productList += ' </div>';
+            productList += '</div>';
+        }
+
+        $(".products").html(productList);
+    }
 </script>
 <div class="siparisBilgileri page-content pt-1 pb-0">
     <div class="cart">
@@ -534,8 +542,13 @@
             </div>
         </aside><!-- End .col-lg-3 -->
         <div class="col-lg-9">
-            <div class="toolbox">
-            </div><!-- End .toolbox -->
+           
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass" style="font-size: x-large;"></i></span>
+                </div>
+                <input type="text" class="urunAramaText form-control" placeholder="Ürün Ara" aria-label="Username" aria-describedby="basic-addon1" onkeyup="urunAra()">
+            </div>
             <div class="products mb-3">
             </div><!-- End .products -->
 

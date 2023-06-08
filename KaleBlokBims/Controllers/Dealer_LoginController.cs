@@ -70,7 +70,7 @@ namespace KaleBlokBims.Controllers
 
                 FormsAuthentication.SetAuthCookie(kullanici.LOGICALREF.ToString(), false); 
 
-                if (Convert.ToDateTime(kullanici.SifreDegistirmeTarihi).AddDays(60)<DateTime.Now || kullanici.GeciciSifre==password)
+                if (Convert.ToDateTime(kullanici.SifreDegistirmeTarihi).AddDays(90)<DateTime.Now || kullanici.GeciciSifre==password)
                 {
                     return RedirectToAction("Index", "Password");
 
