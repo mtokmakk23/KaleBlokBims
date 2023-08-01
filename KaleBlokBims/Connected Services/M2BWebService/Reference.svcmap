@@ -19,11 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://192.168.1.60:8091/IZOKALEAPI.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:61120/IZOKALEAPI.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="IZOKALEAPI.disco" MetadataType="Disco" ID="5f144f0f-91c9-4752-9c8b-aa81b9444590" SourceId="1" SourceUrl="http://192.168.1.60:8091/IZOKALEAPI.asmx?disco" />
-    <MetadataFile FileName="IZOKALEAPI.wsdl" MetadataType="Wsdl" ID="73a2cb81-c7d7-4274-b98f-8e382b13a0a1" SourceId="1" SourceUrl="http://192.168.1.60:8091/IZOKALEAPI.asmx?wsdl" />
+    <MetadataFile FileName="IZOKALEAPI1.disco" MetadataType="Disco" ID="731471ef-b4a8-44ed-922a-c8e853e2dd4f" SourceId="1" SourceUrl="http://localhost:61120/IZOKALEAPI.asmx?disco" />
+    <MetadataFile FileName="IZOKALEAPI1.wsdl" MetadataType="Wsdl" ID="0c92f32a-bd30-49a5-8ab1-346fdbcf614e" SourceId="1" SourceUrl="http://localhost:61120/IZOKALEAPI.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

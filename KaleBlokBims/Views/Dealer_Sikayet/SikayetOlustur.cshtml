@@ -63,10 +63,7 @@
             UyariMesaji("Lütfen Detaylı Açıklama Bölümüne Şikayetinizi Yazınız.");
             return;
         }
-        if (partiNo.trim() == "") {
-            UyariMesaji("Lütfen Parti Numarasını Yazınız.");
-            return;
-        }
+       
         if (urunGrubu.trim() == "") {
             UyariMesaji("Lütfen Ürün Grubunu Seçiniz.");
             return;
@@ -481,7 +478,7 @@
         </div>
         <div class="col-lg-4">
             <div class="form-group row">
-                <label for="staticEmail" class="col-sm-5 col-form-label">Parti No:<i class="fas fa-asterisk fa-xs" style="color: crimson; vertical-align: top;"></i></label>
+                <label for="staticEmail" class="col-sm-5 col-form-label">İrsaliye No:<i class="fas fa-asterisk fa-xs" style="color: crimson; vertical-align: top;"></i></label>
                 <div class="col-sm-7 input-group">
                     <input type="text" autocomplete="off" class="form-control form-control-lg partiNo" maxlength="20" name="msg">
                 </div>

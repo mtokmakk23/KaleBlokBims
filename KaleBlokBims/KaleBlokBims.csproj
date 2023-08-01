@@ -1731,9 +1731,9 @@
     <Content Include="assets\vendor\line-awesome\line-awesome\line-awesome\fonts\line-awesomeeb4f.svg" />
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.js.map" />
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js.map" />
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.disco" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.AmbarBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1827,13 +1827,11 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeyeBagliCarilerVeSatisElemanlariResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YonetimRaporlariResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.wsdl" />
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
@@ -2017,6 +2015,7 @@
     <Content Include="Files\BayiEvraklari\gorselHazirlanıyor.png" />
     <Content Include="Files\BayiSikayetleri\gorselHazirlanıyor.png" />
     <Content Include="Files\ProductImages\gorselHazirlanıyor.png" />
+    <Content Include="Files\SiparisFormlari\gorselHazirlanıyor.png" />
     <Content Include="Global.asax" />
     <Content Include="lib\bootstrap\bootstrap.min.css" />
     <Content Include="lib\isotope\jquery.isotope.min.js" />
@@ -2065,7 +2064,6 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
     <Content Include="Files\BayiEvraklari\bayi_portal-sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\bayi_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\cari-hesap_sozlesmesi.pdf" />

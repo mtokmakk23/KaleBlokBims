@@ -111,7 +111,7 @@ namespace KaleBlokBims.Controllers
                             }
                         }
 
-                        if (Convert.ToDouble(liste.bakiye) + 1000 < toplamTutar)
+                        if (Convert.ToDouble(liste.bakiye) < toplamTutar)
                         {
                             response.IsSuccessStatusCode = false;
                             response.ErrorMessage = "En Fazla " + liste.bakiye + " TL Tutarında Sipariş Girebilirsiniz.";
@@ -130,10 +130,10 @@ namespace KaleBlokBims.Controllers
                     }
                     SiparisFormuOlustur form = new SiparisFormuOlustur();
                     var pdfByte = form.siparisFormu(Convert.ToInt32(baslik.LOGICALREF));
+                    System.IO.File.WriteAllBytes(Server.MapPath("/Files/SiparisFormlari/"+baslik.BayiAdi+" - "+baslik.LOGICALREF+".pdf"), pdfByte);
 
-                  
-                        MailGonderme mail = new MailGonderme();
-                        mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, baslik.BayiKodu + "-" + baslik.LOGICALREF+" - Sipariş Formu", baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
+                    MailGonderme mail = new MailGonderme();
+                    mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, baslik.BayiKodu + "-" + baslik.LOGICALREF+" - Sipariş Formu", baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
 
                    
                     response.IsSuccessStatusCode = true;

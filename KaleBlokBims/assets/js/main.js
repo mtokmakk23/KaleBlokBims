@@ -931,24 +931,13 @@ function SepetiOnayla(step) {
                 SepetiOnayla(1);
             }
         });
-        //Swal.fire({
-        //    title: 'Sepet Onaylansın Mı?',
-        //    text: "Sipariş Kontrol Edildikten Sonra Sisteme Aktarılacaktır.",
-        //    icon: 'warning',
-        //    showCancelButton: true,
-        //    confirmButtonColor: '#3085d6',
-        //    cancelButtonColor: '#d33',
-        //    confirmButtonText: 'EVET'
-        //}).then((result) => {
-        //    if (result.isConfirmed) {
-        //        SepetiOnayla(1);
-        //    }
-        //});
+       
     }
     if (step == 1) {
 
         Swal.fire({
             title: 'Sipariş Onaylansın Mı?',
+        //    html:'<b>deneme</b>',
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'EVET',

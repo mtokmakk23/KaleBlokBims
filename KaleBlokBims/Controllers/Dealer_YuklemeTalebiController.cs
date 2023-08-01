@@ -41,7 +41,8 @@ namespace KaleBlokBims.Controllers
                     BayiTalebiYuklemeTarihi = Convert.ToDateTime(YuklemeTarihi),
                     TalepAcilisTarihi = DateTime.Now,
                     Plakalar=Plakalar,
-                    TalebiAcan=Session["MailAdresi"].ToString()
+                    TalebiAcan=Session["MailAdresi"].ToString(),
+                    YuklendiMi=false
 
                 };
                 db.YuklemeTalebiMaster.Add(ytm);

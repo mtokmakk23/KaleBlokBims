@@ -3,6 +3,13 @@
     ViewBag.Title = "YuklemeTalepleri";
     Layout = "~/Views/Shared/_Admin_Master.cshtml";
 }
+
+@section scripts
+{
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+}
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script>
     window.onload = function () {
         talepleriGetir();
@@ -29,6 +36,7 @@
                     $("#teklifler tbody").append('<tr class="baslik' + i + '"><td><i style="cursor:pointer" onclick="talepBilgileri(this,' + Lresult[i].LOGICALREF + ',' + i + ')" class="fa fa-desktop talepIcon"></i> ' + Lresult[i].LOGICALREF + '</td>' +
                         '<td>' + Lresult[i].BayiKodu + '</td>' +
                         '<td>' + Lresult[i].BayiAdi + '</td>' +
+                        '<td>' + (Lresult[i].YuklendiMi ? 'EVET' : 'HAYIR') + '</td>' +
                         '<td>' + Lresult[i].SiparisTarihi + '</td>' +
                         '<td>' + Lresult[i].SiparisNo + '</td>' +
                         '<td>' + Lresult[i].BayiTalebiYuklemeTarihi + '</td>' +
@@ -39,7 +47,7 @@
                         '</tr>');
                 }
 
-
+                $('#teklifler').bootstrapTable()
             }
         });
     }
@@ -77,7 +85,7 @@
                 $("#teklifIcerigi tfoot").append('<tr>' +
                     '<td colspan="5">' +
                     '<div class="card-body" style="padding:0;width: 50%;float:left">' +
-
+                    '<input type="button" onclick="yuklendi(' + LOGICALREF + ')" class="btn btn-primary mr-2" value="YÜKLENDİ" /><br/>' +
                     '<div class="form-group row" >' +
                     '<label for="exampleInputEmail2" class="col-sm-3 col-form-label">Yükleme Tarihi</label>' +
                     '<div class="col-sm-9">' +
@@ -99,6 +107,11 @@
 
                     '</tr>');
                 loading(false);
+
+                if (Boolean(tumFisler[Li].YuklendiMi)) {
+                    $("#teklifIcerigi tfoot").html("");
+
+                }
             }
 
         });
@@ -124,6 +137,28 @@
             }
         });
     }
+
+
+    function yuklendi(LOGICALREF) {
+        var sonuc = confirm("Talep Yüklendi Olarak İşaretlenecektir Emin misiniz?");
+        if (sonuc) {
+            $.ajax({
+                url: '/Admin_YuklemeTalebi/_talepYuklendi',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'text',
+                data: '{"LOGICALREF":"' + LOGICALREF + '"}',
+                success: function (msg) {
+                    if (msg == "true") {
+                        OnayMesaji("Talep Yüklendi Olarak İşaretlendi.");
+                        talepleriGetir();
+                    }
+                }
+            });
+        }
+
+    }
+
     function talebiSil(LOGICALREF) {
         var sonuc = confirm("Silmek İstediğinize Emin misiniz?");
         if (sonuc) {
@@ -167,12 +202,14 @@
     </h2>
 </div>
 <div class="table-responsive">
-    <table class="table table-hover" id="teklifler">
+    <table class="table table-hover" id="teklifler"
+           data-filter-control="true">
         <thead>
             <tr>
                 <th></th>
                 <th>Bayi Kodu</th>
                 <th>Bayi Adi</th>
+                <th data-field="YuklendiMi" data-filter-control="select">Yüklendi Mi</th>
                 <th>Sipariş Trh.</th>
                 <th>Sipariş No</th>
                 <th>Yükleme Tarihi</th>

@@ -14,7 +14,6 @@
         <EntityTypeShape EntityType="IZOKALEPORTALModel.BayiKullaniciYetkileri" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.AdminKullaniciYetkisi" Width="1.5" PointX="7.375" PointY="5.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.Duyurular" Width="1.5" PointX="9.375" PointY="0.75" />
-        <EntityTypeShape EntityType="IZOKALEPORTALModel.TeklifBasliklari" Width="1.5" PointX="9.375" PointY="4.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.TeklifIcerikleri" Width="1.5" PointX="5.375" PointY="9.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.BayiEvraklari" Width="1.5" PointX="7.375" PointY="10.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.Sikayet" Width="1.5" PointX="9.375" PointY="10.75" />
@@ -25,8 +24,9 @@
         <EntityTypeShape EntityType="IZOKALEPORTALModel.ANKT_Sonuclar" Width="1.5" PointX="0.75" PointY="12.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.ANKT_Sorular" Width="1.5" PointX="2.75" PointY="12.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.YuklemeTalebiDetayi" Width="1.5" PointX="13.375" PointY="0.75" />
-        <EntityTypeShape EntityType="IZOKALEPORTALModel.YuklemeTalebiMaster" Width="1.5" PointX="11.375" PointY="13.75" />
         <EntityTypeShape EntityType="IZOKALEPORTALModel.MailSetting" Width="1.5" PointX="13.375" PointY="13.75" />
+        <EntityTypeShape EntityType="IZOKALEPORTALModel.YuklemeTalebiMaster" Width="1.5" PointX="15.25" PointY="0.75" />
+        <EntityTypeShape EntityType="IZOKALEPORTALModel.TeklifBasliklari" Width="1.5" PointX="14.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

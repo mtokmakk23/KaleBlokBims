@@ -278,9 +278,31 @@ namespace KaleBlokBims.Controllers
             try
             {
                 var db = new Models.IZOKALEPORTALEntities();
-                YuklemeTalebiMaster silinecekUrun = db.YuklemeTalebiMaster.FirstOrDefault(u => u.LOGICALREF == LOGICALREF);
                 db.Database.ExecuteSqlCommand("delete from YuklemeTalebiMaster where LOGICALREF="+LOGICALREF);
                 db.Database.ExecuteSqlCommand("delete from YuklemeTalebiDetayi where YuklemeTeklifiMasterLogicalref=" + LOGICALREF);
+                return "true";
+            }
+            catch (Exception)
+            {
+
+                return "false";
+            }
+
+
+        }  
+        
+        [HttpPost]
+        public string _talepYuklendi(int LOGICALREF)
+        {
+            try
+            {
+                var db = new Models.IZOKALEPORTALEntities();
+                var yuklemeTalebi = db.YuklemeTalebiMaster.Where(x => x.LOGICALREF == LOGICALREF).FirstOrDefault();
+                if (yuklemeTalebi!=null)
+                {
+                    yuklemeTalebi.YuklendiMi = true;
+                    db.SaveChanges();
+                }
                 return "true";
             }
             catch (Exception)

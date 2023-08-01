@@ -113,6 +113,10 @@
                 loading(false);
                 $(".bayiListesi").append("<option value='-1'>Seçiniz</option>");
                 var result = JSON.parse(sonuc);
+                result.unshift({
+                    BayiKodu: 'BAYIYOK',
+                    BayiAdi:' BAYİLİK YOK'
+                });
                 for (var i = 0; i < result.length; i++) {
                     $(".bayiListesi").append("<option value='" + result[i].BayiKodu + "'>" + result[i].BayiAdi + "</option>");
                 }
@@ -583,7 +587,8 @@
                 var gecerlilikTarihi = $("#sonGecerlilikTarihi").val();
                 var theData = {
                     gecerlilikTarihi: gecerlilikTarihi,
-                    odemeTipi: $("#odemeTipi option:selected").val()
+                    odemeTipi: $("#odemeTipi option:selected").val(),
+                    aciklama: $("#aciklama").val()
                 }
                 loading(true);
                 $.ajax({
@@ -722,7 +727,7 @@
                 <tbody></tbody>
             </table>
         </div>
-        <div class="form-group row w-25">
+        <div class="form-group row w-50">
             <label class="col-md-4" style="color:black;font-weight:bold">Ödeme Tipi:</label>
             <div class="col-md-8">
                 <select id="odemeTipi" class="form-control">
@@ -737,10 +742,16 @@
                 </select>
             </div>
         </div>
-        <div class="form-group row w-25">
+        <div class="form-group row w-50">
             <label class="col-md-4" style="color:black;font-weight:bold">Teklif Son Geçerlilik Tarihi:</label>
             <div class="col-md-8">
                 <input type="date" class="form-control" id="sonGecerlilikTarihi" />
+            </div>
+        </div> 
+        <div class="form-group row w-50">
+            <label class="col-md-4" style="color:black;font-weight:bold">Açıklama:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="aciklama" />
             </div>
         </div>
         <div class="form-group row w-100">

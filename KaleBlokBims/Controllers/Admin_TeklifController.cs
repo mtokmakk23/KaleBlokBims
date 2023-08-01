@@ -38,6 +38,7 @@ namespace KaleBlokBims.Controllers
                                  a.FiyatListesi,
                                  Adres = (Convert.ToBoolean(a.FabrikaTeslimMi)) ? "Fabrika Teslim" : a.Il + "/" + a.Ilce,
                                  a.TeklifSonGecerlilikTarihi,
+                                 a.Aciklama,
                                  SipariseDonduMu = (Convert.ToBoolean(a.SipariseDonduMu)) ? "EVET" : "HAYIR",
                                  a.MailAdresi,
                                  a.SilinmeSebebi,
@@ -414,7 +415,7 @@ namespace KaleBlokBims.Controllers
 
        
         [HttpPost]
-        public string TeklifiKaydet(string gecerlilikTarihi,string odemeTipi)
+        public string TeklifiKaydet(string gecerlilikTarihi,string odemeTipi,string aciklama)
         {
             if (odemeTipi== "Seçiniz")
             {
@@ -436,6 +437,7 @@ namespace KaleBlokBims.Controllers
                     baslik.OnaylanmaTarihi = DateTime.Now;
                     baslik.SipariseDonduMu = false;
                     baslik.OdemeTipi = odemeTipi;
+                    baslik.Aciklama = aciklama;
                     db.SaveChanges();
                     TeklifFormuOlustur form = new TeklifFormuOlustur();
                     //form.teklifFormu(baslik.LOGICALREF);

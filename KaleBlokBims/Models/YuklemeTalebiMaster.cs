@@ -26,5 +26,6 @@ namespace KaleBlokBims.Models
         public Nullable<System.DateTime> FirmaYuklemeTarihi { get; set; }
         public string FirmaAciklamasi { get; set; }
         public string TalebiAcan { get; set; }
+        public Nullable<bool> YuklendiMi { get; set; }
     }
 }

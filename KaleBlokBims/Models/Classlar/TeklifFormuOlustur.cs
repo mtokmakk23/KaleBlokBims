@@ -45,7 +45,8 @@ namespace KaleBlokBims.Models.Classlar
                                      fb.FabrikaTeslimMi,
                                      fb.LOGICALREF,
                                      fb.MailAdresi,
-                                     fb.OdemeTipi
+                                     fb.OdemeTipi,
+                                     fb.Aciklama
                                  }).FirstOrDefault();
 
             var teklifIcerigi = (from fb in db.TeklifBasliklari
@@ -366,6 +367,10 @@ namespace KaleBlokBims.Models.Classlar
             detayBilgileri.AddCell(cell);
 
             cell = new PdfPCell(new Phrase(" ", new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell.Border = PdfPCell.NO_BORDER;
+            detayBilgileri.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Açıklama: " + teklifBasligi.Aciklama, new pdf.Font(STF_Helvetica_Turkish, 8, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.Border = PdfPCell.NO_BORDER;
             detayBilgileri.AddCell(cell);
 

@@ -1914,13 +1914,6 @@ namespace KaleBlokBims.M2BWebService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/WCFSozlesmeBilgileri", ReplyAction="*")]
         System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse> WCFSozlesmeBilgileriAsync(KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriRequest request);
         
-        // CODEGEN: Generating message contract since element name testResult from namespace http://tempuri.org/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/test", ReplyAction="*")]
-        KaleBlokBims.M2BWebService.testResponse test(KaleBlokBims.M2BWebService.testRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/test", ReplyAction="*")]
-        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.testResponse> testAsync(KaleBlokBims.M2BWebService.testRequest request);
-        
         // CODEGEN: Generating message contract since element name Ambar from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/M2BSiparisOlustur", ReplyAction="*")]
         KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse M2BSiparisOlustur(KaleBlokBims.M2BWebService.M2BSiparisOlusturRequest request);
@@ -3787,67 +3780,6 @@ namespace KaleBlokBims.M2BWebService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class testRequest {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="test", Namespace="http://tempuri.org/", Order=0)]
-        public KaleBlokBims.M2BWebService.testRequestBody Body;
-        
-        public testRequest() {
-        }
-        
-        public testRequest(KaleBlokBims.M2BWebService.testRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute()]
-    public partial class testRequestBody {
-        
-        public testRequestBody() {
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class testResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="testResponse", Namespace="http://tempuri.org/", Order=0)]
-        public KaleBlokBims.M2BWebService.testResponseBody Body;
-        
-        public testResponse() {
-        }
-        
-        public testResponse(KaleBlokBims.M2BWebService.testResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    public partial class testResponseBody {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string testResult;
-        
-        public testResponseBody() {
-        }
-        
-        public testResponseBody(string testResult) {
-            this.testResult = testResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class M2BSiparisOlusturRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="M2BSiparisOlustur", Namespace="http://tempuri.org/", Order=0)]
@@ -4648,29 +4580,6 @@ namespace KaleBlokBims.M2BWebService {
             inValue.Body.BayiKodu = BayiKodu;
             inValue.Body.BaglantiLREF = BaglantiLREF;
             return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).WCFSozlesmeBilgileriAsync(inValue);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KaleBlokBims.M2BWebService.testResponse KaleBlokBims.M2BWebService.IZOKALEAPISoap.test(KaleBlokBims.M2BWebService.testRequest request) {
-            return base.Channel.test(request);
-        }
-        
-        public string test() {
-            KaleBlokBims.M2BWebService.testRequest inValue = new KaleBlokBims.M2BWebService.testRequest();
-            inValue.Body = new KaleBlokBims.M2BWebService.testRequestBody();
-            KaleBlokBims.M2BWebService.testResponse retVal = ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).test(inValue);
-            return retVal.Body.testResult;
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.testResponse> KaleBlokBims.M2BWebService.IZOKALEAPISoap.testAsync(KaleBlokBims.M2BWebService.testRequest request) {
-            return base.Channel.testAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.testResponse> testAsync() {
-            KaleBlokBims.M2BWebService.testRequest inValue = new KaleBlokBims.M2BWebService.testRequest();
-            inValue.Body = new KaleBlokBims.M2BWebService.testRequestBody();
-            return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).testAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

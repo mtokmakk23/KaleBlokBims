@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="lm2RezObA3qKPxFmXg4BaeXv3OAhl5MFrBNme4Uw0G8=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="KfgNcH4HFYG3E/s94wdbuvpFfIt95AxlNS2c+zoyi6s=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="IZOKALEAPISoap">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="IZOKALEAPISoap" contract="M2BWebService.IZOKALEAPISoap" bindingType="basicHttpBinding" address="http://192.168.1.60:8091/IZOKALEAPI.asmx" bindingConfiguration="IZOKALEAPISoap">
+    <endpoint name="IZOKALEAPISoap" contract="M2BWebService.IZOKALEAPISoap" bindingType="basicHttpBinding" address="http://localhost:61120/IZOKALEAPI.asmx" bindingConfiguration="IZOKALEAPISoap">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://192.168.1.60:8091/IZOKALEAPI.asmx</serializedValue>
+          <serializedValue>http://localhost:61120/IZOKALEAPI.asmx</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

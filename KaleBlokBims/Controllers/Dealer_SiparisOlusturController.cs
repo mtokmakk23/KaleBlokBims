@@ -14,6 +14,34 @@ namespace KaleBlokBims.Controllers
         // GET: Dealer_SiparisOlustur
         public ActionResult Index()
         {
+            string mailAdresi = Session["MailAdresi"].ToString();
+            var db = new Models.IZOKALEPORTALEntities();
+            var query = from m in db.ANKT_Master
+                        where m.AnketTipi == "Bayiler İçin" && m.Status == "Yayında"
+                        orderby m.EklemeTarihi descending
+                        select new
+                        {
+                            m.LOGICALREF,
+                            m.Baslik,
+                            m.Status,
+                            m.BaslangicTarihi,
+                            m.BitisTarihi,
+                            textStyle = (m.Status == "Hazırlanıyor") ? "warning" :
+                                            (m.Status == "Yayında") ? "success" :
+                                              (m.Status == "Kapatıldı") ? "danger" : "default",
+                            yuzde = (((from o in db.ANKT_Sonuclar where o.MasterRef.ToString().Equals(m.LOGICALREF.ToString()) && o.BayiKullaniciMail.Equals(mailAdresi) select new { o.SoruRef }).Distinct().Count()) * 100) / (db.ANKT_Sorular.Where(x => x.MasterRef.ToString().Equals(m.LOGICALREF.ToString())).Count()),
+                            cevaplananSoruSayisi = ((from o in db.ANKT_Sonuclar where o.MasterRef.ToString().Equals(m.LOGICALREF.ToString()) && o.BayiKullaniciMail.Equals(mailAdresi) select new { o.SoruRef }).Distinct().Count()),
+                            toplamSoruSayisi = (db.ANKT_Sorular.Where(x => x.MasterRef.ToString().Equals(m.LOGICALREF.ToString())).Count())
+                            // yüzde =(100*cevaplanan soru sayısı) /toplam soru sayısı
+                        };
+
+            foreach (var item in query)
+            {
+                if (item.cevaplananSoruSayisi<item.toplamSoruSayisi)
+                {
+                    return Content("<script language='javascript' type='text/javascript'>alert('Anket Doldurulmadan Sipariş Oluşturulamaz!');window.location='/Dealer_Anket/TumAnketler';</script>"); ;
+                }
+            }
             return View();
         }
         [HttpPost]

@@ -102,6 +102,9 @@ namespace KaleBlokBims.Controllers
                         baslik.SilindiMi = false;
                         baslik.SiparisNotu = siparisNotu;
                         baslik.OdemeTipi = odemeTipi;
+                        baslik.TigereAktarildiMi = true;
+                        baslik.TigereAktarilmaTarihi = DateTime.Now;
+                        baslik.TigereAktaranKisi = "Tigere Aktarılmadı Bayi Teklifi Onayladı Sadece";
                         baslik.FisiOlusturanAdminMi = (Session["AdminMi"].ToString() == "0") ? false : true;
                         db.SiparisBasliklari.Add(baslik);
                         db.SaveChanges();
@@ -177,7 +180,7 @@ namespace KaleBlokBims.Controllers
                         SiparisFormuOlustur form = new SiparisFormuOlustur();
                         var pdfByte = form.siparisFormu(Convert.ToInt32(baslik.LOGICALREF));
                         MailGonderme mail = new MailGonderme();
-                        mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, baslik.BayiKodu + "-" + baslik.LOGICALREF+ " - Sipariş Formu" , baslik.BayiAdi + " Tarafından oluşturulan " + baslik.BayiKodu + "-" + baslik.LOGICALREF + " referans numaralı sipariş formu ekte yer almaktadır.", pdfByte, baslik.BayiKodu + "-" + baslik.LOGICALREF + ".pdf");
+                        mail.EkliMailGonderme("", SabitTanimlar.SiparisFormuGonderilecekMailler(), baslik.MailAdresi + "," + firmaAdmini, teklif.BayiKodu + "-" + teklif.LOGICALREF+ " - Teklif Onay Formu" , teklif.BayiAdi + " Tarafından oluşturulan " + teklif.BayiKodu + "-" + teklif.LOGICALREF + " referans numaralı teklif onaylanmıştır. Teklife ait sipariş formu ekte yer almaktadır.", pdfByte, teklif.BayiKodu + "-" + teklif.LOGICALREF + ".pdf");
                         response.IsSuccessStatusCode = true;
                         String file = Convert.ToBase64String(pdfByte);
                         response.Content = file;

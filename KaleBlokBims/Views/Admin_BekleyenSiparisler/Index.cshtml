@@ -53,7 +53,7 @@
                             $('#table').bootstrapTable('collapseRow', Gindex);
                         Gindex = index;
                         SiparisDetaylari(row, $detail);
-                        
+
                     }
                 });
             }
@@ -67,7 +67,7 @@
         $("#siparisDetayi" + row.LOGICALREF + " .odemeAciklamasi").html(row.OdemeTipi);
         $("#siparisDetayi" + row.LOGICALREF + " .siparisNotu").val(row.SiparisNotu);
         $("#siparisDetayi" + row.LOGICALREF + " .referansNo").val(row.BayiKodu + "/" + row.LOGICALREF);
-        $("#siparisDetayi" + row.LOGICALREF + " .siparisSilButton").attr("onclick", "siparisiSil(0," + row.LOGICALREF+")");
+        $("#siparisDetayi" + row.LOGICALREF + " .siparisSilButton").attr("onclick", "siparisiSil(0," + row.LOGICALREF + ")");
 
         Malzemeler(row.LOGICALREF);
         CarileriGetir(row);
@@ -82,6 +82,8 @@
 
 
     function CarileriGetir(row) {
+        var secilecekCarininLrefi = -1;
+
         var theData = {
             bayiKodu: row.BayiKodu
         }
@@ -96,9 +98,18 @@
                 var result = JSON.parse(sonuc);
                 for (var i = 0; i < result.length; i++) {
                     $("#siparisDetayi" + row.LOGICALREF + " .cari").append('<option value="' + result[i].LOGICALREF + '">' + result[i].CODE + ' - ' + result[i].DEFINITION_ + ' ' + result[i].DEFINITION2 + '</option>');
+                    if (result[i].DEFINITION2 == "GÜNCEL HESAP") {
+                        secilecekCarininLrefi = result[i].LOGICALREF;
+                    }
                 }
-                $('#siparisDetayi' + row.LOGICALREF + ' .cari option[value=' + row.cariLref+']').attr('selected', 'selected');
+                if (row.cariLref!=-1) {
+                    secilecekCarininLrefi = row.cariLref;
+                }
+                $('#siparisDetayi' + row.LOGICALREF + ' .cari option[value=' + secilecekCarininLrefi + ']').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .cari").select2({ placeholder: "Cari Seçiniz.", });
+
+                $("#siparisDetayi" + row.LOGICALREF + " .cari").attr("disabled", true)
+
             }
         });
     }
@@ -132,7 +143,7 @@
 
                 var result = JSON.parse(sonuc);
                 for (var i = 0; i < result.length; i++) {
-                    $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").append('<option ' + (result[i].SatisElemaniKodu.indexOf(row.satisElemani) != -1 && row.satisElemani!="" ?"selected='selected'":"") + ' value="' + result[i].SatisElemaniKodu + '">' + result[i].SatisElemaniAciklamasi + '</option>');
+                    $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").append('<option ' + (result[i].SatisElemaniKodu.indexOf(row.satisElemani) != -1 && row.satisElemani != "" ? "selected='selected'" : "") + ' value="' + result[i].SatisElemaniKodu + '">' + result[i].SatisElemaniAciklamasi + '</option>');
                 }
                 $("#siparisDetayi" + row.LOGICALREF + " .satisElemani").select2({ placeholder: "Satış Elemanı Seçiniz.", });
             }
@@ -155,7 +166,7 @@
                 $('#siparisDetayi' + row.LOGICALREF + ' .isYeri option[value=000]').attr('selected', 'selected');
                 $("#siparisDetayi" + row.LOGICALREF + " .isYeri").select2({ placeholder: "İşyeri Seçiniz.", });
 
-              
+
             }
         });
     }
@@ -232,8 +243,8 @@
         //        var result = JSON.parse(sonuc);
         //        $("#siparisDetayi" + row.LOGICALREF + " .sozlesmeNo").val(result[0].SozlesmeFisNo);
 
-               
-               
+
+
         //    }
         //});
     }
@@ -252,16 +263,16 @@
                 var sayac = -1;
                 for (var i = 0; i < result.length; i++) {
                     sayac++;
-                        $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
-                            '<td></td>' +
-                            '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + sayac + ',' + (parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ')"><i class="fa-solid fa-tags"></i></a></td>' +
-                            '<td>' + result[i].Turu + '</td>' +
-                            '<td>' + result[i].MalzemeKodu + '</td>' +
-                            '<td>' + result[i].MalzemeAdi + '</td>' +
-                            '<td>' + formatMoney(result[i].Miktar) + ' ' + result[i].Birimi + '</td>' +
-                            '<td>' + formatMoney(parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ' TL</td>' +
-                            '<td>' + result[i].HesaplamaDetayliAciklama + '</td>' +
-                            +'</tr>');
+                    $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + result[i].LOGICALREF + '">' +
+                        '<td></td>' +
+                        '<td><a class="btn btn-warning" onclick="newRow(2,' + baslikREF + ',' + result[i].LOGICALREF + ',' + sayac + ',' + (parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ')"><i class="fa-solid fa-tags"></i></a></td>' +
+                        '<td>' + result[i].Turu + '</td>' +
+                        '<td>' + result[i].MalzemeKodu + '</td>' +
+                        '<td>' + result[i].MalzemeAdi + '</td>' +
+                        '<td>' + formatMoney(result[i].Miktar) + ' ' + result[i].Birimi + '</td>' +
+                        '<td>' + formatMoney(parseFloat(result[i].HesaplanmisBirimFiyatiTL) - parseFloat(result[i].NakliyeFiyatiTL)) + ' TL</td>' +
+                        '<td>' + result[i].HesaplamaDetayliAciklama + '</td>' +
+                        +'</tr>');
                     var indirimler = result[i].Indirimler;
                     for (var j = 0; j < indirimler.length; j++) {
                         sayac++;
@@ -277,7 +288,7 @@
                             +'</tr>');
                     }
 
-                    var nakliyeler = result[i].Nakliyeler;                  
+                    var nakliyeler = result[i].Nakliyeler;
                     for (var j = 0; j < nakliyeler.length; j++) {
                         sayac++;
                         $("#siparisDetayi" + baslikREF + " table tbody").append('<tr class="rows' + nakliyeler[j].LOGICALREF + '">' +
@@ -290,13 +301,13 @@
                             '<td>' + nakliyeler[j].NakliyeFiyatiTL + ' TL</td>' +
                             '<td></td>' +
                             +'</tr>');
-                       
+
                     }
-                    
-                   
+
+
 
                 }
-              
+
 
             }
         });
@@ -514,7 +525,7 @@
                             <select class="satisElemani form-control" name="satisElemani"></select>
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="col-md-3">
                     <div class="form-group row mb-0">
