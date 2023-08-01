@@ -1733,7 +1733,7 @@
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js.map" />
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.disco" />
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.AmbarBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1806,12 +1806,6 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.Malzeme.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriMalzemeListesiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileri.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1830,8 +1824,11 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YonetimRaporlariResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.wsdl" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
