@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using KaleBlokBims.Models.Classlar;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,7 +46,7 @@ namespace KaleBlokBims.Controllers
            
             
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            var list = JsonConvert.DeserializeObject<List<M2BWebService.Malzeme>>(servis.MalzemeListesi(Session["BayiKodu"].ToString(), FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","))));
+            var list = JsonConvert.DeserializeObject<List<Malzeme>>(servis.MalzemeListesi(Session["BayiKodu"].ToString(), FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","))));
             foreach (var item in list)
             {
                 item.ResimUrl = UrunResimleri(item.MalzemeKodu,item.SPECODE1);

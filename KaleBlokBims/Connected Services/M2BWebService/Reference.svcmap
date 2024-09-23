@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="14213f75-7d3e-4bde-be41-319e61e438f9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="754c161f-eec5-4601-b211-2a8e2cfe8050" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,8 +22,8 @@
     <MetadataSource Address="http://192.168.1.60:8091/IZOKALEAPI.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="IZOKALEAPI.disco" MetadataType="Disco" ID="fbe07bf3-7769-4f44-b231-f4616ba58773" SourceId="1" SourceUrl="http://192.168.1.60:8091/IZOKALEAPI.asmx?disco" />
-    <MetadataFile FileName="IZOKALEAPI.wsdl" MetadataType="Wsdl" ID="f1182205-d514-4e86-acc2-09ce797b47ca" SourceId="1" SourceUrl="http://192.168.1.60:8091/IZOKALEAPI.asmx?wsdl" />
+    <MetadataFile FileName="IZOKALEAPI.disco" MetadataType="Disco" ID="c7b2011a-bfb6-44bb-857e-1a087946149c" SourceId="1" SourceUrl="http://192.168.1.60:8091/IZOKALEAPI.asmx?disco" />
+    <MetadataFile FileName="IZOKALEAPI.wsdl" MetadataType="Wsdl" ID="9be2095b-1f87-4dbf-9870-e4fb416e8b95" SourceId="1" SourceUrl="http://192.168.1.60:8091/IZOKALEAPI.asmx?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

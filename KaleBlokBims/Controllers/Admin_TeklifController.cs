@@ -114,7 +114,7 @@ namespace KaleBlokBims.Controllers
 
 
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            var list = JsonConvert.DeserializeObject<List<M2BWebService.Malzeme>>(servis.MalzemeListesi(bayiKodu, FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","))));
+            var list = JsonConvert.DeserializeObject<List<Malzeme>>(servis.MalzemeListesi(bayiKodu, FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","))));
             foreach (var item in list)
             {
                 item.ResimUrl = UrunResimleri(item.MalzemeKodu, item.SPECODE1);
