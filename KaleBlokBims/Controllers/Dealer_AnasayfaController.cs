@@ -154,72 +154,7 @@ namespace KaleBlokBims.Controllers
 
 
 
-        public void sistemKalemleriEkle()
-        {
-            var db = new Models.IZOKALEPORTALEntities();
-            var mailAdresi = Session["MailAdresi"].ToString();
-            var BayiKodu = Session["BayiKodu"].ToString();
-            var baslik = db.SiparisBasliklari.Where(x => x.MailAdresi == mailAdresi && x.BayiKodu == BayiKodu && x.OnaylandiMi == false && x.SilindiMi == false).FirstOrDefault();
-            if (baslik != null)
-            {
-                var temp = baslik.LOGICALREF.ToString();
-                var icerik = db.SiparisIcerikleri.Where(x => x.BaslikLREF.ToString() == temp && x.LINETYPE != 4 && x.LINETYPE != 2 && (x.AnaGrup == "KB_EPS" || x.AnaGrup == "KB_TASYUNU" || x.AnaGrup == "KB_XPS") && x.SistemKalemiMi != true).ToList();
-                db.Database.ExecuteSqlCommand("delete from SiparisIcerikleri where BaslikLREF=" + temp + " and SistemKalemiMi=1");
-                var servis = new M2BWebService.ZOKALEAPISoapClient();
-                foreach (var item in icerik)
-                {
-                    var sistemKalemleriListesi = servis.SistemKalemleriBilgileriAl(item.AnaGrup);
-                    var sistemKalemleriMalzemeKodlari = "";
-                    foreach (var item2 in sistemKalemleriListesi)
-                    {
-                        sistemKalemleriMalzemeKodlari += "'" + item2.Kodu + "',";
-                    }
-                    sistemKalemleriMalzemeKodlari = sistemKalemleriMalzemeKodlari.Substring(0, sistemKalemleriMalzemeKodlari.Length - 1);
-                    var list = servis.SistemKalemleriMalzemeListesi(Session["BayiKodu"].ToString(), baslik.FiyatListesi, baslik.BaglantiLref.ToString(), baslik.Il, baslik.Ilce, Convert.ToBoolean(baslik.FabrikaTeslimMi), Convert.ToDouble(item.GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(item.GuncelEUR.ToString().Replace(".", ",")), sistemKalemleriMalzemeKodlari);
-                    foreach (var item2 in list)
-                    {
-                        var aaa = item.Miktar * sistemKalemleriListesi.Where(x => x.Kodu == item2.MalzemeKodu).FirstOrDefault().BirBirimeKullanilacakMiktar;
-
-                        Dealer_SiparisOlusturController so = new Dealer_SiparisOlusturController();
-                        so.SepeteEkle(baslik.FiyatListesi,
-                            baslik.BaglantiLref.ToString(),
-                            baslik.AdresBasligi,
-                            baslik.IlgiliKisi,
-                            baslik.IlgiliKisiTel,
-                            baslik.SevkAdresi,
-                            baslik.Il,
-                            baslik.Ilce,
-                            baslik.FabrikaTeslimMi.ToString(),
-                            item2.MalzemeKodu,
-                            item2.MalzemeAdi,
-                            item2.Birim,
-                            item2.SPECODE1,
-                            item2.SPECODE2,
-                            "1",
-                            item2.HesaplanmisBirimFiyatiTL.ToString(),
-                            item2.BaseFiyat.ToString(),
-                            item2.BaseDoviz,
-                            item2.NakliyeMasrafiTL.ToString(),
-                            item2.GuncelEUR.ToString(),
-                            item2.GuncelUSD.ToString(),
-                            item2.sozlesmeUSD.ToString(),
-                            item2.sozlesmeEUR.ToString(),
-                            item2.HesaplamaDetayliAciklama,
-                            item2.Kdv.ToString(),
-                            item2.NakliyeKartiLref.ToString(),
-                            item2.NakliyeKodu,
-                            item2.NakliyeAdi,
-                            item2.NakliyeBirimSeti,
-                            true);
-                    }
-                }
-
-
-
-
-
-            }
-        }
+       
         [HttpPost]
         public string acikSiparisler()
         {

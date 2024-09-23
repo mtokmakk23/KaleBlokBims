@@ -240,6 +240,7 @@
     </Compile>
     <Compile Include="Models\Classlar\LINQResultToDataTable.cs" />
     <Compile Include="Models\Classlar\MailGonderme.cs" />
+    <Compile Include="Models\Classlar\Malzeme.cs" />
     <Compile Include="Models\Classlar\MD5.cs" />
     <Compile Include="Models\Classlar\SabitTanimlar.cs" />
     <Compile Include="Models\Classlar\SiparisFormuOlustur.cs" />
@@ -1731,9 +1732,9 @@
     <Content Include="assets\vendor\line-awesome\line-awesome\line-awesome\fonts\line-awesomeeb4f.svg" />
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.js.map" />
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js.map" />
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.AmbarBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1773,6 +1774,9 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IsyeriBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MalzemeListesiResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1797,6 +1801,24 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SiparisFisleriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileriAlResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeVeCarileri.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeyeBagliCarilerVeSatisElemanlariResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.TumBayilerinBaglantiBakiyeOzetiResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFOdemePlanlariResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1806,29 +1828,7 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileri.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileriAlResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.TumBayilerinBaglantiBakiyeOzetiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeVeCarileri.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeyeBagliCarilerVeSatisElemanlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YonetimRaporlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
@@ -2065,6 +2065,7 @@
     <Content Include="Files\BayiEvraklari\bayi_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\cari-hesap_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\nakliye-araclari-isg-bilgilendirme-formu.pdf" />
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\bootstratTable_TR.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
