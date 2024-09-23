@@ -2,6 +2,7 @@
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -90,17 +91,17 @@ namespace KaleBlokBims.Models.Classlar
             PdfPTable saticiBil = new PdfPTable(1);
             saticiBil.WidthPercentage = 99f;
 
-            cell = new PdfPCell(new Phrase("Kale Blok Bims Hafif Yapı Ele. İnş. Malz. İnş. Taah. Maden. Nak. Tur. San. Ve Tic. A.Ş.".ToUpper(), new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.BOLD, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(ConfigurationManager.AppSettings["Firma"].ToUpper(), new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.BOLD, BaseColor.BLACK)));
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             cell.Border = PdfPCell.NO_BORDER;
             saticiBil.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("Horasan Karayolu 3 km. Pasinler/Erzurum".ToUpper(), new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(ConfigurationManager.AppSettings["FirmaAdres"].ToUpper(), new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             cell.Border = PdfPCell.NO_BORDER;
             saticiBil.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("444 75 88 - info@kaleblokbims.com", new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
+            cell = new PdfPCell(new Phrase(ConfigurationManager.AppSettings["FirmaIletisim"], new pdf.Font(STF_Helvetica_Turkish, 9, pdf.Font.NORMAL, BaseColor.BLACK)));
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             cell.Border = PdfPCell.NO_BORDER;
             saticiBil.AddCell(cell);
