@@ -68,7 +68,7 @@ namespace KaleBlokBims.Controllers
                     PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
                     PdfPCell cell;
 
-                    iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Server.MapPath("/assets/images/logom.png"));
+                    iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Server.MapPath(System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()));
                     img.ScaleToFit(100, 80);
 
                     /***********************************************************************/

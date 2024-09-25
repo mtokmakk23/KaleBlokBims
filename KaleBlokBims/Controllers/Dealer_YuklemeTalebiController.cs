@@ -94,7 +94,7 @@ namespace KaleBlokBims.Controllers
                     float[] tablewidths = new float[] { 10f, 60f, 10f, 10f, 10f };
                     table.SetWidths(tablewidths);
 
-                    iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Server.MapPath("/assets/images/logom.png"));
+                    iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(Server.MapPath(System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()));
                     img.ScaleToFit(100, 80);
                     cell = new PdfPCell(img);
                     cell.Border = PdfPCell.NO_BORDER;

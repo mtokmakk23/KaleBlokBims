@@ -89,7 +89,7 @@ namespace KaleBlokBims.Models.Classlar
             adresVeTarihTablo.WidthPercentage = 99f;
             adresVeTarihTablo.SetWidths(new float[] { 45f, 22, 33f });
 
-            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(HttpContext.Current.Server.MapPath("/assets/images/logom.png"));
+            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(HttpContext.Current.Server.MapPath(System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()));
             img.ScaleToFit(100, 80);
 
 

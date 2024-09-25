@@ -14,12 +14,12 @@
 
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logom.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/logom.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logom.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
+    <link rel="icon" type="image/png" sizes="32x32" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
+    <link rel="icon" type="image/png" sizes="16x16" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
     <link rel="manifest" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="/assets/images/logom.png" color="#666666">
-    <link rel="shortcut icon" href="/assets/images/logom.png">
+    <link rel="mask-icon" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}" color="#666666">
+    <link rel="shortcut icon" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
     <meta name="apple-mobile-web-app-title" content="İzokale Portal">
     <meta name="application-name" content="İzokale Portal">
     <meta name="msapplication-TileColor" content="#cc9966">
@@ -77,6 +77,7 @@
 </head>
 <body>
     @using KaleBlokBims.Models.Classlar
+
     @{
 
         var yetkiler = Yetkiler.BayiYetkileri();
@@ -143,7 +144,7 @@
                             <i class="icon-bars"></i>
                         </button>
                         <a href="/Dealer_Anasayfa/Index" class="logo" style="margin:0" ondblclick="if (@Session["AdminMi"].ToString()=='1') { window.location='/Admin_Anasayfa/Index' }">
-                            <img src="/assets/images/logom.png" alt="Kale Blok Logo" width="105" height="25">
+                            <img src="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}"" alt="Kale Blok Logo" width="105" height="25">
                         </a>
                         <nav class="main-nav">
                             <ul class="menu sf-arrows sf-js-enabled" style="touch-action: pan-y;">
@@ -222,7 +223,7 @@
 
 
                                 <li class="megamenu-container">
-                                    <a href="https://kaleblokbims.netahsilat.com/" target="_blank">Kale Tahsilat</a>
+                                    <a href="@{ System.Configuration.ConfigurationManager.AppSettings["TahsilatLinki"].ToString();}" target="_blank"> @{ System.Configuration.ConfigurationManager.AppSettings["TahsilatAdi"].ToString();}</a>
                                 </li>
                                 <li class="megamenu-container">
                                     <a href="#" class="sf-with-ul">Satış Sonrası Hizmetler</a>
@@ -232,7 +233,7 @@
                                                 <div class="col-md-12">
                                                     <ul>
                                                         @{
-                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SikayetleriGorme))
+                                                          if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SikayetleriGorme))
                                                             {
                                                                 <li class="border-top"><a href="/Dealer_Sikayet/SikayetOlustur">Şikayet Oluştur</a></li>
                                                                 <li class="border-bottom mb-3"><a href="/Dealer_Sikayet/SikayetListesi">Tüm Şikayetler</a></li>

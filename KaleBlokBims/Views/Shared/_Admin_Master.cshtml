@@ -14,12 +14,12 @@
 
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logom.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/logom.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logom.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
+    <link rel="icon" type="image/png" sizes="32x32" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
+    <link rel="icon" type="image/png" sizes="16x16" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
     <link rel="manifest" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="/assets/images/logom.png" color="#666666">
-    <link rel="shortcut icon" href="/assets/images/logom.png">
+    <link rel="mask-icon" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}" color="#666666">
+    <link rel="shortcut icon" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
     <meta name="apple-mobile-web-app-title" content="İzokale Portal">
     <meta name="application-name" content="İzokale Portal">
     <meta name="msapplication-TileColor" content="#cc9966">
@@ -132,7 +132,7 @@
                             <i class="icon-bars"></i>
                         </button>
                         <a href="/Admin_Anasayfa/Index" class="logo" style="margin:0">
-                            <img src="/assets/images/logom.png" alt="Kale Blok Logo" width="105" height="25">
+                            <img src="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}"" alt="Kale Blok Logo" width="105" height="25">
                         </a>
                         <nav class="main-nav">
                             <ul class="menu sf-arrows sf-js-enabled" style="touch-action: pan-y;">
