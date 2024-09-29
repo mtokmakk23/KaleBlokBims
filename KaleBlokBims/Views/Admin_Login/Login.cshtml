@@ -17,12 +17,12 @@
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
-    <link rel="icon" type="image/png" sizes="32x32" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
-    <link rel="icon" type="image/png" sizes="16x16" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
+    <link rel="apple-touch-icon" sizes="180x180" href="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()">
+    <link rel="icon" type="image/png" sizes="32x32" href="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()">
+    <link rel="icon" type="image/png" sizes="16x16" href="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()">
     <link rel="manifest" href="/assets/images/icons/site.html">
-    <link rel="mask-icon" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}" color="#666666">
-    <link rel="shortcut icon" href="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}">
+    <link rel="mask-icon" href="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()" color="#666666">
+    <link rel="shortcut icon" href="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()">
     <meta name="apple-mobile-web-app-title" content="Molla">
     <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
@@ -129,7 +129,7 @@
                     <div class="form-tab">
                         <ul class="nav nav-pills nav-fill" role="tablist">
                             <li class="nav-item">
-                                <img src="@{ System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString();}"" alt="Kale Blok Logo" style="width:100%;border-radius: 5px 5px 0 0;" ondblclick="window.location='/Dealer_Login/Login'">
+                                <img src="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()"" alt="Kale Blok Logo" style="width:100%;border-radius: 5px 5px 0 0;" ondblclick="window.location='/Dealer_Login/Login'">
 
                                 <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">GİRİŞ YAP</a>
                             </li>

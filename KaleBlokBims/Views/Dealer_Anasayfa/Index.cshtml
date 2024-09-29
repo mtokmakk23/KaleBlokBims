@@ -185,7 +185,7 @@
 </style>
 <div class="page-header text-center bg-white" @*style="background-image: url('/assets/images/banners/banner.jpeg')"*@>
     <div class="container">
-        <img src="/assets/images/banners/banner.jpeg" />
+        <img src="@System.Configuration.ConfigurationManager.AppSettings["DealerBanner"].ToString()" />
         <h1 class="page-title" style="font-family: cursive;font-weight: bold;display:none">İZOKALE PORTAL</h1>
     </div><!-- End .container -->
 
