@@ -507,10 +507,16 @@
                                 <td class="border-0"><select class="ilce form-control" id="ilceler"><option value="-1">Seçiniz</option></select></td>
 
                             </tr><!-- End .summary-subtotal -->
-                            <tr class="summary-subtotal">
-                                <td>Fabrika Teslim:</td>
-                                <td colspan="3"> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input" onchange="$('.adresBilgileriDivi').toggle();"></td>
-                            </tr><!-- End .summary-subtotal -->
+                            @{
+                                if (System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString().ToLower()!="ergibs")
+                                {
+                                    <tr class="summary-subtotal">
+                                        <td>Fabrika Teslim:</td>
+                                        <td colspan="3"> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input" onchange="$('.adresBilgileriDivi').toggle();"></td>
+                                    </tr><!-- End .summary-subtotal -->
+                                }
+                            }
+
 
                         </tbody>
                     </table><!-- End .table table-summary -->
