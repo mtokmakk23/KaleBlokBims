@@ -1732,10 +1732,13 @@ namespace KaleBlokBims.M2BWebService {
         [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
         public double GuncelEUR;
         
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
+        public string PAYPLANREF;
+        
         public MalzemeListesiRequestBody() {
         }
         
-        public MalzemeListesiRequestBody(string BayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, bool fabrikaTeslimMi, double GuncelUSD, double GuncelEUR) {
+        public MalzemeListesiRequestBody(string BayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, bool fabrikaTeslimMi, double GuncelUSD, double GuncelEUR, string PAYPLANREF) {
             this.BayiKodu = BayiKodu;
             this.FiyatListesiKodu = FiyatListesiKodu;
             this.baglantiLREF = baglantiLREF;
@@ -1746,6 +1749,7 @@ namespace KaleBlokBims.M2BWebService {
             this.fabrikaTeslimMi = fabrikaTeslimMi;
             this.GuncelUSD = GuncelUSD;
             this.GuncelEUR = GuncelEUR;
+            this.PAYPLANREF = PAYPLANREF;
         }
     }
     
@@ -3487,7 +3491,7 @@ namespace KaleBlokBims.M2BWebService {
             return base.Channel.MalzemeListesi(request);
         }
         
-        public string MalzemeListesi(string BayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, bool fabrikaTeslimMi, double GuncelUSD, double GuncelEUR) {
+        public string MalzemeListesi(string BayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, bool fabrikaTeslimMi, double GuncelUSD, double GuncelEUR, string PAYPLANREF) {
             KaleBlokBims.M2BWebService.MalzemeListesiRequest inValue = new KaleBlokBims.M2BWebService.MalzemeListesiRequest();
             inValue.Body = new KaleBlokBims.M2BWebService.MalzemeListesiRequestBody();
             inValue.Body.BayiKodu = BayiKodu;
@@ -3500,6 +3504,7 @@ namespace KaleBlokBims.M2BWebService {
             inValue.Body.fabrikaTeslimMi = fabrikaTeslimMi;
             inValue.Body.GuncelUSD = GuncelUSD;
             inValue.Body.GuncelEUR = GuncelEUR;
+            inValue.Body.PAYPLANREF = PAYPLANREF;
             KaleBlokBims.M2BWebService.MalzemeListesiResponse retVal = ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).MalzemeListesi(inValue);
             return retVal.Body.MalzemeListesiResult;
         }
@@ -3509,7 +3514,7 @@ namespace KaleBlokBims.M2BWebService {
             return base.Channel.MalzemeListesiAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.MalzemeListesiResponse> MalzemeListesiAsync(string BayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, bool fabrikaTeslimMi, double GuncelUSD, double GuncelEUR) {
+        public System.Threading.Tasks.Task<KaleBlokBims.M2BWebService.MalzemeListesiResponse> MalzemeListesiAsync(string BayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, bool fabrikaTeslimMi, double GuncelUSD, double GuncelEUR, string PAYPLANREF) {
             KaleBlokBims.M2BWebService.MalzemeListesiRequest inValue = new KaleBlokBims.M2BWebService.MalzemeListesiRequest();
             inValue.Body = new KaleBlokBims.M2BWebService.MalzemeListesiRequestBody();
             inValue.Body.BayiKodu = BayiKodu;
@@ -3522,6 +3527,7 @@ namespace KaleBlokBims.M2BWebService {
             inValue.Body.fabrikaTeslimMi = fabrikaTeslimMi;
             inValue.Body.GuncelUSD = GuncelUSD;
             inValue.Body.GuncelEUR = GuncelEUR;
+            inValue.Body.PAYPLANREF = PAYPLANREF;
             return ((KaleBlokBims.M2BWebService.IZOKALEAPISoap)(this)).MalzemeListesiAsync(inValue);
         }
         

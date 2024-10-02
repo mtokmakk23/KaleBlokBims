@@ -26,6 +26,7 @@ namespace KaleBlokBims.Models.Classlar
 
 
         public double BaseFiyat;
+        public string DigerFiyatlar;
         public string BaseDoviz;
         public double sozlesmeUSD;
         public double sozlesmeEUR;

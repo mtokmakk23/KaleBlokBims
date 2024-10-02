@@ -101,7 +101,7 @@ namespace KaleBlokBims.Controllers
                         baslik.SevkAdresi = detayliAdres;
                         baslik.SilindiMi = false;
                         baslik.SiparisNotu = siparisNotu;
-                        baslik.OdemeTipi = odemeTipi;
+                        baslik.PayplanRef = teklif.PayplanRef;
                         baslik.TigereAktarildiMi = true;
                         baslik.TigereAktarilmaTarihi = DateTime.Now;
                         baslik.TigereAktaranKisi = "Tigere Aktarılmadı Bayi Teklifi Onayladı Sadece";

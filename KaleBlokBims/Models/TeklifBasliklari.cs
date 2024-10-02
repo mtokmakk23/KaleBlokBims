@@ -34,5 +34,6 @@ namespace KaleBlokBims.Models
         public Nullable<bool> SipariseDonduMu { get; set; }
         public string OdemeTipi { get; set; }
         public string Aciklama { get; set; }
+        public string PayplanRef { get; set; }
     }
 }

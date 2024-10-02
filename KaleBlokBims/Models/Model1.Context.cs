@@ -30,7 +30,6 @@ namespace KaleBlokBims.Models
         public virtual DbSet<AdminKullanicilari> AdminKullanicilari { get; set; }
         public virtual DbSet<BayiKullanicilari> BayiKullanicilari { get; set; }
         public virtual DbSet<KayitliAdresler> KayitliAdresler { get; set; }
-        public virtual DbSet<SiparisBasliklari> SiparisBasliklari { get; set; }
         public virtual DbSet<SiparisIcerikleri> SiparisIcerikleri { get; set; }
         public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<BayiKullaniciYetkileri> BayiKullaniciYetkileri { get; set; }
@@ -48,6 +47,7 @@ namespace KaleBlokBims.Models
         public virtual DbSet<YuklemeTalebiDetayi> YuklemeTalebiDetayi { get; set; }
         public virtual DbSet<MailSetting> MailSetting { get; set; }
         public virtual DbSet<YuklemeTalebiMaster> YuklemeTalebiMaster { get; set; }
+        public virtual DbSet<SiparisBasliklari> SiparisBasliklari { get; set; }
         public virtual DbSet<TeklifBasliklari> TeklifBasliklari { get; set; }
     
         public virtual ObjectResult<BayilerinPortalKullanimSayisi_Result> BayilerinPortalKullanimSayisi(string tarih)

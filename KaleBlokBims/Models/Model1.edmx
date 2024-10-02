@@ -258,6 +258,7 @@
           <Property Name="FisiOlusturanAdminMi" Type="bit" />
           <Property Name="BaglantiLref" Type="int" />
           <Property Name="BaglantiAciklamasi" Type="nvarchar(max)" />
+          <Property Name="PayplanRef" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="SiparisIcerikleri">
           <Key>
@@ -326,6 +327,7 @@
           <Property Name="SipariseDonduMu" Type="bit" />
           <Property Name="OdemeTipi" Type="nvarchar(max)" />
           <Property Name="Aciklama" Type="nvarchar(max)" />
+          <Property Name="PayplanRef" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TeklifIcerikleri">
           <Key>
@@ -428,7 +430,6 @@
           <EntitySet Name="AdminKullanicilari" EntityType="IZOKALEPORTALModel.AdminKullanicilari" />
           <EntitySet Name="BayiKullanicilari" EntityType="IZOKALEPORTALModel.BayiKullanicilari" />
           <EntitySet Name="KayitliAdresler" EntityType="IZOKALEPORTALModel.KayitliAdresler" />
-          <EntitySet Name="SiparisBasliklari" EntityType="IZOKALEPORTALModel.SiparisBasliklari" />
           <EntitySet Name="SiparisIcerikleri" EntityType="IZOKALEPORTALModel.SiparisIcerikleri" />
           <EntitySet Name="Log" EntityType="IZOKALEPORTALModel.Log" />
           <EntitySet Name="BayiKullaniciYetkileri" EntityType="IZOKALEPORTALModel.BayiKullaniciYetkileri" />
@@ -449,6 +450,7 @@
           </FunctionImport>
           <EntitySet Name="MailSetting" EntityType="IZOKALEPORTALModel.MailSetting" />
           <EntitySet Name="YuklemeTalebiMaster" EntityType="IZOKALEPORTALModel.YuklemeTalebiMaster" />
+          <EntitySet Name="SiparisBasliklari" EntityType="IZOKALEPORTALModel.SiparisBasliklari" />
           <EntitySet Name="TeklifBasliklari" EntityType="IZOKALEPORTALModel.TeklifBasliklari" />
         </EntityContainer>
         <EntityType Name="AdminKullanicilari">
@@ -493,38 +495,6 @@
           <Property Name="Il" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Ilce" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DetayliAdres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="SiparisBasliklari">
-          <Key>
-            <PropertyRef Name="LOGICALREF" />
-          </Key>
-          <Property Name="LOGICALREF" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BayiKodu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BayiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MailAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EklenmeTarihi" Type="DateTime" Precision="3" />
-          <Property Name="FiyatListesi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdresBasligi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IlgiliKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IlgiliKisiTel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SevkAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Il" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Ilce" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FabrikaTeslimMi" Type="Boolean" />
-          <Property Name="OnaylandiMi" Type="Boolean" />
-          <Property Name="OnaylanmaTarihi" Type="DateTime" Precision="3" />
-          <Property Name="SilindiMi" Type="Boolean" />
-          <Property Name="SilinmeSebebi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
-          <Property Name="SilenKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TigereAktarildiMi" Type="Boolean" />
-          <Property Name="TigereAktarilmaTarihi" Type="DateTime" Precision="3" />
-          <Property Name="TigereAktaranKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OdemeTipi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SiparisNotu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FisiOlusturanAdminMi" Type="Boolean" />
-          <Property Name="BaglantiLref" Type="Int32" />
-          <Property Name="BaglantiAciklamasi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SiparisIcerikleri">
           <Key>
@@ -818,6 +788,39 @@
           <Property Name="TalebiAcan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="YuklendiMi" Type="Boolean" />
         </EntityType>
+        <EntityType Name="SiparisBasliklari">
+          <Key>
+            <PropertyRef Name="LOGICALREF" />
+          </Key>
+          <Property Name="LOGICALREF" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BayiKodu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BayiAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MailAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EklenmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="FiyatListesi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdresBasligi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IlgiliKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IlgiliKisiTel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SevkAdresi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Il" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Ilce" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FabrikaTeslimMi" Type="Boolean" />
+          <Property Name="OnaylandiMi" Type="Boolean" />
+          <Property Name="OnaylanmaTarihi" Type="DateTime" Precision="3" />
+          <Property Name="SilindiMi" Type="Boolean" />
+          <Property Name="SilinmeSebebi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="SilenKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TigereAktarildiMi" Type="Boolean" />
+          <Property Name="TigereAktarilmaTarihi" Type="DateTime" Precision="3" />
+          <Property Name="TigereAktaranKisi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OdemeTipi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SiparisNotu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FisiOlusturanAdminMi" Type="Boolean" />
+          <Property Name="BaglantiLref" Type="Int32" />
+          <Property Name="BaglantiAciklamasi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PayplanRef" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="TeklifBasliklari">
           <Key>
             <PropertyRef Name="LOGICALREF" />
@@ -842,6 +845,7 @@
           <Property Name="SipariseDonduMu" Type="Boolean" />
           <Property Name="OdemeTipi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Aciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PayplanRef" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -890,39 +894,6 @@
                 <ScalarProperty Name="IlgiliKisiTel" ColumnName="IlgiliKisiTel" />
                 <ScalarProperty Name="IlgiliKisi" ColumnName="IlgiliKisi" />
                 <ScalarProperty Name="AdresBasligi" ColumnName="AdresBasligi" />
-                <ScalarProperty Name="BayiKodu" ColumnName="BayiKodu" />
-                <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SiparisBasliklari">
-            <EntityTypeMapping TypeName="IZOKALEPORTALModel.SiparisBasliklari">
-              <MappingFragment StoreEntitySet="SiparisBasliklari">
-                <ScalarProperty Name="BaglantiAciklamasi" ColumnName="BaglantiAciklamasi" />
-                <ScalarProperty Name="BaglantiLref" ColumnName="BaglantiLref" />
-                <ScalarProperty Name="FisiOlusturanAdminMi" ColumnName="FisiOlusturanAdminMi" />
-                <ScalarProperty Name="SiparisNotu" ColumnName="SiparisNotu" />
-                <ScalarProperty Name="OdemeTipi" ColumnName="OdemeTipi" />
-                <ScalarProperty Name="TigereAktaranKisi" ColumnName="TigereAktaranKisi" />
-                <ScalarProperty Name="TigereAktarilmaTarihi" ColumnName="TigereAktarilmaTarihi" />
-                <ScalarProperty Name="TigereAktarildiMi" ColumnName="TigereAktarildiMi" />
-                <ScalarProperty Name="SilenKisi" ColumnName="SilenKisi" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="SilinmeSebebi" ColumnName="SilinmeSebebi" />
-                <ScalarProperty Name="SilindiMi" ColumnName="SilindiMi" />
-                <ScalarProperty Name="OnaylanmaTarihi" ColumnName="OnaylanmaTarihi" />
-                <ScalarProperty Name="OnaylandiMi" ColumnName="OnaylandiMi" />
-                <ScalarProperty Name="FabrikaTeslimMi" ColumnName="FabrikaTeslimMi" />
-                <ScalarProperty Name="Ilce" ColumnName="Ilce" />
-                <ScalarProperty Name="Il" ColumnName="Il" />
-                <ScalarProperty Name="SevkAdresi" ColumnName="SevkAdresi" />
-                <ScalarProperty Name="IlgiliKisiTel" ColumnName="IlgiliKisiTel" />
-                <ScalarProperty Name="IlgiliKisi" ColumnName="IlgiliKisi" />
-                <ScalarProperty Name="AdresBasligi" ColumnName="AdresBasligi" />
-                <ScalarProperty Name="FiyatListesi" ColumnName="FiyatListesi" />
-                <ScalarProperty Name="EklenmeTarihi" ColumnName="EklenmeTarihi" />
-                <ScalarProperty Name="MailAdresi" ColumnName="MailAdresi" />
-                <ScalarProperty Name="BayiAdi" ColumnName="BayiAdi" />
                 <ScalarProperty Name="BayiKodu" ColumnName="BayiKodu" />
                 <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
               </MappingFragment>
@@ -1241,9 +1212,44 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SiparisBasliklari">
+            <EntityTypeMapping TypeName="IZOKALEPORTALModel.SiparisBasliklari">
+              <MappingFragment StoreEntitySet="SiparisBasliklari">
+                <ScalarProperty Name="PayplanRef" ColumnName="PayplanRef" />
+                <ScalarProperty Name="BaglantiAciklamasi" ColumnName="BaglantiAciklamasi" />
+                <ScalarProperty Name="BaglantiLref" ColumnName="BaglantiLref" />
+                <ScalarProperty Name="FisiOlusturanAdminMi" ColumnName="FisiOlusturanAdminMi" />
+                <ScalarProperty Name="SiparisNotu" ColumnName="SiparisNotu" />
+                <ScalarProperty Name="OdemeTipi" ColumnName="OdemeTipi" />
+                <ScalarProperty Name="TigereAktaranKisi" ColumnName="TigereAktaranKisi" />
+                <ScalarProperty Name="TigereAktarilmaTarihi" ColumnName="TigereAktarilmaTarihi" />
+                <ScalarProperty Name="TigereAktarildiMi" ColumnName="TigereAktarildiMi" />
+                <ScalarProperty Name="SilenKisi" ColumnName="SilenKisi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="SilinmeSebebi" ColumnName="SilinmeSebebi" />
+                <ScalarProperty Name="SilindiMi" ColumnName="SilindiMi" />
+                <ScalarProperty Name="OnaylanmaTarihi" ColumnName="OnaylanmaTarihi" />
+                <ScalarProperty Name="OnaylandiMi" ColumnName="OnaylandiMi" />
+                <ScalarProperty Name="FabrikaTeslimMi" ColumnName="FabrikaTeslimMi" />
+                <ScalarProperty Name="Ilce" ColumnName="Ilce" />
+                <ScalarProperty Name="Il" ColumnName="Il" />
+                <ScalarProperty Name="SevkAdresi" ColumnName="SevkAdresi" />
+                <ScalarProperty Name="IlgiliKisiTel" ColumnName="IlgiliKisiTel" />
+                <ScalarProperty Name="IlgiliKisi" ColumnName="IlgiliKisi" />
+                <ScalarProperty Name="AdresBasligi" ColumnName="AdresBasligi" />
+                <ScalarProperty Name="FiyatListesi" ColumnName="FiyatListesi" />
+                <ScalarProperty Name="EklenmeTarihi" ColumnName="EklenmeTarihi" />
+                <ScalarProperty Name="MailAdresi" ColumnName="MailAdresi" />
+                <ScalarProperty Name="BayiAdi" ColumnName="BayiAdi" />
+                <ScalarProperty Name="BayiKodu" ColumnName="BayiKodu" />
+                <ScalarProperty Name="LOGICALREF" ColumnName="LOGICALREF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TeklifBasliklari">
             <EntityTypeMapping TypeName="IZOKALEPORTALModel.TeklifBasliklari">
               <MappingFragment StoreEntitySet="TeklifBasliklari">
+                <ScalarProperty Name="PayplanRef" ColumnName="PayplanRef" />
                 <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
                 <ScalarProperty Name="OdemeTipi" ColumnName="OdemeTipi" />
                 <ScalarProperty Name="SipariseDonduMu" ColumnName="SipariseDonduMu" />

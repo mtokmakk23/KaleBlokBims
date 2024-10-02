@@ -39,14 +39,14 @@ namespace KaleBlokBims.Controllers
 
 
         [HttpPost]
-        public string MalzemeFiyatlariniGetir(string FiyatListesiKodu,string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, string fabrikaTeslimMi, string GuncelUSD, string GuncelEUR)
+        public string MalzemeFiyatlariniGetir(string FiyatListesiKodu,string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, string fabrikaTeslimMi, string GuncelUSD, string GuncelEUR,string PayplanRef)
         {
             if (SPECODE1=="-1") SPECODE1 = "";
             if (SPECODE2=="-1") SPECODE2 = "";
            
             
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            var list = JsonConvert.DeserializeObject<List<Malzeme>>(servis.MalzemeListesi(Session["BayiKodu"].ToString(), FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","))));
+            var list = JsonConvert.DeserializeObject<List<Malzeme>>(servis.MalzemeListesi(Session["BayiKodu"].ToString(), FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ",")), PayplanRef));
             foreach (var item in list)
             {
                 item.ResimUrl = UrunResimleri(item.MalzemeKodu,item.SPECODE1);
