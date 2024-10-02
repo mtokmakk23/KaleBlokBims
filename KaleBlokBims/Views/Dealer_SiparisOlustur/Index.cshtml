@@ -16,10 +16,33 @@
                 fiyatListeleri();
                 iller();
                 kayitliAdresler();
-
+                OdemeleriGetir();
             }
         }, 100);
 
+    }
+
+    function OdemeleriGetir() {
+
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/OdemeleriGetir/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $(".odemeler").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $(".odemeler").append('<option value="' + result[i].OdemePlaniId + '">' + result[i].OdemePlaniAciklamasi + '</option>');
+                }
+                $(".odemeler").select2({ placeholder: "Ödeme Seçiniz.", });
+                if (bekleyenBaslikBilgileri != undefined) {
+                    if (bekleyenBaslikBilgileri.length > 0) {
+                        $('.odemeler option[value="' + bekleyenBaslikBilgileri[0].PayplanRef + '"]').attr('selected', 'selected');
+                    }
+                }
+            }
+        });
     }
 
     var kayitliAdreslerArray;
@@ -256,6 +279,11 @@
             HataMesaji("Fiyat Listesi Seçilmelidir.");
             return;
         }
+        if ($(".odemeler option:selected").val() == "-1") {
+            HataMesaji("Ödeme Bilgisi Seçilmelidir.");
+            return;
+        }
+
         var theData = {
             adresBasligi: $(".adresBasligi").val(),
             ilgiliKisi: $(".ilgiliKisi").val(),
@@ -292,6 +320,7 @@
     var MalzemeFiyatlari;
     function fiyatlariGetir(check) {
         var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var PayplanRef = $(".odemeler option:selected").val();
         var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
         var il = $(".il option:selected").val();
         var ilce = $(".ilce option:selected").val();
@@ -307,6 +336,7 @@
             fabrikaTeslimMi: Boolean(fabrikaTeslimMi),
             GuncelUSD: GuncelUSD,
             GuncelEUR: GuncelEUR,
+            PayplanRef:PayplanRef
         }
         loading(true);
         $.ajax({
@@ -339,6 +369,7 @@
             return;
         }
         var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var PayplanRef = $(".odemeler option:selected").val();
         var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
         var il = $(".il option:selected").text();
         var ilce = $(".ilce option:selected").text();
@@ -380,7 +411,9 @@
             NakliyeKodu: MalzemeFiyatlari[i].NakliyeKodu,
             NakliyeAdi: MalzemeFiyatlari[i].NakliyeAdi,
             NakliyeBirimSeti: MalzemeFiyatlari[i].NakliyeBirimSeti,
-            SistemKalemiMi: false
+            SistemKalemiMi: false,
+            PayplanRef: PayplanRef,
+
         }
         loading(true);
         $.ajax({
@@ -436,6 +469,7 @@
             productList += '             <div class="product-cat"> <a href="#">' + MalzemeFiyatlari[i].MalzemeKodu + '</a></div>';
             productList += '             <h3 class="product-title"><a href="#">' + MalzemeFiyatlari[i].MalzemeAdi + '</a></h3>';
             productList += '             <h3 class="product-title mt-3" style="font-weight:bold"><a href="#">' + MalzemeFiyatlari[i].MalzemeAciklama + '</a></h3>';
+            productList += '             <h3 class="product-title mt-3" style="font-weight:bold"><a href="#">' + MalzemeFiyatlari[i].DigerFiyatlar + '</a></h3>';
             // productList += '             <div class="product-content p-0 pt-3 text-center"><p>' + result[i].MalzemeAciklama + '</p></div>';
             productList += '           </div>';
             productList += '       </div>';
@@ -459,6 +493,10 @@
                             <tr class="summary-subtotal">
                                 <td style="width:40%">Fiyat Listesi:</td>
                                 <td style="width:60%"><select class="fiyatListeleri form-control"></select></td>
+                            </tr><!-- End .summary-subtotal --> 
+                            <tr class="summary-subtotal">
+                                <td style="width:40%">Ödeme Bilgisi:</td>
+                                <td style="width:60%"><select class="odemeler form-control"></select></td>
                             </tr><!-- End .summary-subtotal -->
 
                         </tbody>

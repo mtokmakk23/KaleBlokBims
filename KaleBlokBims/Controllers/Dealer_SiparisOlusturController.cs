@@ -37,7 +37,7 @@ namespace KaleBlokBims.Controllers
 
             foreach (var item in query)
             {
-                if (item.cevaplananSoruSayisi<item.toplamSoruSayisi)
+                if (item.cevaplananSoruSayisi < item.toplamSoruSayisi)
                 {
                     return Content("<script language='javascript' type='text/javascript'>alert('Anket Doldurulmadan Sipariş Oluşturulamaz!');window.location='/Dealer_Anket/TumAnketler';</script>"); ;
                 }
@@ -50,13 +50,13 @@ namespace KaleBlokBims.Controllers
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             return JsonConvert.SerializeObject(servis.SecilebilirFiyatListeleri(Session["BayiKodu"].ToString()));
         }
-         [HttpPost]
+        [HttpPost]
         public string Iller()
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
             return servis.IlveIlceleriGetir();
         }
-         [HttpPost]
+        [HttpPost]
         public string KayitliAdresler()
         {
             var db = new Models.IZOKALEPORTALEntities();
@@ -69,13 +69,13 @@ namespace KaleBlokBims.Controllers
         public string Gruplar(string fiyatListesi)
         {
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            return servis.AnaGruplar("","","");
+            return servis.AnaGruplar("", "", "");
         }
         [HttpPost]
         public string adresKontrol(string adresBasligi, string ilgiliKisi, string ilgiliKisiTel, string detayliAdres, string il, string ilce, string fabrikaTeslimMi)
         {
             RestResponse response = new RestResponse();
-            if (adresBasligi == "" || ilgiliKisi == "" || ilgiliKisiTel == "" )
+            if (adresBasligi == "" || ilgiliKisi == "" || ilgiliKisiTel == "")
             {
                 response.IsSuccessStatusCode = false;
                 response.ErrorMessage = "Lütfen Tüm Bilgileri Doldurunuz";
@@ -108,7 +108,7 @@ namespace KaleBlokBims.Controllers
                 }
                 else
                 {
-                    
+
                     query.DetayliAdres = detayliAdres;
                     query.FabrikaTeslimMi = Convert.ToBoolean(fabrikaTeslimMi);
                     query.Il = il;
@@ -157,14 +157,16 @@ namespace KaleBlokBims.Controllers
             string NakliyeKodu,
             string NakliyeAdi,
             string NakliyeBirimSeti,
-            bool SistemKalemiMi=false)
+            bool SistemKalemiMi,
+            string PayplanRef)
         {
+            SistemKalemiMi = SistemKalemiMi == null ? false : SistemKalemiMi;
             RestResponse response = new RestResponse();
             var db = new Models.IZOKALEPORTALEntities();
             var trans = db.Database.BeginTransaction();
             try
             {
-               
+
                 var mailAdresi = Session["MailAdresi"].ToString();
                 var BayiKodu = Session["BayiKodu"].ToString();
                 var BayiAdi = Session["BayiAdi"].ToString();
@@ -182,7 +184,7 @@ namespace KaleBlokBims.Controllers
                 baslik.EklenmeTarihi = DateTime.Now;
                 baslik.FabrikaTeslimMi = Convert.ToBoolean(FabrikaTeslimMi);
                 baslik.FiyatListesi = fiyatListesi;
-                baslik.BaglantiLref =Convert.ToInt32(baglantiLREF);
+                baslik.BaglantiLref = Convert.ToInt32(baglantiLREF);
                 baslik.Il = Il;
                 baslik.Ilce = Ilce;
                 baslik.IlgiliKisi = IlgiliKisi;
@@ -192,6 +194,7 @@ namespace KaleBlokBims.Controllers
                 baslik.SevkAdresi = SevkAdresi;
                 baslik.SilindiMi = false;
                 baslik.FisiOlusturanAdminMi = (Session["AdminMi"].ToString() == "0") ? false : true;
+                baslik.PayplanRef = PayplanRef;
                 if (yeniBaslikMi)
                 {
                     db.SiparisBasliklari.Add(baslik);
@@ -202,13 +205,14 @@ namespace KaleBlokBims.Controllers
                 icerik.AltGrup = AltGrup;
                 icerik.AnaGrup = AnaGrup;
                 icerik.FiyatListesi = fiyatListesi;
+                icerik.PayplanRef = PayplanRef;
                 icerik.LINETYPE = 0;
                 icerik.BaseDoviz = BaseDoviz;
-                icerik.BaseFiyat = Convert.ToDouble(BaseFiyat.Replace(".",","));
+                icerik.BaseFiyat = Convert.ToDouble(BaseFiyat.Replace(".", ","));
                 icerik.BaslikLREF = baslik.LOGICALREF;
                 icerik.Birimi = Birim;
                 icerik.EklenmeTarihi = DateTime.Now;
-                icerik.GuncelEUR = Convert.ToDouble(GuncelEUR.ToString().Replace(".",","));
+                icerik.GuncelEUR = Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","));
                 icerik.GuncelUSD = Convert.ToDouble(GuncelUSD.ToString().Replace(".", ","));
                 icerik.HesaplamaDetayliAciklama = HesaplamaDetayliAciklama;
                 icerik.HesaplanmisBirimFiyatiTL = Convert.ToDouble(HesaplanmisBirimFiyatiTL.ToString().Replace(".", ","));
@@ -224,7 +228,7 @@ namespace KaleBlokBims.Controllers
                 db.SiparisIcerikleri.Add(icerik);
                 db.SaveChanges();
 
-                if (icerik.NakliyeFiyatiTL>0)
+                if (icerik.NakliyeFiyatiTL > 0)
                 {
                     //Nakliye bilgileri kalem olarak ekleniyor
                     var nakliye = new Models.SiparisIcerikleri();

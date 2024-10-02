@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Dealer_Master.cshtml";
+            ViewBag.Title = "Index";
+            Layout = "~/Views/Shared/_Dealer_Master.cshtml";
 }
 
 <script>
@@ -9,21 +9,39 @@
         fiyatListeleri();
         AnaGruplar();
         iller();
+        OdemeleriGetir();
     }
+    function OdemeleriGetir() {
 
+        $.ajax({
+            url: '/Admin_BekleyenSiparisler/OdemeleriGetir/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                $(".odemeler").append('<option value="-1">Seçiniz.</option>');
+
+                var result = JSON.parse(sonuc);
+                for (var i = 0; i < result.length; i++) {
+                    $(".odemeler").append('<option value="' + result[i].OdemePlaniId + '">' + result[i].OdemePlaniAciklamasi + '</option>');
+                }
+                $(".odemeler").select2({ placeholder: "Ödeme Seçiniz.", });
+
+            }
+        });
+    }
     function fiyatListeleri() {
         $.ajax({
             url: '/Dealer_FiyatListesi/fiyatListeleri/',
             type: 'POST',
             dataType: 'text',
             success: function (sonuc) {
-                 var result = JSON.parse(sonuc);
+                var result = JSON.parse(sonuc);
 
-                    $(".fiyatListeleri").html("<option value='-1'>Seçiniz</option>");
-                    for (var i = 0; i < result.length; i++) {
-                        $(".fiyatListeleri").append("<option data-baglantiLREF='" + result[i].baglantiLREF +"'  value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + " " + ((result[i].baglantiLREF != -1) ? " Kalan Tutar: " + (result[i].bakiye) + " TL" : "") + "</option>");
+                $(".fiyatListeleri").html("<option value='-1'>Seçiniz</option>");
+                for (var i = 0; i < result.length; i++) {
+                    $(".fiyatListeleri").append("<option data-baglantiLREF='" + result[i].baglantiLREF + "'  value='" + result[i].fiyatListesiKodu + "'>" + result[i].fiyatListesiKodu + " " + ((result[i].baglantiLREF != -1) ? " Kalan Tutar: " + (result[i].bakiye) + " TL" : "") + "</option>");
 
-                    }
+                }
             }
         });
 
@@ -65,21 +83,21 @@
 
     //---------------------------------------------------------------------------------------------------
     var IllerArray;
-     function iller() {
-         $.ajax({
-             url: '/Dealer_FiyatListesi/Iller/',
-             type: 'POST',
-             dataType: 'text',
-             success: function (sonuc) {
-                 var result = JSON.parse(sonuc);
-                 IllerArray = result;
-                 $(".il").html("<option value='-1'>Seçiniz</option>");
-                 for (var i = 0; i < result.length; i++) {
-                     $(".il").append("<option value='" + result[i].LOGICALREF + "'>" + result[i].IlAdi + "</option>");
+    function iller() {
+        $.ajax({
+            url: '/Dealer_FiyatListesi/Iller/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+                var result = JSON.parse(sonuc);
+                IllerArray = result;
+                $(".il").html("<option value='-1'>Seçiniz</option>");
+                for (var i = 0; i < result.length; i++) {
+                    $(".il").append("<option value='" + result[i].LOGICALREF + "'>" + result[i].IlAdi + "</option>");
 
-                 }
-             }
-         });
+                }
+            }
+        });
     }
 
     function ilceler() {
@@ -102,6 +120,7 @@
 
     function fiyatlariGetir() {
         var fiyatListesiKodu = $(".fiyatListeleri option:selected").val();
+        var PayplanRef = $(".odemeler option:selected").val();
         var baglantiLREF = $(".fiyatListeleri option:selected").attr("data-baglantiLREF");
         var anaGrupKodu = $(".anaGrup option:selected").val();
         var altGrupKodu = $(".altGrup option:selected").val();
@@ -110,6 +129,10 @@
         var fabrikaTeslimMi = $('.fabrikaTeslimMi').is(':checked');
         if (fiyatListesiKodu == "-1") {
             UyariMesaji("Fiyat listesi seçilmelidir.");
+            return;
+        }
+        if (PayplanRef == "-1") {
+            UyariMesaji("Ödeme bilgisi seçilmelidir.");
             return;
         }
         if (anaGrupKodu == "-1") {
@@ -122,8 +145,8 @@
                 return;
             }
         }
-       
-       
+
+
         var theData = {
             FiyatListesiKodu: fiyatListesiKodu,
             baglantiLREF: baglantiLREF,
@@ -134,6 +157,8 @@
             fabrikaTeslimMi: Boolean(fabrikaTeslimMi),
             GuncelUSD: GuncelUSD,
             GuncelEUR: GuncelEUR,
+            PayplanRef: PayplanRef
+
         }
         loading(true);
         $.ajax({
@@ -145,17 +170,17 @@
                 loading(false);
                 var result = JSON.parse(sonuc);
 
-                var dataTable=[]
+                var dataTable = []
                 for (var i = 0; i < result.length; i++) {
                     dataTable.push({
                         'field1': result[i].MalzemeKodu,
                         'field2': result[i].MalzemeAdi,
                         'field3': result[i].MalzemeAciklama,
                         'field4': result[i].Birim,
-                        'field5': formatMoney(result[i].HesaplanmisBirimFiyatiTL)+" TL",
+                        'field5': formatMoney(result[i].HesaplanmisBirimFiyatiTL) + " TL",
                         'field6': result[i].HataMesaji,
                     });
-                  
+
                 }
                 $(".malzemeFiyatlariTablosu").bootstrapTable("destroy");
                 $(".malzemeFiyatlariTablosu").bootstrapTable({ data: dataTable, pagination: false });
@@ -167,7 +192,7 @@
 
 </script>
 <style>
-  
+
     table tbody tr td {
         white-space: nowrap;
     }
@@ -191,6 +216,10 @@
                                 <td>Fiyat Listesi:</td>
                                 <td><select class="fiyatListeleri form-control"></select></td>
                             </tr><!-- End .summary-subtotal -->
+                            <tr class="summary-subtotal">
+                                <td>Ödeme Bilgisi:</td>
+                                <td><select class="odemeler form-control"></select></td>
+                            </tr><!-- End .summary-subtotal -->
                             <tr class="summary-subtotal 0">
                                 <td class="border-0">Ana Grup:</td>
                                 <td class="border-0"><select class="anaGrup form-control" onchange="AltGruplar()"><option value="-1">Seçiniz</option></select></td>
@@ -208,13 +237,13 @@
                                 <td class="border-0"><select class="ilce form-control"><option value="-1">Seçiniz</option></select></td>
                             </tr><!-- End .summary-subtotal -->
                             @{
-                                if (System.Configuration.ConfigurationManager.AppSettings["FirmaTag"].ToString().ToLower() != "ergibs")
-                                {
-                                    <tr class="summary-subtotal">
-                                        <td>Fabrika Teslim:</td>
-                                        <td> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input"></td>
-                                    </tr><!-- End .summary-subtotal -->
-                                }
+                               If (System.Configuration.ConfigurationManager.AppSettings["FirmaTag"].ToString().ToLower() != "ergibs")
+                               {
+                                <tr class="summary-subtotal">
+                                    <td>Fabrika Teslim:</td>
+                                    <td> <input type="checkbox" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input"></td>
+                                </tr><!-- End .summary-subtotal -->
+                                                                                                                                }
                             }
 
 
@@ -242,7 +271,7 @@
                             <th data-field="field6"></th>
                         </tr>
                     </thead>
-                  
+
                 </table><!-- End .table table-wishlist -->
 
             </div>

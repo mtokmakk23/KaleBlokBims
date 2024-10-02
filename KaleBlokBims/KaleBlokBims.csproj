@@ -1732,9 +1732,9 @@
     <Content Include="assets\vendor\line-awesome\line-awesome\line-awesome\fonts\line-awesomeeb4f.svg" />
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.js.map" />
     <Content Include="assets\js\excel-bootstrap-table-filter-bundle.min.js.map" />
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.disco" />
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.disco" />
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.AmbarBilgileriResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -1831,6 +1831,7 @@
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YonetimRaporlariResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Connected Services\M2BWebService\IZOKALEAPI1.wsdl" />
     <None Include="Connected Services\M2BWebService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -2065,7 +2066,6 @@
     <Content Include="Files\BayiEvraklari\bayi_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\cari-hesap_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\nakliye-araclari-isg-bilgilendirme-formu.pdf" />
-    <None Include="Connected Services\M2BWebService\IZOKALEAPI.wsdl" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\bootstratTable_TR.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />

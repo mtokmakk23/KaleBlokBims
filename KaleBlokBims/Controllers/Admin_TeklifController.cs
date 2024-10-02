@@ -107,14 +107,14 @@ namespace KaleBlokBims.Controllers
         }
 
         [HttpPost]
-        public string MalzemeFiyatlariniGetir(string bayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, string fabrikaTeslimMi, string GuncelUSD, string GuncelEUR)
+        public string MalzemeFiyatlariniGetir(string bayiKodu, string FiyatListesiKodu, string baglantiLREF, string SPECODE1, string SPECODE2, string Il, string Ilce, string fabrikaTeslimMi, string GuncelUSD, string GuncelEUR,string PayplanRef)
         {
             if (SPECODE1 == "-1") SPECODE1 = "";
             if (SPECODE2 == "-1") SPECODE2 = "";
 
 
             var servis = new M2BWebService.ZOKALEAPISoapClient();
-            var list = JsonConvert.DeserializeObject<List<Malzeme>>(servis.MalzemeListesi(bayiKodu, FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","))));
+            var list = JsonConvert.DeserializeObject<List<Malzeme>>(servis.MalzemeListesi(bayiKodu, FiyatListesiKodu, baglantiLREF, SPECODE1, SPECODE2, Il, Ilce, Convert.ToBoolean(fabrikaTeslimMi), Convert.ToDouble(GuncelUSD.ToString().Replace(".", ",")), Convert.ToDouble(GuncelEUR.ToString().Replace(".", ",")), PayplanRef));
             foreach (var item in list)
             {
                 item.ResimUrl = UrunResimleri(item.MalzemeKodu, item.SPECODE1);
@@ -185,6 +185,7 @@ namespace KaleBlokBims.Controllers
           string NakliyeKodu,
           string NakliyeAdi,
           string NakliyeBirimSeti,
+          string PayplanRef,
           bool SistemKalemiMi = false)
         {
             RestResponse response = new RestResponse();
@@ -214,6 +215,7 @@ namespace KaleBlokBims.Controllers
                 baslik.OnaylandiMi = false;
                 baslik.SilindiMi = false;
                 baslik.SipariseDonduMu = false;
+                baslik.PayplanRef = PayplanRef;
                 if (yeniBaslikMi)
                 {
                     db.TeklifBasliklari.Add(baslik);
@@ -302,6 +304,7 @@ namespace KaleBlokBims.Controllers
                                     a.BaslikLREF,
                                     a.Birimi,
                                     a.FiyatListesi,
+                                    a.PayplanRef,
                                     a.HesaplamaDetayliAciklama,
                                     a.HesaplanmisBirimFiyatiTL,
                                     a.IndirimAciklamasi,
