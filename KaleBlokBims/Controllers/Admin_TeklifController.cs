@@ -304,7 +304,6 @@ namespace KaleBlokBims.Controllers
                                     a.BaslikLREF,
                                     a.Birimi,
                                     a.FiyatListesi,
-                                    a.PayplanRef,
                                     a.HesaplamaDetayliAciklama,
                                     a.HesaplanmisBirimFiyatiTL,
                                     a.IndirimAciklamasi,
