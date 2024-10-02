@@ -945,10 +945,9 @@ function SepetiOnayla(step) {
         }).then((result) => {
             if (result.isConfirmed) {
 
-                sepetOnaylaOdemeTipi = $("#swal-input1 option:selected").text();
                 sepetOnaylaSiparisNotu = $("#swal-input2").val();
                 var theData = {
-                    sepetOnaylaOdemeTipi: sepetOnaylaOdemeTipi,
+                    sepetOnaylaOdemeTipi: "",
                     sepetOnaylaSiparisNotu: sepetOnaylaSiparisNotu
                 }
                 loading(true);
