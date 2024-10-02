@@ -205,7 +205,6 @@ namespace KaleBlokBims.Controllers
                 icerik.AltGrup = AltGrup;
                 icerik.AnaGrup = AnaGrup;
                 icerik.FiyatListesi = fiyatListesi;
-                icerik.PayplanRef = PayplanRef;
                 icerik.LINETYPE = 0;
                 icerik.BaseDoviz = BaseDoviz;
                 icerik.BaseFiyat = Convert.ToDouble(BaseFiyat.Replace(".", ","));
