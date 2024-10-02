@@ -41,5 +41,6 @@ namespace KaleBlokBims.Models
         public Nullable<bool> FisiOlusturanAdminMi { get; set; }
         public Nullable<int> BaglantiLref { get; set; }
         public string BaglantiAciklamasi { get; set; }
+        public string PayplanRef { get; set; }
     }
 }
