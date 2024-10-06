@@ -2,6 +2,23 @@
 <wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="PaletFiyatiniAl">
+        <s:complexType />
+      </s:element>
+      <s:element name="PaletFiyatiniAlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PaletFiyatiniAlResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="Bayiler">
         <s:complexType />
       </s:element>
@@ -491,6 +508,12 @@
       </s:element>
     </s:schema>
   </wsdl:types>
+  <wsdl:message name="PaletFiyatiniAlSoapIn">
+    <wsdl:part name="parameters" element="tns:PaletFiyatiniAl" />
+  </wsdl:message>
+  <wsdl:message name="PaletFiyatiniAlSoapOut">
+    <wsdl:part name="parameters" element="tns:PaletFiyatiniAlResponse" />
+  </wsdl:message>
   <wsdl:message name="BayilerSoapIn">
     <wsdl:part name="parameters" element="tns:Bayiler" />
   </wsdl:message>
@@ -660,6 +683,10 @@
     <wsdl:part name="parameters" element="tns:M2BSiparisOlusturResponse" />
   </wsdl:message>
   <wsdl:portType name="IZOKALEAPISoap">
+    <wsdl:operation name="PaletFiyatiniAl">
+      <wsdl:input message="tns:PaletFiyatiniAlSoapIn" />
+      <wsdl:output message="tns:PaletFiyatiniAlSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="Bayiler">
       <wsdl:input message="tns:BayilerSoapIn" />
       <wsdl:output message="tns:BayilerSoapOut" />
@@ -775,6 +802,15 @@
   </wsdl:portType>
   <wsdl:binding name="IZOKALEAPISoap" type="tns:IZOKALEAPISoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PaletFiyatiniAl">
+      <soap:operation soapAction="http://tempuri.org/PaletFiyatiniAl" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="Bayiler">
       <soap:operation soapAction="http://tempuri.org/Bayiler" style="document" />
       <wsdl:input>
@@ -1030,6 +1066,15 @@
   </wsdl:binding>
   <wsdl:binding name="IZOKALEAPISoap12" type="tns:IZOKALEAPISoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PaletFiyatiniAl">
+      <soap12:operation soapAction="http://tempuri.org/PaletFiyatiniAl" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="Bayiler">
       <soap12:operation soapAction="http://tempuri.org/Bayiler" style="document" />
       <wsdl:input>

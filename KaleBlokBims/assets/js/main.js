@@ -854,6 +854,22 @@ function sistemKalemleriEkle() {
 
 var acikSiparislerYuklendiMi = false;
 var bekleyenBaslikBilgileri;
+function paletEkle() {
+    $.ajax({
+        url: '/Dealer_Anasayfa/PaletHesapla/',
+        type: 'POST',
+        dataType: 'text',
+        success: function (sonuc) {
+
+            var result = JSON.parse(sonuc);
+            if (Boolean(result.IsSuccessStatusCode)) {
+                acikSiparisler();
+            } else {
+                alert(result.ErrorMessage);
+            }
+        }
+    });
+}
 function acikSiparisler() {
     $(".dropdown-cart-products").html("");
     $(".cart-count").html("0");

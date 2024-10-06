@@ -1735,100 +1735,16 @@
     <None Include="Connected Services\M2BWebService\configuration91.svcinfo" />
     <None Include="Connected Services\M2BWebService\configuration.svcinfo" />
     <None Include="Connected Services\M2BWebService\IZOKALEAPI1.disco" />
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.AmbarBilgileriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.AnaGruplarResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BaglantiBakiyeOzetiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BayilerResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.BolumBilgileriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.FabrikaBilgileriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.FiyatListesiBakiye.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.HesapEkstresiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.HesapOzetiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IlveIlceleriGetirResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IrsaliyeFisiSatirlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IrsaliyeFisleriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.IsyeriBilgileriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.M2BSiparisOlusturResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MalzemeListesiResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.Musteriler.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MusteriyeBagliCariBilgileriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.MusteriyeSevkRaporuResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SecilebilirFiyatListeleriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SiparisFisiSatirIrsaliyeleriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SiparisFisiSatirlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SiparisFisleriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileri.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SistemKalemleriBilgileriAlResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeVeCarileri.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.SozlesmeyeBagliCarilerVeSatisElemanlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.testResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.TumBayilerinBaglantiBakiyeOzetiResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFOdemePlanlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSatisElemanlariResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.WCFSozlesmeBilgileriResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\M2BWebService\KaleBlokBims.M2BWebService.YonetimRaporlariResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Connected Services\M2BWebService\IZOKALEAPI1.wsdl" />
@@ -2066,6 +1982,7 @@
     <Content Include="Files\BayiEvraklari\bayi_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\cari-hesap_sozlesmesi.pdf" />
     <Content Include="Files\BayiEvraklari\nakliye-araclari-isg-bilgilendirme-formu.pdf" />
+    <Content Include="Properties\DataSources\System.Data.DataTable.datasource" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\bootstratTable_TR.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />

@@ -19,6 +19,22 @@
 
     var acikSiparislerYuklendiMi = false;
     var bekleyenBaslikBilgileri;
+    function paletEkle() {
+        $.ajax({
+            url: '/Admin_Teklif/PaletHesapla/',
+            type: 'POST',
+            dataType: 'text',
+            success: function (sonuc) {
+
+                var result = JSON.parse(sonuc);
+                if (Boolean(result.IsSuccessStatusCode)) {
+                    acikSiparisler();
+                } else {
+                    alert(result.ErrorMessage);
+                }
+            }
+        });
+    }
     function acikSiparisler() {
         $(".dropdown-cart-products .table tbody").html("");
         $(".cart-count").html("0");
@@ -471,6 +487,8 @@
             NakliyeBirimSeti: MalzemeFiyatlari[i].NakliyeBirimSeti,
             PayplanRef: PayplanRef,
             SistemKalemiMi: false,
+            PALET_KT: MalzemeFiyatlari[i].PALET_KT
+
         }
         loading(true);
         $.ajax({
@@ -760,6 +778,12 @@
     <div class="col-md-8 m-auto eklenenUrunBilgileri" style="display:none">
         <a class="btn btn-success mb-1 text-white" style="float:right" onclick="$('.eklenenUrunBilgileri').hide('fast');$('.siparisBilgileri').show('slow');">Ürün Ekle</a>
         <h5 class="mb-0">Sepetteki Ürünler</h5><hr class="mt-1 mb-1 " />
+        @{
+            if (System.Configuration.ConfigurationManager.AppSettings["FirmaTag"].ToString().ToLower() != "ergibs")
+            {
+                <a class="btn btn-warning" onclick="paletEkle()">Palet Ekle</a>
+            }
+        }
         <div class="dropdown-cart-products">
             <table class="table">
                 <thead>
@@ -777,7 +801,7 @@
                 <tbody></tbody>
             </table>
         </div>
-        <div class="form-group row w-50">
+        @*<div class="form-group row w-50">
             <label class="col-md-4" style="color:black;font-weight:bold">Ödeme Tipi:</label>
             <div class="col-md-8">
                 <select id="odemeTipi" class="form-control">
@@ -791,13 +815,13 @@
                     <option>90 GÜN VADE</option>
                 </select>
             </div>
-        </div>
+        </div>*@
         <div class="form-group row w-50">
             <label class="col-md-4" style="color:black;font-weight:bold">Teklif Son Geçerlilik Tarihi:</label>
             <div class="col-md-8">
                 <input type="date" class="form-control" id="sonGecerlilikTarihi" />
             </div>
-        </div> 
+        </div>
         <div class="form-group row w-50">
             <label class="col-md-4" style="color:black;font-weight:bold">Açıklama:</label>
             <div class="col-md-8">

@@ -144,7 +144,7 @@
                             <i class="icon-bars"></i>
                         </button>
                         <a href="/Dealer_Anasayfa/Index" class="logo" style="margin:0" ondblclick="if (@Session["AdminMi"].ToString()=='1') { window.location='/Admin_Anasayfa/Index' }">
-                            <img src="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()"" alt="Kale Blok Logo" width="105" height="25">
+                            <img src="@System.Configuration.ConfigurationManager.AppSettings["Logo"].ToString()" " alt="Kale Blok Logo" width="105" height="25">
                         </a>
                         <nav class="main-nav">
                             <ul class="menu sf-arrows sf-js-enabled" style="touch-action: pan-y;">
@@ -233,7 +233,7 @@
                                                 <div class="col-md-12">
                                                     <ul>
                                                         @{
-                                                          if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SikayetleriGorme))
+                                                            if (Convert.ToBoolean(yetkiler.FirmaAdminiMi) || Convert.ToBoolean(yetkiler.SikayetleriGorme))
                                                             {
                                                                 <li class="border-top"><a href="/Dealer_Sikayet/SikayetOlustur">Şikayet Oluştur</a></li>
                                                                 <li class="border-bottom mb-3"><a href="/Dealer_Sikayet/SikayetListesi">Tüm Şikayetler</a></li>
@@ -347,7 +347,12 @@
                             <div class="product-shop">
                                 @*<a class="btn btn-info btn-warning m-1" onclick="sistemKalemleriEkle()">Sistem Kalemleri Ekle</a>*@
                                 <div class="mobile-menu-wrapper">
-
+                                    @{
+                                        if (System.Configuration.ConfigurationManager.AppSettings["FirmaTag"].ToString().ToLower() != "ergibs")
+                                        {
+                                            <a class="btn btn-warning" onclick="paletEkle()">Palet Ekle</a>
+                                        }
+                                    }
                                     <span class="product-shop-close" onclick="$('.product-shop').css('transform','translateX(450px)');$('.product-shop').css('visibility','hidden');"><i class="icon-close"></i></span>
                                     <nav class="mobile-nav">
                                         <div class="dropdown-cart-products mt-1">
@@ -361,7 +366,7 @@
                                             <label class="col-md-6 genelToplam" style="text-align: right; color: black; font-weight: bold "></label>
                                         </div>
 
-                                      
+
                                         <div class="dropdown-cart-action">
                                             <div class="form-group row w-100">
                                                 <label class="col-md-4" style="color:black;font-weight:bold">Sipariş Notu:</label>

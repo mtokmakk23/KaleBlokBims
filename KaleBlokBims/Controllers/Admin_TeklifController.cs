@@ -150,7 +150,103 @@ namespace KaleBlokBims.Controllers
             }
             return path + "gorselHazirlanıyor.png";
         }
+        [HttpPost]
+        public string PaletHesapla()
+        {
+            var servis = new M2BWebService.ZOKALEAPISoapClient();
+            RestResponse response = new RestResponse();
+            var db = new Models.IZOKALEPORTALEntities();
+            var mailAdresi = Session["MailAdresi"].ToString();
+            var BayiKodu = Session["BayiKodu"].ToString();
+            try
+            {
+                var paletBilgileri = servis.PaletFiyatiniAl();
+                if (paletBilgileri == null)
+                {
+                    response.IsSuccessStatusCode = false;
+                    response.ErrorMessage = "Palet Fiyatı Alınamadı.";
+                    return JsonConvert.SerializeObject(response);
+                }
+                var baslik = db.TeklifBasliklari.Where(x => x.MailAdresi == mailAdresi && x.BayiKodu == BayiKodu && x.OnaylandiMi == false && x.SilindiMi != true).FirstOrDefault();
+                if (baslik == null)
+                {
+                    response.IsSuccessStatusCode = false;
+                    response.ErrorMessage = "Açık Siparişiniz Bulunmuyor";
+                    return JsonConvert.SerializeObject(response);
+                }
 
+                var malzemeler = db.TeklifIcerikleri.Where(x => x.BaslikLREF == baslik.LOGICALREF).ToList();
+                int toplamPalet = 0;
+                double varOlanPaletMiktari = 0;
+                int index = 1;
+                foreach (var item in malzemeler)
+                {
+                    if (item.MalzemeKodu == paletBilgileri.Rows[0]["CODE"].ToString())
+                    {
+                        varOlanPaletMiktari += Convert.ToDouble(item.Miktar);
+                    }
+                    else
+                    {
+                        if (item.Miktar % item.PALET_KT == 0)
+                        {
+                            toplamPalet += Convert.ToInt32(item.Miktar / item.PALET_KT);
+                        }
+                        else
+                        {
+                            response.IsSuccessStatusCode = false;
+                            response.ErrorMessage = index + ". Satırdaki Malzemenin Miktarı " + item.PALET_KT + " " + item.Birimi + " veya Katları Olmalıdır.";
+                            return JsonConvert.SerializeObject(response);
+                        }
+
+                    }
+                    index++;
+                }
+                if (varOlanPaletMiktari > 0)
+                {
+                    db.Database.ExecuteSqlCommand("delete from TeklifIcerikleri where BaslikLREF=" + baslik.LOGICALREF + " AND MalzemeKodu='" + paletBilgileri.Rows[0]["CODE"].ToString() + "'");
+                    db.SaveChanges();
+                }
+
+                var icerik = new Models.TeklifIcerikleri();
+                icerik.AltGrup = "";
+                icerik.AnaGrup = "";
+                icerik.FiyatListesi = baslik.FiyatListesi;
+                icerik.LINETYPE = 0;
+                icerik.BaseDoviz = "TL";
+                icerik.BaseFiyat = Convert.ToDouble(paletBilgileri.Rows[0]["PRICE"].ToString().Replace(".", ","));
+                icerik.PALET_KT = 1;
+                icerik.BaslikLREF = baslik.LOGICALREF;
+                icerik.Birimi = paletBilgileri.Rows[0]["UNIT"].ToString();
+                icerik.EklenmeTarihi = DateTime.Now;
+                icerik.GuncelEUR = 1;
+                icerik.GuncelUSD = 1;
+                icerik.HesaplamaDetayliAciklama = "";
+                icerik.HesaplanmisBirimFiyatiTL = Convert.ToDouble(paletBilgileri.Rows[0]["PRICE"].ToString().Replace(".", ","));
+                icerik.MalzemeAdi = paletBilgileri.Rows[0]["NAME"].ToString();
+                icerik.MalzemeKodu = paletBilgileri.Rows[0]["CODE"].ToString();
+                icerik.Miktar = Convert.ToDouble(toplamPalet.ToString().Replace(".", ","));
+                icerik.NakliyeFiyatiTL = 0;
+                icerik.SabitEUR = 1;
+                icerik.SabitUSD = 1;
+                icerik.Kdv = Convert.ToDouble(paletBilgileri.Rows[0]["vat"].ToString().Replace(".", ","));
+                icerik.Editable = false;
+                icerik.SistemKalemiMi = false;
+                db.TeklifIcerikleri.Add(icerik);
+                db.SaveChanges();
+                response.IsSuccessStatusCode = true;
+                response.ErrorMessage = "Palet Eklendi. Sepet Fiyatını Kontrol Ediniz.";
+                return JsonConvert.SerializeObject(response);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccessStatusCode = false;
+                response.ErrorMessage = ex.Message;
+                return JsonConvert.SerializeObject(response);
+            }
+
+
+
+        }
 
         [HttpPost]
         public string SepeteEkle(
@@ -173,6 +269,7 @@ namespace KaleBlokBims.Controllers
           string Miktar,
           string HesaplanmisBirimFiyatiTL,
           string BaseFiyat,
+          string PALET_KT,
           string BaseDoviz,
           string NakliyeFiyatiTL,
           string GuncelEUR,
@@ -232,6 +329,7 @@ namespace KaleBlokBims.Controllers
                 icerik.BaslikLREF = baslik.LOGICALREF;
                 icerik.Birimi = Birim;
                 icerik.EklenmeTarihi = DateTime.Now;
+                icerik.PALET_KT = Convert.ToDouble(PALET_KT.Replace(".", ","));
                 icerik.GuncelEUR = Convert.ToDouble(GuncelEUR.ToString().Replace(".", ","));
                 icerik.GuncelUSD = Convert.ToDouble(GuncelUSD.ToString().Replace(".", ","));
                 icerik.HesaplamaDetayliAciklama = HesaplamaDetayliAciklama;

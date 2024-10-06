@@ -45,5 +45,6 @@ namespace KaleBlokBims.Models
         public string NakliyeAdi { get; set; }
         public string NakliyeBirimSeti { get; set; }
         public Nullable<bool> SistemKalemiMi { get; set; }
+        public Nullable<double> PALET_KT { get; set; }
     }
 }
