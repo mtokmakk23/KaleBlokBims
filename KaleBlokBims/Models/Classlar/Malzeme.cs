@@ -23,6 +23,7 @@ namespace KaleBlokBims.Models.Classlar
         public double M2Katsayi;
         public double M3Katsayi;
         public double KGKatsayi;
+        public double PALET_KT;
 
 
         public double BaseFiyat;

@@ -146,6 +146,7 @@ namespace KaleBlokBims.Controllers
             string HesaplanmisBirimFiyatiTL,
             string BaseFiyat,
             string BaseDoviz,
+            string PALET_KT,
             string NakliyeFiyatiTL,
             string GuncelEUR,
             string GuncelUSD,
@@ -208,6 +209,7 @@ namespace KaleBlokBims.Controllers
                 icerik.LINETYPE = 0;
                 icerik.BaseDoviz = BaseDoviz;
                 icerik.BaseFiyat = Convert.ToDouble(BaseFiyat.Replace(".", ","));
+                icerik.PALET_KT = Convert.ToDouble(PALET_KT.Replace(".", ","));
                 icerik.BaslikLREF = baslik.LOGICALREF;
                 icerik.Birimi = Birim;
                 icerik.EklenmeTarihi = DateTime.Now;

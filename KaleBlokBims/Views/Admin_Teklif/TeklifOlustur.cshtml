@@ -125,7 +125,7 @@
                     if (bekleyenBaslikBilgileri.length > 0) {
                         $('.bayiListesi option[value="' + bekleyenBaslikBilgileri[0].BayiKodu + '"]').attr('selected', 'selected');
                         fiyatListeleri();
-                        OdemeleriGetir();
+                       
                     }
                 }
             }
@@ -133,6 +133,7 @@
     }
 
     function fiyatListeleri() {
+        OdemeleriGetir();
         $(".fiyatListeleri").html("<option value='-2'>Seçiniz</option>");
         var bayiKodu = $(".bayiListesi option:selected").val();
         if (bayiKodu == -1) {
@@ -707,12 +708,16 @@
                                     <td class="border-0"><select class="ilce form-control" id="ilceler"><option value="-1">Seçiniz</option></select></td>
 
                                 </tr><!-- End .summary-subtotal -->
-                                <tr class="summary-subtotal">
-                                    <td colspan="4">Fabrika Teslim:<input type="checkbox" style="margin-left:5px" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input" onchange="$('.adresBilgileriDivi').toggle();"></td>
+                                @{
+                                            if(System.Configuration.ConfigurationManager.AppSettings["FirmaTag"].ToString().ToLower() != "ergibs")
+                                    {
+                                        <tr class="summary-subtotal">
+                                            <td colspan = "4" > Fabrika Teslim:<input type = "checkbox" style="margin-left:5px" id="express-shipping" name="shipping" class="fabrikaTeslimMi custom-control-input" onchange="$('.adresBilgileriDivi').toggle();"></td>
 
-                                </tr><!-- End .summary-subtotal -->
+                                        </tr><!-- End.summary-subtotal -->
 
-                            </tbody>
+                                    } }
+                                    </tbody>
                         </table><!-- End .table table-summary -->
                         <a href="#" onclick="UrunDiviniAc()" class="btn btn-outline-primary-2 btn-order btn-block">FİYATLARI GETİR</a>
                     </div><!-- End .summary -->

@@ -67,6 +67,8 @@ namespace KaleBlokBims.Controllers
             }
             return JsonConvert.SerializeObject(response);
         }
+
+      
         [HttpPost]
         public string SepetiOnayla(string sepetOnaylaOdemeTipi, string sepetOnaylaSiparisNotu)
         {
